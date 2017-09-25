@@ -6,6 +6,7 @@
 //************************************************/
 #include "SL_Window.h"
 #include <SL_Texture.h>
+#include <SL_KeyManager.h>
 #include <d3d11.h>
 #include <Keyboard.h>
 #include <Mouse.h>
@@ -13,12 +14,64 @@
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
+/// <summary>
+/// コンストラクタ　初期設定
+/// </summary>
+ShunLib::Window::Window():
+	m_width(640.0f),
+	m_height(480.0f),
+	m_name(L"タイトル")
+{
+	for (int i = 0; i < typeNum; i++)
+	{
+		m_game[i] = nullptr;
+		m_swapChain[i] = nullptr;
+		m_renderTargetView[i] = nullptr;
+		m_depthStencilView[i] = nullptr;
+	}
+
+	//スワップチェインの設定
+	ZeroMemory(&m_sd, sizeof(m_sd));
+	m_sd.BufferCount = 1;
+	m_sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;//32bitカラー
+	m_sd.BufferDesc.RefreshRate.Numerator = 60;         //フレッシュレート　60fps
+	m_sd.BufferDesc.RefreshRate.Denominator = 1;        //バックバッファの数
+	m_sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	m_sd.SampleDesc.Count = 1;
+	m_sd.SampleDesc.Quality = 0;
+	m_sd.Windowed = TRUE;
+
+	//深度ステンシルビューの設定
+	m_descDepth.MipLevels = 1;
+	m_descDepth.ArraySize = 1;
+	m_descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+	m_descDepth.SampleDesc.Count = 1;
+	m_descDepth.SampleDesc.Quality = 0;
+	m_descDepth.Usage = D3D11_USAGE_DEFAULT;
+	m_descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	m_descDepth.CPUAccessFlags = 0;
+	m_descDepth.MiscFlags = 0;
+
+}
+
+/// <summary>
+/// デストラクタ　終了処理
+/// </summary>
 ShunLib::Window::~Window() {
-	SAFE_RELEASE(m_swapChain);
-	SAFE_RELEASE(m_recderTargetView);
+	for (int i = 0; i < typeNum; i++)
+	{
+		SAFE_RELEASE(m_swapChain[i]);
+		SAFE_RELEASE(m_renderTargetView[i]);
+	}
+
 	SAFE_RELEASE(m_deviceContext);
 	SAFE_RELEASE(m_texture2D);
-	SAFE_RELEASE(m_depthStencilView);
+
+	for (int i = 0; i < typeNum; i++)
+	{
+		SAFE_RELEASE(m_depthStencilView[i]);
+	}
+
 	SAFE_RELEASE(m_device);
 
 	for (int i = 0; i < typeNum; i++)
@@ -31,6 +84,9 @@ ShunLib::Window::~Window() {
 	SAFE_DELETE(m_tmp);
 }
 
+/// <summary>
+/// 1つ目のウィンドウを作成
+/// </summary>
 HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 {
 	m_instApp = hInst;
@@ -48,25 +104,58 @@ HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 /// </summary>
 HRESULT ShunLib::Window::CreateSecondWindow()
 {
+	//既に作成されたものが合ったら削除
+	SAFE_RELEASE(m_swapChain[DEBUGGER]);
+	SAFE_RELEASE(m_renderTargetView[DEBUGGER]);
+	SAFE_RELEASE(m_depthStencilView[DEBUGGER]);
+	if (IsWindow(m_hWnd[DEBUGGER]))
+	{
+		DestroyWindow(m_hWnd[DEBUGGER]);
+	}
+
+	//ウィンドウ作成
 	if (FAILED(MakeWindow(DEBUGGER)))
 	{
 		return E_FAIL;
 	}
 
+	// スワップチェーンの作成
+	IDXGIDevice1* pDXGI = NULL;
+	IDXGIAdapter* pAdapter = NULL;
+	IDXGIFactory* pFactory = NULL;
 
-	//IDXGIDevice1* pDXGI = NULL;
-	//IDXGIAdapter* pAdapter = NULL;
-	//IDXGIFactory* pFactory = NULL;
+	m_device->QueryInterface(__uuidof(IDXGIDevice1), (void**)&pDXGI);
+	pDXGI->GetAdapter(&pAdapter);
+	pAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&pFactory);
 
-	//m_device->QueryInterface(__uuidof(IDXGIDevice1), (void**)&pDXGI);
-	//pDXGI->GetAdapter(&pAdapter);
-	//pAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&pFactory);
+	m_sd.BufferDesc.Width = (UINT)m_width;              //画面横幅
+	m_sd.BufferDesc.Height = (UINT)m_height;            //画面縦幅
+	m_sd.OutputWindow = m_hWnd[DEBUGGER];
+	pFactory->CreateSwapChain(m_device, &m_sd, &m_swapChain[DEBUGGER]);
 
-	//sd.OutputWindow = hWindow[0];
-	//pFactory->CreateSwapChain(m_device, &sd, &pSwapChain[0]);
+	//スワップチェインが持っているバックバッファを取得
+	ID3D11Texture2D *backBuffer;
+	m_swapChain[DEBUGGER]->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 
-	//sd.OutputWindow = hWindow[1];
-	//pFactory->CreateSwapChain(m_device, &sd, &pSwapChain[1]);
+	//レンダーターゲットビューの作成
+	//レンダーターゲットとリソースを繋げるもの
+	m_device->CreateRenderTargetView(backBuffer, NULL, &m_renderTargetView[DEBUGGER]);
+
+	//深度ステンシルビューの作成
+	//Zバッファとステンシルバッファに対するビュー
+	m_descDepth.Width = (UINT)m_width;
+	m_descDepth.Height = (UINT)m_height;
+	m_device->CreateTexture2D(&m_descDepth, NULL, &m_texture2D);
+	m_device->CreateDepthStencilView(m_texture2D, NULL, &m_depthStencilView[DEBUGGER]);
+
+	//レンダーターゲットビューと深度ステンシルビューをパイプラインに関連付ける
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView[DEBUGGER], m_depthStencilView[DEBUGGER]);
+
+
+	//バックバッファの参照カウンタを１つ減らす
+	//※破棄ではない
+	SAFE_RELEASE(backBuffer);
+
 	return S_OK;
 }
 
@@ -76,19 +165,9 @@ HRESULT ShunLib::Window::CreateSecondWindow()
 HRESULT ShunLib::Window::InitD3D()
 {
 	// デバイスとスワップチェーンの作成
-	DXGI_SWAP_CHAIN_DESC sd;
-	ZeroMemory(&sd, sizeof(sd));
-	sd.BufferCount = 1;
-	sd.BufferDesc.Width = (UINT)m_width;                    //画面横幅
-	sd.BufferDesc.Height = (UINT)m_height;                  //画面縦幅
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;//32bitカラー
-	sd.BufferDesc.RefreshRate.Numerator = 60;         //フレッシュレート　60fps
-	sd.BufferDesc.RefreshRate.Denominator = 1;        //バックバッファの数
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.OutputWindow = m_hWnd[EDITOR];
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
-	sd.Windowed = TRUE;
+	m_sd.BufferDesc.Width = (UINT)m_width;              //画面横幅
+	m_sd.BufferDesc.Height = (UINT)m_height;            //画面縦幅
+	m_sd.OutputWindow = m_hWnd[EDITOR];
 
 	D3D_FEATURE_LEVEL featureLevels = D3D_FEATURE_LEVEL_11_0;
 	D3D_FEATURE_LEVEL* featureLevel = NULL;
@@ -102,8 +181,8 @@ HRESULT ShunLib::Window::InitD3D()
 		&featureLevels,
 		1,
 		D3D11_SDK_VERSION,
-		&sd,
-		&m_swapChain,
+		&m_sd,
+		&m_swapChain[EDITOR],
 		&m_device,
 		featureLevel,
 		&m_deviceContext);
@@ -113,37 +192,27 @@ HRESULT ShunLib::Window::InitD3D()
 
 	//スワップチェインが持っているバックバッファを取得
 	ID3D11Texture2D *backBuffer;
-	m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
+	m_swapChain[EDITOR]->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 
 	//レンダーターゲットビューの作成
 	//レンダーターゲットとリソースを繋げるもの
-	m_device->CreateRenderTargetView(backBuffer, NULL, &m_recderTargetView);
+	m_device->CreateRenderTargetView(backBuffer, NULL, &m_renderTargetView[EDITOR]);
 
 	//バックバッファの参照カウンタを１つ減らす
 	//※破棄ではない
 	SAFE_RELEASE(backBuffer);
 
 
-
 	//深度ステンシルビューの作成
 	//Zバッファとステンシルバッファに対するビュー
-	D3D11_TEXTURE2D_DESC descDepth;
-	descDepth.Width = (UINT)m_width;
-	descDepth.Height = (UINT)m_height;
-	descDepth.MipLevels = 1;
-	descDepth.ArraySize = 1;
-	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
-	descDepth.SampleDesc.Count = 1;
-	descDepth.SampleDesc.Quality = 0;
-	descDepth.Usage = D3D11_USAGE_DEFAULT;
-	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	descDepth.CPUAccessFlags = 0;
-	descDepth.MiscFlags = 0;
-	m_device->CreateTexture2D(&descDepth, NULL, &m_texture2D);
-	m_device->CreateDepthStencilView(m_texture2D, NULL, &m_depthStencilView);
+	m_descDepth.Width = (UINT)m_width;
+	m_descDepth.Height = (UINT)m_height;
+
+	m_device->CreateTexture2D(&m_descDepth, NULL, &m_texture2D);
+	m_device->CreateDepthStencilView(m_texture2D, NULL, &m_depthStencilView[EDITOR]);
 
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインに関連付ける
-	m_deviceContext->OMSetRenderTargets(1, &m_recderTargetView, m_depthStencilView);
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView[EDITOR], m_depthStencilView[EDITOR]);
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
@@ -296,11 +365,22 @@ void ShunLib::Window::Run()
 			DispatchMessage(&msg);
 		}
 		else {
+			ShunLib::KeyManager::GetInstance()->Update();
+
 			//ゲームの更新
 			GameUpdate();
 			GameRender();
 		}
 	}
+}
+
+/// <summary>
+/// 描画するウィンドウを設定
+/// </summary>
+/// <param name="type"></param>
+void ShunLib::Window::SetDrawingWindow(WINDOW_TYPE type)
+{
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView[type], m_depthStencilView[type]);
 }
 
 /// <summary>
@@ -351,11 +431,32 @@ void ShunLib::Window::GameRender()
 			m_game[i]->Render();
 		}
 	}
+	static WINDOW_TYPE type = EDITOR;
+	auto key = ShunLib::KeyManager::GetInstance();
+	if (key->IsTracker(ShunLib::KeyManager::KEY_CODE::SPACE))
+	{
+		type = DEBUGGER;
+	}
+	else if(key->IsTracker(ShunLib::KeyManager::KEY_CODE::Z))
+	{
+		type = EDITOR;
+	}
+	else if (key->IsTracker(ShunLib::KeyManager::KEY_CODE::X))
+	{
+		CreateSecondWindow();
+	}
 
-	//m_tmp->Draw(Vec2(0.0f, 0.0f), Vec2(1.0f, 1.0f));
+	SetDrawingWindow(type);
+	m_tmp->Draw(Vec2(0.0f, 0.0f), Vec2(1.0f, 1.0f));
 
 	//バックバッファとフロントバッファを交換
-	m_swapChain->Present(0, 0);
+	for (int i = 0; i < typeNum; i++)
+	{
+		if (m_swapChain[i] != nullptr)
+		{
+			m_swapChain[i]->Present(0, 0);
+		}
+	}
 }
 
 /// <summary>
@@ -366,11 +467,19 @@ void ShunLib::Window::Clear()
 	//画面の色
 	float color[4] = { 0,1,1,1 };
 
-	//画面クリア
-	m_deviceContext->ClearRenderTargetView(m_recderTargetView, color);
+	for (int i = 0; i < typeNum; i++)
+	{
+		if (m_renderTargetView[i] != nullptr &&m_depthStencilView[i] != nullptr)
+		{
+			//画面クリア
+			m_deviceContext->ClearRenderTargetView(m_renderTargetView[i], color);
 
-	//深度バッファクリア
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+			//深度バッファクリア
+			m_deviceContext->ClearDepthStencilView(m_depthStencilView[i], D3D11_CLEAR_DEPTH, 1.0f, 0);
+		}
+
+
+	}
 }
 
 
