@@ -7,7 +7,6 @@
 #pragma once
 #include <Windows.h>
 #include <SL_Singleton.h>
-
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
