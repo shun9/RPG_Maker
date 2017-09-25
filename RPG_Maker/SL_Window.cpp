@@ -5,7 +5,7 @@
 //* @author:S.Katou
 //************************************************/
 #include "SL_Window.h"
-
+#include <SL_Texture.h>
 #include <d3d11.h>
 #include <Keyboard.h>
 #include <Mouse.h>
@@ -196,6 +196,7 @@ HRESULT ShunLib::Window::InitD3D()
 	m_deviceContext->RSSetState(irs);
 	SAFE_RELEASE(irs);
 
+	ShunLib::Texture::SetDevice(m_device, m_deviceContext);
 	return S_OK;
 }
 
