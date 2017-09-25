@@ -5,6 +5,7 @@
 //* @author:S.Katou
 //************************************************/
 #include "GameEditor.h"
+#include "../Game/Game.h"
 
 GameEditor::GameEditor()
 {
@@ -32,4 +33,12 @@ void GameEditor::Render()
 //終了
 void GameEditor::Finalize()
 {
+}
+
+/// <summary>
+/// デバッグ開始
+/// </summary>
+void GameEditor::StartDebug()
+{
+	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGER);
 }

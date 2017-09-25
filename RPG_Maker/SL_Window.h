@@ -18,6 +18,7 @@ namespace ShunLib
 	{
 		friend Singleton<Window>;
 
+	public:
 		enum WINDOW_TYPE{
 			CREATER = 0,
 			DEBUGER,

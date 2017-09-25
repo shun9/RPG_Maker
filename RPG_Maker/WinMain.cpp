@@ -1,6 +1,7 @@
 #include <Windows.h>
 
 #include "SL_Window.h"
+#include "Classes\Editor\GameEditor.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
@@ -15,6 +16,10 @@ HRESULT InitWindow(HINSTANCE hInst);
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpShow)
 {
 	auto window = ShunLib::Window::GetInstance();
+
+	//エディター設定
+	GameEditor editor;
+	window->SetApp(&editor, ShunLib::Window::WINDOW_TYPE::CREATER);
 
 	//ウィンドウ作成
 	if (SUCCEEDED(InitWindow(hInst)))
