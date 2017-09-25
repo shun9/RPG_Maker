@@ -35,67 +35,35 @@ HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 {
 	m_instApp = hInst;
 
-	//ウィンドウ情報　0で初期化
-	WNDCLASSEX wc;
-	ZeroMemory(&wc, sizeof(wc));
-
-	//ウィンドウの情報を設定
-	wc.cbSize = sizeof(wc);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WndProc;
-	wc.hInstance = m_instApp;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-	wc.lpszClassName = m_name;
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-
-	//ウィンドウの登録
-	RegisterClassEx(&wc);
-
-	//ウィンドウを作成
-	m_hWnd[EDITOR] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
-
-	//作成に失敗したらエラー
-	if (!m_hWnd[EDITOR])return E_FAIL;
-
-	//ウィンドウを画面に表示
-	ShowWindow(m_hWnd[EDITOR], SW_SHOW);
-	UpdateWindow(m_hWnd[EDITOR]);
+	if (FAILED(MakeWindow(EDITOR)))
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 HRESULT ShunLib::Window::CreateSecondWindow()
 {
-	//ウィンドウ情報　0で初期化
-	WNDCLASSEX wc;
-	ZeroMemory(&wc, sizeof(wc));
+	if (FAILED(MakeWindow(DEBUGER)))
+	{
+		return E_FAIL;
+	}
 
-	//ウィンドウの情報を設定
-	wc.cbSize = sizeof(wc);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WndProc;
-	wc.hInstance = m_instApp;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-	wc.lpszClassName = m_name;
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-	//ウィンドウの登録
-	RegisterClassEx(&wc);
+	//IDXGIDevice1* pDXGI = NULL;
+	//IDXGIAdapter* pAdapter = NULL;
+	//IDXGIFactory* pFactory = NULL;
 
-	//ウィンドウを作成
-	m_hWnd[DEBUGER] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
+	//m_device->QueryInterface(__uuidof(IDXGIDevice1), (void**)&pDXGI);
+	//pDXGI->GetAdapter(&pAdapter);
+	//pAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&pFactory);
 
-	//作成に失敗したらエラー
-	if (!m_hWnd[DEBUGER])return E_FAIL;
+	//sd.OutputWindow = hWindow[0];
+	//pFactory->CreateSwapChain(m_device, &sd, &pSwapChain[0]);
 
-	//ウィンドウを画面に表示
-	ShowWindow(m_hWnd[DEBUGER], SW_SHOW);
-	UpdateWindow(m_hWnd[DEBUGER]);
-
+	//sd.OutputWindow = hWindow[1];
+	//pFactory->CreateSwapChain(m_device, &sd, &pSwapChain[1]);
 	return S_OK;
 }
 
@@ -237,6 +205,7 @@ LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, L
 
 		//ウィンドウが消された
 	case WM_DESTROY:
+
 		PostQuitMessage(0);
 		break;
 	}
@@ -245,6 +214,33 @@ LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, L
 	return DefWindowProc(hWnd, iMag, wParam, lParam);
 }
 
+
+/// <summary>
+/// ウィンドウプロシージャ
+/// ・OSからメッセージを受け取り処理をする
+/// </summary>
+LRESULT CALLBACK ShunLib::Window::MsgProcDebuger(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
+{
+	using namespace DirectX;
+
+	switch (iMag)
+	{
+		//キーが押された
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		Keyboard::ProcessMessage(iMag, wParam, lParam);
+		break;
+
+	case WM_ACTIVATEAPP:
+		Keyboard::ProcessMessage(iMag, wParam, lParam);
+		break;
+	}
+
+	//不要なメッセージをOSに処理させる
+	return DefWindowProc(hWnd, iMag, wParam, lParam);
+}
 
 /// <summary>
 /// メッセージループ
@@ -279,6 +275,11 @@ void ShunLib::Window::SetApp(AppBase * game, WINDOW_TYPE type)
 {
 	m_game[type] = game;
 	m_game[type]->Initialize();
+}
+
+void ShunLib::Window::DestroyGame()
+{
+	DELETE_POINTER(m_game[DEBUGER]);
 }
 
 
@@ -329,4 +330,36 @@ void ShunLib::Window::Clear()
 
 	//深度バッファクリア
 	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
+{
+	//ウィンドウ情報　0で初期化
+	WNDCLASSEX wc;
+	ZeroMemory(&wc, sizeof(wc));
+
+	//ウィンドウの情報を設定
+	wc.cbSize = sizeof(wc);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = WndProc;
+	wc.hInstance = m_instApp;
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
+	wc.lpszClassName = m_name;
+	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+	//ウィンドウの登録
+	RegisterClassEx(&wc);
+
+	//ウィンドウを作成
+	m_hWnd[type] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
+
+	//作成に失敗したらエラー
+	if (!m_hWnd[type])return E_FAIL;
+
+	//ウィンドウを画面に表示
+	ShowWindow(m_hWnd[type], SW_SHOW);
+	UpdateWindow(m_hWnd[type]);
+	return S_OK;
 }

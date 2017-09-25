@@ -18,6 +18,7 @@ namespace ShunLib
 	{
 		friend Singleton<Window>;
 
+	public:
 		enum WINDOW_TYPE{
 			EDITOR = 0,
 			DEBUGER,
@@ -55,6 +56,9 @@ namespace ShunLib
 		//プロシージャ
 		LRESULT CALLBACK MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
+		//デバッガー用プロシージャ
+		LRESULT CALLBACK MsgProcDebuger(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
+
 		//メッセージループ
 		void Run();
 
@@ -68,8 +72,12 @@ namespace ShunLib
 		float Width() { return m_width; }
 		float Height() { return m_height; }
 		WCHAR* Name() { return m_name; }
+		HWND* WindouHandle() { return m_hWnd; }  //ウィンドウハンドル
+
 		ID3D11Device* Device() { return m_device; }
 		ID3D11DeviceContext* DeviceContext() { return m_deviceContext; }
+
+		void DestroyGame();
 
 	private:
 		//コンストラクタ＆デストラクタ
@@ -93,5 +101,8 @@ namespace ShunLib
 
 		//画面クリア
 		void Clear();
+
+		HRESULT MakeWindow(WINDOW_TYPE type);
+
 	};
 }
