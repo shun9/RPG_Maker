@@ -20,18 +20,18 @@ namespace ShunLib
 		friend Singleton<Window>;
 
 		enum WINDOW_TYPE{
-			CREATER = 0,
+			EDITOR = 0,
 			DEBUGER,
 			typeNum,
 		};
 
 	private:
 		//ウィンドウサイズ
-		float m_width;  //横
-		float m_height; //縦
-
-		WCHAR* m_name;//ウィンドウ名
-		HWND m_hWnd;  //ウィンドウハンドル
+		float m_width;         //横
+		float m_height;        //縦
+		WCHAR* m_name;         //ウィンドウ名
+		HWND m_hWnd[typeNum];  //ウィンドウハンドル
+		HINSTANCE m_instApp;   //このウィンドウを作成したアプリケーション
 
 		//全体で１つ
 		ID3D11Device* m_device;
@@ -47,6 +47,8 @@ namespace ShunLib
 	public:
 		//ウィンドウ作成
 		HRESULT Create(HINSTANCE);
+
+		HRESULT CreateSecondWindow();
 
 		//DirectX関連の初期化
 		HRESULT InitD3D();

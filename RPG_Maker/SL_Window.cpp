@@ -33,6 +33,8 @@ ShunLib::Window::~Window() {
 
 HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 {
+	m_instApp = hInst;
+
 	//ウィンドウ情報　0で初期化
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(wc));
@@ -41,7 +43,7 @@ HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 	wc.cbSize = sizeof(wc);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = WndProc;
-	wc.hInstance = hInst;
+	wc.hInstance = m_instApp;
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
@@ -52,14 +54,47 @@ HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 	RegisterClassEx(&wc);
 
 	//ウィンドウを作成
-	m_hWnd = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, hInst, 0);
+	m_hWnd[EDITOR] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
 
 	//作成に失敗したらエラー
-	if (!m_hWnd)return E_FAIL;
+	if (!m_hWnd[EDITOR])return E_FAIL;
 
 	//ウィンドウを画面に表示
-	ShowWindow(m_hWnd, SW_SHOW);
-	UpdateWindow(m_hWnd);
+	ShowWindow(m_hWnd[EDITOR], SW_SHOW);
+	UpdateWindow(m_hWnd[EDITOR]);
+
+	return S_OK;
+}
+
+HRESULT ShunLib::Window::CreateSecondWindow()
+{
+	//ウィンドウ情報　0で初期化
+	WNDCLASSEX wc;
+	ZeroMemory(&wc, sizeof(wc));
+
+	//ウィンドウの情報を設定
+	wc.cbSize = sizeof(wc);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = WndProc;
+	wc.hInstance = m_instApp;
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
+	wc.lpszClassName = m_name;
+	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+	//ウィンドウの登録
+	RegisterClassEx(&wc);
+
+	//ウィンドウを作成
+	m_hWnd[DEBUGER] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
+
+	//作成に失敗したらエラー
+	if (!m_hWnd[DEBUGER])return E_FAIL;
+
+	//ウィンドウを画面に表示
+	ShowWindow(m_hWnd[DEBUGER], SW_SHOW);
+	UpdateWindow(m_hWnd[DEBUGER]);
 
 	return S_OK;
 }
@@ -79,7 +114,7 @@ HRESULT ShunLib::Window::InitD3D()
 	sd.BufferDesc.RefreshRate.Numerator = 60;         //フレッシュレート　60fps
 	sd.BufferDesc.RefreshRate.Denominator = 1;        //バックバッファの数
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.OutputWindow = m_hWnd;
+	sd.OutputWindow = m_hWnd[EDITOR];
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;
