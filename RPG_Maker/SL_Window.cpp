@@ -1,13 +1,38 @@
+//************************************************/
+//* @file  :SL_Window.cpp
+//* @brief :ウィンドウ関連の作成、管理
+//* @date  :2017/09/26
+//* @author:S.Katou
+//************************************************/
 #include "SL_Window.h"
 
 #include <d3d11.h>
 #include <Keyboard.h>
 #include <Mouse.h>
+#include "Classes\AppBase\AppBase.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
+ShunLib::Window::~Window() {
+	SAFE_RELEASE(m_swapChain);
+	SAFE_RELEASE(m_recderTargetView);
+	SAFE_RELEASE(m_deviceContext);
+	SAFE_RELEASE(m_texture2D);
+	SAFE_RELEASE(m_depthStencilView);
+	SAFE_RELEASE(m_device);
+
+
+	for (int i = 0; i < typeNum; i++)
+	{
+		if (m_game[i] != nullptr)
+		{
+			m_game[i]->Finalize();
+		}
+	}
+}
+
 HRESULT ShunLib::Window::Create(HINSTANCE hInst)
-{	
+{
 	//ウィンドウ情報　0で初期化
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(wc));
@@ -58,7 +83,7 @@ HRESULT ShunLib::Window::InitD3D()
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;
-	
+
 	D3D_FEATURE_LEVEL featureLevels = D3D_FEATURE_LEVEL_11_0;
 	D3D_FEATURE_LEVEL* featureLevel = NULL;
 
@@ -77,7 +102,7 @@ HRESULT ShunLib::Window::InitD3D()
 		featureLevel,
 		&m_deviceContext);
 
-	if(FAILED(result))return FALSE;
+	if (FAILED(result))return FALSE;
 
 
 	//スワップチェインが持っているバックバッファを取得
@@ -110,7 +135,7 @@ HRESULT ShunLib::Window::InitD3D()
 	descDepth.MiscFlags = 0;
 	m_device->CreateTexture2D(&descDepth, NULL, &m_texture2D);
 	m_device->CreateDepthStencilView(m_texture2D, NULL, &m_depthStencilView);
-	
+
 	//レンダーターゲットビューと深度ステンシルビューをパイプラインに関連付ける
 	m_deviceContext->OMSetRenderTargets(1, &m_recderTargetView, m_depthStencilView);
 
@@ -149,7 +174,7 @@ LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, L
 
 	switch (iMag)
 	{
-	//キーが押された
+		//キーが押された
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 	case WM_KEYUP:
@@ -174,7 +199,7 @@ LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, L
 		Mouse::ProcessMessage(iMag, wParam, lParam);
 		break;
 
-	//ウィンドウが消された
+		//ウィンドウが消された
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -209,18 +234,47 @@ void ShunLib::Window::Run()
 		else {
 			//ゲームの更新
 			GameUpdate();
+			GameRender();
 		}
 	}
 }
+
+void ShunLib::Window::SetApp(AppBase * game, WINDOW_TYPE type)
+{
+	m_game[type] = game;
+	m_game[type]->Initialize();
+}
+
 
 /// <summary>
 /// ゲームの更新
 /// </summary>
 void ShunLib::Window::GameUpdate()
-{		
+{
+	for (int i = 0; i < typeNum; i++)
+	{
+		if (m_game[i] != nullptr)
+		{
+			m_game[i]->Update();
+		}
+	}
+}
+
+/// <summary>
+/// ゲームの描画
+/// </summary>
+void ShunLib::Window::GameRender()
+{
 	//画面クリア
 	Clear();
 
+	for (int i = 0; i < typeNum; i++)
+	{
+		if (m_game[i] != nullptr)
+		{
+			m_game[i]->Render();
+		}
+	}
 
 	//バックバッファとフロントバッファを交換
 	m_swapChain->Present(0, 0);
@@ -236,7 +290,7 @@ void ShunLib::Window::Clear()
 
 	//画面クリア
 	m_deviceContext->ClearRenderTargetView(m_recderTargetView, color);
-	
+
 	//深度バッファクリア
-	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH,1.0f,0);
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }

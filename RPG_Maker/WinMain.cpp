@@ -5,7 +5,6 @@
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
 HRESULT InitWindow(HINSTANCE hInst);
-HRESULT InitGraphics();
 
 /// <summary>
 /// エントリーポイント
@@ -16,7 +15,7 @@ HRESULT InitGraphics();
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpShow)
 {
 	auto window = ShunLib::Window::GetInstance();
-	
+
 	//ウィンドウ作成
 	if (SUCCEEDED(InitWindow(hInst)))
 	{
@@ -48,8 +47,8 @@ HRESULT InitWindow(HINSTANCE hInst)
 	auto window = ShunLib::Window::GetInstance();
 
 	//ウィンドウ情報設定
-	window->Width(640.0f);
-	window->Height(480.0f);
+	window->Width(800.0f);
+	window->Height(600.0f);
 	window->Name(L"RPGツクールツクール");
 
 	//ウィンドウ作成

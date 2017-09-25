@@ -1,9 +1,17 @@
+//************************************************/
+//* @file  :SL_Window.h
+//* @brief :ウィンドウ関連の作成、管理
+//* @date  :2017/09/26
+//* @author:S.Katou
+//************************************************/
 #pragma once
 #include <Windows.h>
 #include <SL_Singleton.h>
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
+
+class AppBase;
 
 namespace ShunLib
 {
@@ -14,6 +22,7 @@ namespace ShunLib
 		enum WINDOW_TYPE{
 			CREATER = 0,
 			DEBUGER,
+			typeNum,
 		};
 
 	private:
@@ -31,7 +40,10 @@ namespace ShunLib
 		ID3D11RenderTargetView* m_recderTargetView;
 		ID3D11DepthStencilView* m_depthStencilView;
 		ID3D11Texture2D* m_texture2D;
-	
+
+		//エディターと作成したゲーム
+		AppBase* m_game[typeNum];
+
 	public:
 		//ウィンドウ作成
 		HRESULT Create(HINSTANCE);
@@ -49,6 +61,7 @@ namespace ShunLib
 		void Width(float width) { m_width = width; }
 		void Height(float height) { m_height = height; }
 		void Name(WCHAR* name) { m_name = name; }
+		void SetApp(AppBase* game, WINDOW_TYPE type);
 
 		//Getter
 		float Width() { return m_width; }
@@ -61,23 +74,23 @@ namespace ShunLib
 		//コンストラクタ＆デストラクタ
 		//シングルトンのため隠蔽
 		Window() :
-			m_width(640.0f),
+			m_width (640.0f),
 			m_height(480.0f),
-			m_name(L"タイトル") {}
+			m_name  (L"タイトル"){
+			for (int i = 0; i < typeNum; i++)
+			{
+				m_game[i] = nullptr;
 
-		~Window() {
-			SAFE_RELEASE(m_swapChain);
-			SAFE_RELEASE(m_recderTargetView);
-			SAFE_RELEASE(m_deviceContext);
-			SAFE_RELEASE(m_texture2D);
-			SAFE_RELEASE(m_depthStencilView);
-			SAFE_RELEASE(m_device);
+			}
 		}
+
+		~Window();
 
 		//ゲームの更新
 		void GameUpdate();
+		void GameRender();
 
 		//画面クリア
-		void Clear();	
+		void Clear();
 	};
 }

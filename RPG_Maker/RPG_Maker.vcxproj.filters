@@ -5,16 +5,49 @@
       <UniqueIdentifier>b1c9f47f-c1a2-4cf2-8346-3b85ce23f33d</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{adb7db37-ccc3-44da-baf3-a81f294501eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Game">
+      <UniqueIdentifier>{ed0c5984-ae93-4737-93d8-fce1117d69ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Window">
+      <UniqueIdentifier>{d25fd858-b1b8-4661-9527-19c75c99443b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Editor">
+      <UniqueIdentifier>{2c2b77f8-559f-4957-b8e5-69f3c2165205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\AppBase">
+      <UniqueIdentifier>{c0b06c33-534c-481f-b95c-4a0609c3c464}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="StepTimer.h" />
-    <ClInclude Include="SL_Window.h" />
+    <ClInclude Include="Classes\Game\Game.h">
+      <Filter>Main\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SL_Window.h">
+      <Filter>Main\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Editor\GameEditor.h">
+      <Filter>Main\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\AppBase\AppBase.h">
+      <Filter>Main\AppBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="SL_Window.cpp" />
-    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="Classes\Game\Game.cpp">
+      <Filter>Main\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="SL_Window.cpp">
+      <Filter>Main\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Editor\GameEditor.cpp">
+      <Filter>Main\Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
