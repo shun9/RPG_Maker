@@ -64,7 +64,7 @@ HRESULT InitWindow(HINSTANCE hInst)
 		//DirectXŠÖ˜A‚Ì‰Šú‰»
 		if (SUCCEEDED(window->InitD3D()))
 		{
-			window->CreateSecondWindow();
+			//window->CreateSecondWindow();
 			return S_OK;
 		}
 	}

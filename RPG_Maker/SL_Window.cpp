@@ -352,7 +352,7 @@ void ShunLib::Window::GameRender()
 		}
 	}
 
-	m_tmp->Draw(Vec2(0.0f, 0.0f), Vec2(1.0f, 1.0f));
+	//m_tmp->Draw(Vec2(0.0f, 0.0f), Vec2(1.0f, 1.0f));
 
 	//バックバッファとフロントバッファを交換
 	m_swapChain->Present(0, 0);
