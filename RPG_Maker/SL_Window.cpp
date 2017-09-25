@@ -5,7 +5,6 @@
 //* @author:S.Katou
 //************************************************/
 #include "SL_Window.h"
-#include <SL_Texture.h>
 #include <SL_KeyManager.h>
 #include <d3d11.h>
 #include <Keyboard.h>
@@ -81,7 +80,6 @@ ShunLib::Window::~Window() {
 			m_game[i]->Finalize();
 		}
 	}
-	SAFE_DELETE(m_tmp);
 }
 
 /// <summary>
@@ -237,7 +235,6 @@ HRESULT ShunLib::Window::InitD3D()
 	SAFE_RELEASE(irs);
 
 	Texture::SetDevice(m_device, m_deviceContext);
-	m_tmp = new Texture(L"62212367_p0_master1200.jpg");
 	return S_OK;
 }
 
@@ -431,23 +428,6 @@ void ShunLib::Window::GameRender()
 			m_game[i]->Render();
 		}
 	}
-	static WINDOW_TYPE type = EDITOR;
-	auto key = ShunLib::KeyManager::GetInstance();
-	if (key->IsTracker(ShunLib::KeyManager::KEY_CODE::SPACE))
-	{
-		type = DEBUGGER;
-	}
-	else if(key->IsTracker(ShunLib::KeyManager::KEY_CODE::Z))
-	{
-		type = EDITOR;
-	}
-	else if (key->IsTracker(ShunLib::KeyManager::KEY_CODE::X))
-	{
-		CreateSecondWindow();
-	}
-
-	SetDrawingWindow(type);
-	m_tmp->Draw(Vec2(0.0f, 0.0f), Vec2(1.0f, 1.0f));
 
 	//バックバッファとフロントバッファを交換
 	for (int i = 0; i < typeNum; i++)
@@ -477,8 +457,6 @@ void ShunLib::Window::Clear()
 			//深度バッファクリア
 			m_deviceContext->ClearDepthStencilView(m_depthStencilView[i], D3D11_CLEAR_DEPTH, 1.0f, 0);
 		}
-
-
 	}
 }
 
