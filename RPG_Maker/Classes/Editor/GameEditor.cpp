@@ -40,5 +40,5 @@ void GameEditor::Finalize()
 /// </summary>
 void GameEditor::StartDebug()
 {
-	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGER);
+	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGGER);
 }

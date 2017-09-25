@@ -10,6 +10,8 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
+#include <SL_Texture.h>
+
 class AppBase;
 
 namespace ShunLib
@@ -44,11 +46,13 @@ namespace ShunLib
 		//エディターと作成したゲーム
 		AppBase* m_game[typeNum];
 
+		Texture* m_tmp;
 
 	public:
 		//ウィンドウ作成
 		HRESULT Create(HINSTANCE);
 
+		//二つ目以降のウィンドウ作成
 		HRESULT CreateSecondWindow();
 
 		//DirectX関連の初期化

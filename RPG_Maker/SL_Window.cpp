@@ -28,6 +28,7 @@ ShunLib::Window::~Window() {
 			m_game[i]->Finalize();
 		}
 	}
+	SAFE_DELETE(m_tmp);
 }
 
 HRESULT ShunLib::Window::Create(HINSTANCE hInst)
@@ -166,10 +167,15 @@ HRESULT ShunLib::Window::InitD3D()
 	m_deviceContext->RSSetState(irs);
 	SAFE_RELEASE(irs);
 
-	ShunLib::Texture::SetDevice(m_device, m_deviceContext);
+	Texture::SetDevice(m_device, m_deviceContext);
+	m_tmp = new Texture(L"62212367_p0_master1200.jpg");
 	return S_OK;
 }
 
+/// <summary>
+/// ウィンドウプロシージャ
+/// ・OSからメッセージを受け取り処理をする
+/// </summary>
 LRESULT ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
 {
 	auto window = ShunLib::Window::GetInstance();
@@ -345,6 +351,8 @@ void ShunLib::Window::GameRender()
 			m_game[i]->Render();
 		}
 	}
+
+	m_tmp->Draw(Vec2(0.0f, 0.0f), Vec2(1.0f, 1.0f));
 
 	//バックバッファとフロントバッファを交換
 	m_swapChain->Present(0, 0);
