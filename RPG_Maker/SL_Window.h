@@ -21,7 +21,7 @@ namespace ShunLib
 	public:
 		enum WINDOW_TYPE{
 			EDITOR = 0,
-			DEBUGER,
+			DEBUGGER,
 			typeNum,
 		};
 
@@ -44,6 +44,7 @@ namespace ShunLib
 		//エディターと作成したゲーム
 		AppBase* m_game[typeNum];
 
+
 	public:
 		//ウィンドウ作成
 		HRESULT Create(HINSTANCE);
@@ -53,11 +54,14 @@ namespace ShunLib
 		//DirectX関連の初期化
 		HRESULT InitD3D();
 
-		//プロシージャ
+		//受け取り用プロシージャ
 		LRESULT CALLBACK MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
+		//エディター用
+		LRESULT CALLBACK MsgProcEditor(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
+
 		//デバッガー用プロシージャ
-		LRESULT CALLBACK MsgProcDebuger(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
+		LRESULT CALLBACK MsgProcDebugger(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
 		//メッセージループ
 		void Run();
@@ -77,7 +81,7 @@ namespace ShunLib
 		ID3D11Device* Device() { return m_device; }
 		ID3D11DeviceContext* DeviceContext() { return m_deviceContext; }
 
-		void DestroyGame();
+		void DestroyDebugger();
 
 	private:
 		//コンストラクタ＆デストラクタ

@@ -36,14 +36,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
 {
 	auto window = ShunLib::Window::GetInstance();
 
-	auto hw = window->WindouHandle();
-
-	//デバッグ用
-	if (hWnd == hw[ShunLib::Window::WINDOW_TYPE::DEBUGER])
-	{
-		return window->MsgProcDebuger(hWnd, iMag, wParam, lParam);
-	}
-
 	//エディター用
 	return window->MsgProc(hWnd, iMag, wParam, lParam);
 }

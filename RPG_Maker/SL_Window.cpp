@@ -21,7 +21,6 @@ ShunLib::Window::~Window() {
 	SAFE_RELEASE(m_depthStencilView);
 	SAFE_RELEASE(m_device);
 
-
 	for (int i = 0; i < typeNum; i++)
 	{
 		if (m_game[i] != nullptr)
@@ -43,9 +42,12 @@ HRESULT ShunLib::Window::Create(HINSTANCE hInst)
 	return S_OK;
 }
 
+/// <summary>
+/// 二つ目以降のウィンドウを作成
+/// </summary>
 HRESULT ShunLib::Window::CreateSecondWindow()
 {
-	if (FAILED(MakeWindow(DEBUGER)))
+	if (FAILED(MakeWindow(DEBUGGER)))
 	{
 		return E_FAIL;
 	}
@@ -168,11 +170,30 @@ HRESULT ShunLib::Window::InitD3D()
 	return S_OK;
 }
 
+LRESULT ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
+{
+	auto window = ShunLib::Window::GetInstance();
+
+	auto hw = window->WindouHandle();
+
+	//デバッグウィンドウ
+	auto hWD = hw[ShunLib::Window::WINDOW_TYPE::DEBUGGER];
+
+	//デバッグ用
+	if (hWnd == hWD)
+	{
+		return window->MsgProcDebugger(hWnd, iMag, wParam, lParam);
+	}
+
+	//エディター用
+	return window->MsgProcEditor(hWnd, iMag, wParam, lParam);
+}
+
 /// <summary>
 /// ウィンドウプロシージャ
 /// ・OSからメッセージを受け取り処理をする
 /// </summary>
-LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ShunLib::Window::MsgProcEditor(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
 {
 	using namespace DirectX;
 
@@ -205,7 +226,6 @@ LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, L
 
 		//ウィンドウが消された
 	case WM_DESTROY:
-
 		PostQuitMessage(0);
 		break;
 	}
@@ -219,7 +239,7 @@ LRESULT CALLBACK ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, L
 /// ウィンドウプロシージャ
 /// ・OSからメッセージを受け取り処理をする
 /// </summary>
-LRESULT CALLBACK ShunLib::Window::MsgProcDebuger(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ShunLib::Window::MsgProcDebugger(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam)
 {
 	using namespace DirectX;
 
@@ -235,6 +255,12 @@ LRESULT CALLBACK ShunLib::Window::MsgProcDebuger(HWND hWnd, UINT iMag, WPARAM wP
 
 	case WM_ACTIVATEAPP:
 		Keyboard::ProcessMessage(iMag, wParam, lParam);
+
+
+		//ウィンドウが消された
+	case WM_DESTROY:
+		this->DestroyDebugger();
+
 		break;
 	}
 
@@ -271,15 +297,23 @@ void ShunLib::Window::Run()
 	}
 }
 
+/// <summary>
+/// アプリケーションを設定
+/// </summary>
+/// <param name="game"></param>
+/// <param name="type"></param>
 void ShunLib::Window::SetApp(AppBase * game, WINDOW_TYPE type)
 {
 	m_game[type] = game;
 	m_game[type]->Initialize();
 }
 
-void ShunLib::Window::DestroyGame()
+/// <summary>
+/// デバッカーを削除
+/// </summary>
+void ShunLib::Window::DestroyDebugger()
 {
-	DELETE_POINTER(m_game[DEBUGER]);
+	DELETE_POINTER(m_game[DEBUGGER]);
 }
 
 
@@ -304,7 +338,6 @@ void ShunLib::Window::GameRender()
 {
 	//画面クリア
 	Clear();
-
 	for (int i = 0; i < typeNum; i++)
 	{
 		if (m_game[i] != nullptr)
@@ -332,6 +365,10 @@ void ShunLib::Window::Clear()
 	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
+
+/// <summary>
+/// ウィンドウ作成
+/// </summary>
 HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
 {
 	//ウィンドウ情報　0で初期化
