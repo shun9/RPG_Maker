@@ -7,6 +7,8 @@
 #pragma once
 #include "../AppBase/AppBase.h"
 #include "../../SL_Window.h"
+#include "../UI/Editor/ButtonBase.h"
+#include <memory>
 
 class Game;
 
@@ -14,6 +16,7 @@ class GameEditor : public AppBase
 {
 private:
 	Game* m_game;
+	std::shared_ptr<ButtonBase> m_button;
 
 public:
 	GameEditor();

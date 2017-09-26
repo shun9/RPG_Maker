@@ -166,6 +166,7 @@
     <ClInclude Include="Classes\imgui\stb_textedit.h" />
     <ClInclude Include="Classes\imgui\stb_truetype.h" />
     <ClInclude Include="Classes\Map\Tile.h" />
+    <ClInclude Include="Classes\UI\Editor\ButtonBase.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
     <ClInclude Include="ShunLibTK\inc\SL_Texture.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Classes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="Classes\Map\Tile.cpp" />
+    <ClCompile Include="Classes\UI\Editor\ButtonBase.cpp" />
     <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
     <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp" />
     <ClCompile Include="ShunLib\src\SL_Conversion.cpp" />

@@ -304,6 +304,50 @@ LRESULT CALLBACK ShunLib::Window::MsgProcEditor(HWND hWnd, UINT iMag, WPARAM wPa
 		break;
 	}
 
+	// ImGuiのメッセージ
+	ImGuiIO& io = ImGui::GetIO();
+	switch (iMag)
+	{
+	case WM_LBUTTONDOWN:
+		io.MouseDown[0] = true;
+		break;
+	case WM_LBUTTONUP:
+		io.MouseDown[0] = false;
+		break;
+	case WM_RBUTTONDOWN:
+		io.MouseDown[1] = true;
+		break;
+	case WM_RBUTTONUP:
+		io.MouseDown[1] = false;
+		break;
+	case WM_MBUTTONDOWN:
+		io.MouseDown[2] = true;
+		break;
+	case WM_MBUTTONUP:
+		io.MouseDown[2] = false;
+		break;
+	case WM_MOUSEWHEEL:
+		io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
+		break;
+	case WM_MOUSEMOVE:
+		io.MousePos.x = (signed short)(lParam);
+		io.MousePos.y = (signed short)(lParam >> 16);
+		break;
+	case WM_KEYDOWN:
+		if (wParam < 256)
+			io.KeysDown[wParam] = 1;
+		break;
+	case WM_KEYUP:
+		if (wParam < 256)
+			io.KeysDown[wParam] = 0;
+		break;
+	case WM_CHAR:
+		// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
+		if (wParam > 0 && wParam < 0x10000)
+			io.AddInputCharacter((unsigned short)wParam);
+		break;
+	}
+
 	//不要なメッセージをOSに処理させる
 	return DefWindowProc(hWnd, iMag, wParam, lParam);
 }
