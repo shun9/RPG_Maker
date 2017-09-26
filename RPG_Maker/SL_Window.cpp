@@ -12,6 +12,9 @@
 #include <Mouse.h>
 #include "Classes\AppBase\AppBase.h"
 
+#include "Classes\imgui\imgui.h"
+#include "Classes\imgui\imgui_impl_dx11.h"
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
 /// <summary>
@@ -236,6 +239,7 @@ HRESULT ShunLib::Window::InitD3D()
 	SAFE_RELEASE(irs);
 
 	Texture::SetDevice(m_device, m_deviceContext);
+	ImGui_ImplDX11_Init(m_hWnd[EDITOR], m_device, m_deviceContext);
 	return S_OK;
 }
 
