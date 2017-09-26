@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;d3d11.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;d3dcompiler.lib;d3d11.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,6 +158,13 @@
     <ClInclude Include="Classes\AppBase\AppBase.h" />
     <ClInclude Include="Classes\Editor\GameEditor.h" />
     <ClInclude Include="Classes\Game\Game.h" />
+    <ClInclude Include="Classes\imgui\imconfig.h" />
+    <ClInclude Include="Classes\imgui\imgui.h" />
+    <ClInclude Include="Classes\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="Classes\imgui\imgui_internal.h" />
+    <ClInclude Include="Classes\imgui\stb_rect_pack.h" />
+    <ClInclude Include="Classes\imgui\stb_textedit.h" />
+    <ClInclude Include="Classes\imgui\stb_truetype.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
     <ClInclude Include="ShunLibTK\inc\SL_Texture.h" />
@@ -182,6 +189,10 @@
   <ItemGroup>
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
     <ClCompile Include="Classes\Game\Game.cpp" />
+    <ClCompile Include="Classes\imgui\imgui.cpp" />
+    <ClCompile Include="Classes\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Classes\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
     <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp" />
     <ClCompile Include="ShunLib\src\SL_Conversion.cpp" />
