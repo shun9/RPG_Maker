@@ -1,52 +1,79 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Assets">
-      <UniqueIdentifier>b1c9f47f-c1a2-4cf2-8346-3b85ce23f33d</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{adb7db37-ccc3-44da-baf3-a81f294501eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Game">
-      <UniqueIdentifier>{ed0c5984-ae93-4737-93d8-fce1117d69ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Window">
-      <UniqueIdentifier>{d25fd858-b1b8-4661-9527-19c75c99443b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\Editor">
-      <UniqueIdentifier>{2c2b77f8-559f-4957-b8e5-69f3c2165205}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\AppBase">
-      <UniqueIdentifier>{c0b06c33-534c-481f-b95c-4a0609c3c464}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShunLib">
-      <UniqueIdentifier>{f40e33b2-4132-4c5e-bcfd-5c0948160ac7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShunLibTK">
-      <UniqueIdentifier>{f44a6904-37a1-41e6-8018-7a6953cdd756}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{617db515-114b-4b9b-a447-78931bcd29a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{790fe044-ddd4-4aab-8b9c-a46270898e27}</UniqueIdentifier>
-    <Filter Include="Map">
-      <UniqueIdentifier>{247af20e-37ff-4b56-9812-9aa0b68325d4}</UniqueIdentifier>
-    </Filter>
+    <Manifest Include="settings.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Classes\Game\Game.cpp">
+      <Filter>Main\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Editor\GameEditor.cpp">
+      <Filter>Main\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\imgui\imgui.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\imgui\imgui_demo.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\imgui\imgui_draw.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_Conversion.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_Matrix.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_RandomNumber.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLibTK\src\SL_Texture.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_Vec2.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_Vec3.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ShunLib\src\SL_Vec4.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SL_Window.cpp">
+      <Filter>ShunLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Map\Tile.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\Game\Game.h">
       <Filter>Main\Game</Filter>
     </ClInclude>
-    <ClInclude Include="SL_Window.h">
-      <Filter>Main\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\Editor\GameEditor.h">
-      <Filter>Main\Editor</Filter>
+      <Filter>Main\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\AppBase\AppBase.h">
-      <Filter>Main\AppBase</Filter>
+    <ClInclude Include="Classes\imgui\imconfig.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\imgui\imgui.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\imgui\imgui_impl_dx11.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\imgui\imgui_internal.h">
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="ShunLib\inc\SL_Command.h">
       <Filter>ShunLib</Filter>
@@ -63,7 +90,13 @@
     <ClInclude Include="ShunLib\inc\SL_Conversion.h">
       <Filter>ShunLib</Filter>
     </ClInclude>
+    <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h">
+      <Filter>ShunLib</Filter>
+    </ClInclude>
     <ClInclude Include="ShunLib\inc\SL_Factory.h">
+      <Filter>ShunLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h">
       <Filter>ShunLib</Filter>
     </ClInclude>
     <ClInclude Include="ShunLib\inc\SL_MacroConstants.h">
@@ -84,6 +117,9 @@
     <ClInclude Include="ShunLib\inc\SL_StateMachine.h">
       <Filter>ShunLib</Filter>
     </ClInclude>
+    <ClInclude Include="ShunLibTK\inc\SL_Texture.h">
+      <Filter>ShunLib</Filter>
+    </ClInclude>
     <ClInclude Include="ShunLib\inc\SL_Timer.h">
       <Filter>ShunLib</Filter>
     </ClInclude>
@@ -96,26 +132,8 @@
     <ClInclude Include="ShunLib\inc\SL_Vec4.h">
       <Filter>ShunLib</Filter>
     </ClInclude>
-    <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h">
-      <Filter>ShunLibTK</Filter>
-    </ClInclude>
-    <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h">
-      <Filter>ShunLibTK</Filter>
-    </ClInclude>
-    <ClInclude Include="ShunLibTK\inc\SL_Texture.h">
-      <Filter>ShunLibTK</Filter>
-    </ClInclude>
-    <ClInclude Include="Classes\imgui\imconfig.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Classes\imgui\imgui.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Classes\imgui\imgui_impl_dx11.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Classes\imgui\imgui_internal.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="SL_Window.h">
+      <Filter>ShunLib</Filter>
     </ClInclude>
     <ClInclude Include="Classes\imgui\stb_rect_pack.h">
       <Filter>UI</Filter>
@@ -126,76 +144,40 @@
     <ClInclude Include="Classes\imgui\stb_truetype.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\MouseManager.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Classes\AppBase\AppBase.h">
+      <Filter>Main\Game</Filter>
+    </ClInclude>
     <ClInclude Include="Classes\Map\Tile.h">
       <Filter>Map</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Classes\Game\Game.cpp">
-      <Filter>Main\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="WinMain.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="SL_Window.cpp">
-      <Filter>Main\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="Classes\Editor\GameEditor.cpp">
-      <Filter>Main\Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_Conversion.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_Matrix.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_RandomNumber.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_Vec2.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_Vec3.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLib\src\SL_Vec4.cpp">
-      <Filter>ShunLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ShunLibTK\src\SL_Texture.cpp">
-      <Filter>ShunLibTK</Filter>
-    </ClCompile>
-    <ClCompile Include="Classes\imgui\imgui.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Classes\imgui\imgui_demo.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Classes\imgui\imgui_draw.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Classes\Map\Tile.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
+    <ClInclude Include="Utils\MouseManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="directx.ico">
-      <Filter>Assets</Filter>
-    </Image>
+    <Image Include="directx.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="settings.manifest">
-      <Filter>Assets</Filter>
-    </Manifest>
+    <Filter Include="Main">
+      <UniqueIdentifier>{6b01641b-ed3d-4f69-bb50-7bc3bbbd0359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Game">
+      <UniqueIdentifier>{9883eb63-2e67-408b-a71e-69330dda072e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{182c12af-62ce-47d1-a8db-568b8e631b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShunLib">
+      <UniqueIdentifier>{04d17023-8344-4f53-8a0d-23caad20e802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{f4c1fe79-a089-4a3c-aa20-5e004daf35c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{f6e0afdb-f46c-4392-8706-d55f37c22afc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
