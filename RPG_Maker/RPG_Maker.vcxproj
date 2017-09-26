@@ -185,6 +185,7 @@
     <ClInclude Include="ShunLib\inc\SL_Vec3.h" />
     <ClInclude Include="ShunLib\inc\SL_Vec4.h" />
     <ClInclude Include="SL_Window.h" />
+    <ClInclude Include="Utils\MouseManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
