@@ -6,6 +6,7 @@
 //************************************************/
 #include "SL_Window.h"
 #include <SL_KeyManager.h>
+#include <SL_Texture.h>
 #include <d3d11.h>
 #include <Keyboard.h>
 #include <Mouse.h>

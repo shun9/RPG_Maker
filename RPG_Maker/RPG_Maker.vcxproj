@@ -70,7 +70,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLibTK\inc;C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLib\inc;C:\DirectXTK\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLibTK\Debug;C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLib\Debug;C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLib\DebugLib;C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLibTK\DebugLib;C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

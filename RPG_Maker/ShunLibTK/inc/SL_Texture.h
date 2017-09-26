@@ -15,6 +15,7 @@
 
 #include <SL_Matrix.h>
 #include <SL_Vec2.h>
+
 namespace ShunLib
 {
 	class Texture
