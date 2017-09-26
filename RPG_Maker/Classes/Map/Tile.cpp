@@ -7,6 +7,9 @@
 #include "Tile.h"
 #include <SL_RandomNumber.h>
 
+//タイルの1辺の長さ
+const float Tile::SIZE = 32.0f;
+
 /// <summary>
 /// マップタイルをリンクする
 /// ゲーム開始時に使用
@@ -15,8 +18,10 @@ void Tile::LinkTile(Tile ** map, int row, int column)
 {
 	using DIRECTION_2D = ShunLib::ConstantNumber::DIRECTION_2D;
 
+	//縦
 	for (int i = 0; i < column; i++)
 	{
+		//横
 		for (int j = 0; j < row; j++)
 		{
 			//上
@@ -39,6 +44,27 @@ void Tile::LinkTile(Tile ** map, int row, int column)
 }
 
 
+Tile::Tile() :
+	m_texture(nullptr)
+{
+	m_texture = new ShunLib::Texture(L"Image\\brick.png");
+}
+
+Tile::~Tile()
+{
+	DELETE_POINTER(m_texture);
+}
+
+/// <summary>
+/// 描画
+/// </summary>
+void Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2& scale)
+{
+	if (m_texture != nullptr)
+	{
+		m_texture->Draw(pos, scale);
+	}
+}
 
 /// <summary>
 /// エンカウントするかどうか
@@ -68,6 +94,7 @@ Enemy * Tile::GetRandamEnemy()
 	return nullptr;
 }
 
+
 /// <summary>
 /// 指定方向のタイルに移動できるかどうか
 /// </summary>
@@ -86,6 +113,7 @@ bool Tile::CanMoveSpecifiedDir(ShunLib::ConstantNumber::DIRECTION_2D dir)
 
 	return tile->CanMove();
 }
+
 
 /// <summary>
 /// 指定方向のタイルの情報を設定
