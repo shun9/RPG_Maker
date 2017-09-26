@@ -422,6 +422,8 @@ void ShunLib::Window::GameRender()
 {
 	//‰æ–ÊƒNƒŠƒA
 	Clear();
+
+	//ƒQ[ƒ€•`‰æ
 	for (int i = 0; i < typeNum; i++)
 	{
 		if (m_game[i] != nullptr)
