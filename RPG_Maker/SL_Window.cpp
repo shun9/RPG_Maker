@@ -77,11 +77,13 @@ ShunLib::Window::~Window() {
 
 	SAFE_RELEASE(m_device);
 
+	m_game[EDITOR]->Finalize();
+
 	for (int i = 0; i < typeNum; i++)
 	{
-		if (m_game[i] != nullptr)
+		//if (m_game[i] != nullptr)
 		{
-			m_game[i]->Finalize();
+			//m_game[i]->Finalize();
 		}
 	}
 }
@@ -238,8 +240,6 @@ HRESULT ShunLib::Window::InitD3D()
 	m_deviceContext->RSSetState(irs);
 	SAFE_RELEASE(irs);
 
-	Texture::SetDevice(m_device, m_deviceContext);
-	ImGui_ImplDX11_Init(m_hWnd[EDITOR], m_device, m_deviceContext);
 	return S_OK;
 }
 
@@ -251,10 +251,7 @@ LRESULT ShunLib::Window::MsgProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lPa
 {
 	auto window = ShunLib::Window::GetInstance();
 
-	auto hw = window->WindouHandle();
-
-	//デバッグウィンドウ
-	auto hWD = hw[ShunLib::Window::WINDOW_TYPE::DEBUGGER];
+	auto hWD = window->WindouHandle(ShunLib::Window::WINDOW_TYPE::DEBUGGER);
 
 	//デバッグ用
 	if (hWnd == hWD)

@@ -83,7 +83,7 @@ namespace ShunLib
 		float Width() { return m_width; }
 		float Height() { return m_height; }
 		WCHAR* Name() { return m_name; }
-		HWND* WindouHandle() { return m_hWnd; }  //ウィンドウハンドル
+		HWND WindouHandle(WINDOW_TYPE type) { return m_hWnd[type]; }  //ウィンドウハンドル
 
 		ID3D11Device* Device() { return m_device; }
 		ID3D11DeviceContext* DeviceContext() { return m_deviceContext; }

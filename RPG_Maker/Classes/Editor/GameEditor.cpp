@@ -5,10 +5,17 @@
 //* @author:S.Katou
 //************************************************/
 #include "GameEditor.h"
+
+#include <SL_Texture.h>
+
 #include "../Game/Game.h"
+#include "../../SL_Window.h"
+#include "../imgui/imgui.h"
+#include "../imgui/imgui_impl_dx11.h"
 
 GameEditor::GameEditor()
 {
+
 }
 
 GameEditor::~GameEditor()
@@ -18,6 +25,11 @@ GameEditor::~GameEditor()
 //‰Šú‰»
 void GameEditor::Initialize()
 {
+	auto win = ShunLib::Window::GetInstance();
+	ShunLib::Texture::SetDevice(win->Device(), win->DeviceContext());
+	ImGui_ImplDX11_Init(win->WindouHandle(ShunLib::Window::EDITOR), win->Device(), win->DeviceContext());
+	ImGui_ImplDX11_NewFrame();
+
 }
 
 //XV
@@ -28,11 +40,14 @@ void GameEditor::Update()
 //•`‰æ
 void GameEditor::Render()
 {
+	//‚±‚Ìã‚É•`‰æˆ—‚ğ‘‚­
+	ImGui::Render();
 }
 
 //I—¹
 void GameEditor::Finalize()
 {
+	ImGui_ImplDX11_Shutdown();
 }
 
 /// <summary>

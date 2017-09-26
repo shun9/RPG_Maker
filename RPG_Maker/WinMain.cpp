@@ -19,11 +19,12 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpSh
 
 	//エディター設定
 	GameEditor editor;
-	window->SetApp(&editor, ShunLib::Window::WINDOW_TYPE::EDITOR);
 
 	//ウィンドウ作成
 	if (SUCCEEDED(InitWindow(hInst)))
 	{
+		window->SetApp(&editor, ShunLib::Window::WINDOW_TYPE::EDITOR);
+
 		//作成に成功したらループ
 		window->Run();
 	}
