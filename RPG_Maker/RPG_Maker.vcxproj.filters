@@ -29,6 +29,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{617db515-114b-4b9b-a447-78931bcd29a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{790fe044-ddd4-4aab-8b9c-a46270898e27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\Game\Game.h">
@@ -120,6 +123,9 @@
     </ClInclude>
     <ClInclude Include="Classes\imgui\stb_truetype.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MouseManager.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
