@@ -165,10 +165,12 @@
     <ClInclude Include="Classes\imgui\stb_rect_pack.h" />
     <ClInclude Include="Classes\imgui\stb_textedit.h" />
     <ClInclude Include="Classes\imgui\stb_truetype.h" />
+    <ClInclude Include="Classes\Map\Map.h" />
     <ClInclude Include="Classes\Map\Tile.h" />
     <ClInclude Include="Classes\UI\Editor\UIBase.h" />
     <ClInclude Include="Classes\UI\Editor\UIButton.h" />
     <ClInclude Include="Classes\UI\Editor\UIWindow.h" />
+    <ClInclude Include="Classes\Map\TileDataHolder.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
     <ClInclude Include="ShunLibTK\inc\SL_Texture.h" />
@@ -198,6 +200,7 @@
     <ClCompile Include="Classes\imgui\imgui_demo.cpp" />
     <ClCompile Include="Classes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Classes\Map\Map.cpp" />
     <ClCompile Include="Classes\Map\Tile.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIBase.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIButton.cpp" />
