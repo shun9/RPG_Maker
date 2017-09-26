@@ -13,6 +13,10 @@
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_dx11.h"
 
+#include "../UI/Editor/UIWindow.h"
+
+#include <string>
+
 using namespace std;
 
 GameEditor::GameEditor()
@@ -34,7 +38,7 @@ void GameEditor::Initialize()
 
 	//win->CreateSecondWindow();
 
-	m_button = make_shared<ButtonBase>();
+	m_button = make_shared<UIWindow>(string("tab"),Vector2(330.0f,100.0f));
 }
 
 //XV
@@ -47,7 +51,7 @@ void GameEditor::Render()
 {
 	ImGui_ImplDX11_NewFrame();
 	
-	m_button->Draw(Vector2(0.0f, 0.0f));
+	m_button->DrawUpdate();
 
 	// Rendering
 	//‚±‚Ìã‚É•`‰æˆ—‚ğ‘‚­

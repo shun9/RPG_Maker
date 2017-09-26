@@ -55,7 +55,13 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\UI\Editor\ButtonBase.cpp">
+    <ClCompile Include="Classes\UI\Editor\UIWindow.cpp">
+      <Filter>UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\UI\Editor\UIBase.cpp">
+      <Filter>UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\UI\Editor\UIButton.cpp">
       <Filter>UI\Editor</Filter>
     </ClCompile>
   </ItemGroup>
@@ -156,7 +162,13 @@
     <ClInclude Include="Utils\MouseManager.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\UI\Editor\ButtonBase.h">
+    <ClInclude Include="Classes\UI\Editor\UIWindow.h">
+      <Filter>UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\UI\Editor\UIBase.h">
+      <Filter>UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\UI\Editor\UIButton.h">
       <Filter>UI\Editor</Filter>
     </ClInclude>
   </ItemGroup>
