@@ -9,17 +9,36 @@
 
 /// <summary>
 /// マップタイルをリンクする
+/// ゲーム開始時に使用
 /// </summary>
 void Tile::LinkTile(Tile ** map, int row, int column)
 {
+	using DIRECTION_2D = ShunLib::ConstantNumber::DIRECTION_2D;
+
 	for (int i = 0; i < column; i++)
 	{
 		for (int j = 0; j < row; j++)
 		{
-			map[column][row];
+			//上
+			if (i == 0)         map[i][j].SetContactTile(DIRECTION_2D::TOP, nullptr);
+			else                map[i][j].SetContactTile(DIRECTION_2D::TOP, &map[i +1][j]);
+
+			//下
+			if (i == column - 1)map[i][j].SetContactTile(DIRECTION_2D::BOTTOM, nullptr);
+			else                map[i][j].SetContactTile(DIRECTION_2D::BOTTOM, &map[i + 1][j]);
+
+			//右
+			if (j == 0)         map[i][j].SetContactTile(DIRECTION_2D::RIGHT, nullptr);
+			else                map[i][j].SetContactTile(DIRECTION_2D::RIGHT, &map[i][j + 1]);
+
+			//左
+			if (j == row - 1)   map[i][j].SetContactTile(DIRECTION_2D::LEFT, nullptr);
+			else                map[i][j].SetContactTile(DIRECTION_2D::LEFT, &map[i][j - 1]);
 		}
 	}
 }
+
+
 
 /// <summary>
 /// エンカウントするかどうか
@@ -66,4 +85,12 @@ bool Tile::CanMoveSpecifiedDir(ShunLib::ConstantNumber::DIRECTION_2D dir)
 	}
 
 	return tile->CanMove();
+}
+
+/// <summary>
+/// 指定方向のタイルの情報を設定
+/// </summary>
+void Tile::SetContactTile(ShunLib::ConstantNumber::DIRECTION_2D dir, Tile* tile)
+{
+	m_contactTile[dir] = tile;
 }

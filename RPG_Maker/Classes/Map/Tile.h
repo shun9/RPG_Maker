@@ -12,6 +12,8 @@ class Enemy;
 
 class Tile
 {
+	//タイルを繋げる
+	//ゲーム開始時に使用
 	static void LinkTile(Tile** map,int row,int column);
 
 private:
@@ -43,7 +45,7 @@ public:
 	//タイルの上から移動しようとしたときに使用
 	bool CanMoveSpecifiedDir(ShunLib::ConstantNumber::DIRECTION_2D);
 
-	//
+	//指定方向のタイルの情報を設定
 	void SetContactTile(ShunLib::ConstantNumber::DIRECTION_2D,Tile*);
 
 	//Get & Set
