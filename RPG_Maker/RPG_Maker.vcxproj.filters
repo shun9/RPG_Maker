@@ -31,6 +31,8 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{790fe044-ddd4-4aab-8b9c-a46270898e27}</UniqueIdentifier>
+    <Filter Include="Map">
+      <UniqueIdentifier>{247af20e-37ff-4b56-9812-9aa0b68325d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +128,8 @@
     </ClInclude>
     <ClInclude Include="Utils\MouseManager.h">
       <Filter>Utils</Filter>
+    <ClInclude Include="Classes\Map\Tile.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +180,9 @@
     </ClCompile>
     <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\Map\Tile.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

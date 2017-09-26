@@ -13,7 +13,7 @@ namespace ShunLib
 	public:
 		//‰~Žü—¦
 		static const float PI;
-	
+
 		//•ûŒü
 		enum DIRECTION_2D
 		{
