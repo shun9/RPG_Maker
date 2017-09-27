@@ -18,6 +18,7 @@ using namespace std;
 
 UIWindow::UIWindow(const string& name, const Vector2 & windowSize)
 	:UIBase(name)
+	, m_windowSize(make_shared<ImVec2>(windowSize.x, windowSize.y))
 {
 	m_buttonList.push_back(make_shared<UIButton>(string("test")));
 	m_buttonList.push_back(make_shared<UIButton>(string("test2")));
@@ -29,11 +30,10 @@ UIWindow::~UIWindow()
 
 void UIWindow::DrawUpdate()
 {
-
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
 	ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(*m_windowSize.get(), ImGuiSetCond_Once);
 
 	auto& style = ImGui::GetStyle();
 

@@ -330,8 +330,8 @@ LRESULT CALLBACK ShunLib::Window::MsgProcEditor(HWND hWnd, UINT iMag, WPARAM wPa
 		io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
 		break;
 	case WM_MOUSEMOVE:
-		io.MousePos.x = (signed short)(lParam);
-		io.MousePos.y = (signed short)(lParam >> 16);
+		io.MousePos.x = static_cast<short>(LOWORD(lParam));
+		io.MousePos.y = static_cast<short>(HIWORD(lParam));
 		break;
 	case WM_KEYDOWN:
 		if (wParam < 256)
@@ -532,8 +532,16 @@ HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
 	//ウィンドウの登録
 	RegisterClassEx(&wc);
 
+	RECT rc;
+	rc.top = 0;
+	rc.left = 0;
+	rc.right = static_cast<LONG>(m_width);
+	rc.bottom = static_cast<LONG>(m_height);
+
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
 	//ウィンドウを作成
-	m_hWnd[type] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
+	m_hWnd[type] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW &~ WS_THICKFRAME &~ WS_MAXIMIZEBOX, 0, 0, rc.right-rc.left, rc.bottom-rc.top, 0, 0, m_instApp, 0);
 
 	//作成に失敗したらエラー
 	if (!m_hWnd[type])return E_FAIL;

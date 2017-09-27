@@ -22,6 +22,8 @@ class UIWindow : public UIBase
 {
 private:
 	std::list<std::shared_ptr<UIBase>> m_buttonList;
+
+	std::shared_ptr<ImVec2> m_windowSize;
 public:
 
 	/// <summary>
