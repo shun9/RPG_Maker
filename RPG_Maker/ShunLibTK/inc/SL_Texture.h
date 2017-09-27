@@ -44,16 +44,6 @@ namespace ShunLib
 		//ステート作成
 		std::unique_ptr<DirectX::CommonStates> m_state;
 
-		//エフェクト
-		std::unique_ptr<DirectX::AlphaTestEffect> m_alphaTestEffect;
-
-		//プリミティブバッチ
-		std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
-
-		//インプットレイアウト
-		Microsoft::WRL::ComPtr<ID3D11InputLayout> m_input;
-
-
 		/*--メンバ関数--*/
 	public:
 		Texture(const wchar_t* texture);
@@ -62,6 +52,5 @@ namespace ShunLib
 		//描画
 		void Draw(float x, float y, float scale = 1.0f, const RECT* rect = nullptr);
 		void Draw(const Vec2& pos, const Vec2& scale, const RECT* rect = nullptr);
-		void Draw(const Matrix& world, const Matrix& view, const Matrix& proj, const Vec3& color=Vec3(1.0f,1.0f,1.0f), float alpha = 1.0f);
 	};
 }

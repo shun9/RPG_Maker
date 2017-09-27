@@ -1,6 +1,7 @@
 #include <Windows.h>
-
+#include <SL_KeyManager.h>
 #include "SL_Window.h"
+
 #include "Classes\Editor\GameEditor.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
@@ -28,6 +29,8 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpSh
 		//çÏê¨Ç…ê¨å˜ÇµÇΩÇÁÉãÅ[Év
 		window->Run();
 	}
+
+	ShunLib::KeyManager::Destroy();
 	ShunLib::Window::Destroy();
 
 	//èIóπ

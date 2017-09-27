@@ -1,7 +1,7 @@
 //************************************************/
 //* @file  :Map.h
 //* @brief :マップ（タイルの集合体）
-//* @date  :2017/09/26
+//* @date  :2017/09/27
 //* @author:S.Katou
 //************************************************/
 #pragma once
@@ -9,7 +9,6 @@
 #include <SL_ConstantNumber.h>
 #include <SL_Texture.h>
 #include <SL_MacroConstants.h>
-
 #include "Tile.h"
 
 class Map
@@ -26,44 +25,49 @@ private:
 	std::vector<std::vector<Tile>>m_map;
 
 	//スクロールした値
-	ShunLib::Vec2 m_scrollNum;
+	Vec2 m_scrollNum;
+
+	//表示位置
+	Vec2 m_firstPos;
+	Vec2 m_displaySize;
 
 public:
 	Map();
 	~Map();
 
-	void SetTileId(int id, int x, int y) { m_map[y][x].Id(id); }
+	//キー入力でスクロールする
+	void Update();
+
+	//スクロールした値
+	void Scroll(const Vec2& num) { m_scrollNum = num; }
+	ShunLib::Vec2* Scroll() { return &m_scrollNum; }
+
+	//タイルをセットする
+	void SetTileId(int id, int x, int y);
+
 	//描画
 	void Draw();
 
-	/// <summary>
+	//スクリーン上の座標をマップの座標に変換する
+	void ConvertMapPos(const Vec2& pos, int* bufX, int* bufY);
+
 	/// 指定方向のタイルに移動できるかどうか
-	/// </summary>
-	/// <param name="dir">方向</param>
-	/// <returns>移動可能 true</returns>
 	bool CanMoveSpecifiedDir(Vec2 pos,DIRECTION_2D dir);
 
-	//エンカウントするかどうか
-	//タイルの上に移動したときに使用
-	bool IsEncount();
+	////エンカウントするかどうか
+	////タイルの上に移動したときに使用
+	//bool IsEncount();
 
-	//敵グループからランダムに取得
-	Enemy* GetRandamEnemy();
+	////敵グループからランダムに取得
+	//Enemy* GetRandamEnemy();
 
-	//指定方向のタイルの情報を設定
-	void SetContactTile(ShunLib::ConstantNumber::DIRECTION_2D, Tile*);
+	void DisplayRange(const Vec2& leftTop, const Vec2& rightBottom) {
+		m_firstPos = leftTop;
+		m_displaySize = rightBottom;
+	};
 
+private:
+	bool IsInRangeTile(int x, int y, int dirTile[]);
 
-	//Get & Set
-	//エンカウント率
-	int EncountRate();
-	void EncountRate(int rate);
-
-	//移動可能か
-	bool CanMove();
-	void CanMove(bool isWalk);
-
-	//画像
-	void Texture(ShunLib::Texture* tex);
-
+	void DrawEdgeTile(int x,int y,float edge[], DIRECTION_2D dir,int dirTile[]);
 };
