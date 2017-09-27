@@ -55,6 +55,15 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Classes\UI\Editor\UIWindow.cpp">
+      <Filter>UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\UI\Editor\UIBase.cpp">
+      <Filter>UI\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\UI\Editor\UIButton.cpp">
+      <Filter>UI\Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\Game\Game.h">
@@ -153,6 +162,15 @@
     <ClInclude Include="Utils\MouseManager.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Classes\UI\Editor\UIWindow.h">
+      <Filter>UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\UI\Editor\UIBase.h">
+      <Filter>UI\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\UI\Editor\UIButton.h">
+      <Filter>UI\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -178,6 +196,9 @@
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{f6e0afdb-f46c-4392-8706-d55f37c22afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Editor">
+      <UniqueIdentifier>{1d5d97e5-8768-436e-a44d-d7fe4b58d6d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

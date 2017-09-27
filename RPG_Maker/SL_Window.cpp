@@ -304,6 +304,50 @@ LRESULT CALLBACK ShunLib::Window::MsgProcEditor(HWND hWnd, UINT iMag, WPARAM wPa
 		break;
 	}
 
+	// ImGuiのメッセージ
+	ImGuiIO& io = ImGui::GetIO();
+	switch (iMag)
+	{
+	case WM_LBUTTONDOWN:
+		io.MouseDown[0] = true;
+		break;
+	case WM_LBUTTONUP:
+		io.MouseDown[0] = false;
+		break;
+	case WM_RBUTTONDOWN:
+		io.MouseDown[1] = true;
+		break;
+	case WM_RBUTTONUP:
+		io.MouseDown[1] = false;
+		break;
+	case WM_MBUTTONDOWN:
+		io.MouseDown[2] = true;
+		break;
+	case WM_MBUTTONUP:
+		io.MouseDown[2] = false;
+		break;
+	case WM_MOUSEWHEEL:
+		io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
+		break;
+	case WM_MOUSEMOVE:
+		io.MousePos.x = static_cast<short>(LOWORD(lParam));
+		io.MousePos.y = static_cast<short>(HIWORD(lParam));
+		break;
+	case WM_KEYDOWN:
+		if (wParam < 256)
+			io.KeysDown[wParam] = 1;
+		break;
+	case WM_KEYUP:
+		if (wParam < 256)
+			io.KeysDown[wParam] = 0;
+		break;
+	case WM_CHAR:
+		// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
+		if (wParam > 0 && wParam < 0x10000)
+			io.AddInputCharacter((unsigned short)wParam);
+		break;
+	}
+
 	//不要なメッセージをOSに処理させる
 	return DefWindowProc(hWnd, iMag, wParam, lParam);
 }
@@ -488,8 +532,16 @@ HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
 	//ウィンドウの登録
 	RegisterClassEx(&wc);
 
+	RECT rc;
+	rc.top = 0;
+	rc.left = 0;
+	rc.right = static_cast<LONG>(m_width);
+	rc.bottom = static_cast<LONG>(m_height);
+
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
 	//ウィンドウを作成
-	m_hWnd[type] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW, 0, 0, (int)m_width, (int)m_height, 0, 0, m_instApp, 0);
+	m_hWnd[type] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW &~ WS_THICKFRAME &~ WS_MAXIMIZEBOX, 0, 0, rc.right-rc.left, rc.bottom-rc.top, 0, 0, m_instApp, 0);
 
 	//作成に失敗したらエラー
 	if (!m_hWnd[type])return E_FAIL;
