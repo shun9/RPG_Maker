@@ -4,8 +4,6 @@
 //* @date  :2017/09/27
 //* @author:K.Yamamoto
 //************************************************/
-#include <simplemath.h>
-
 #include <SL_Texture.h>
 
 #include "../../Game/Game.h"
@@ -18,7 +16,7 @@ using namespace std;
 
 UIWindow::UIWindow(const string& name, const Vector2 & windowSize)
 	:UIBase(name)
-	, m_windowSize(make_shared<ImVec2>(windowSize.x, windowSize.y))
+	, m_windowSize(make_shared<ImVec2>(windowSize.m_x, windowSize.m_y))
 {
 	m_buttonList.push_back(make_shared<UIButton>(string("test")));
 	m_buttonList.push_back(make_shared<UIButton>(string("test2")));

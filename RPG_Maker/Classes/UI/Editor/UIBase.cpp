@@ -7,8 +7,6 @@
 
 #include "UIBase.h"
 
-#include <simplemath.h>
-
 #include <SL_Texture.h>
 
 #include "../../Game/Game.h"
@@ -29,7 +27,7 @@ UIBase::~UIBase()
 
 void UIBase::DrawUpdate()
 {
-	
+
 }
 
 // 設定可能パラメーター ===================================================

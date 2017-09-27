@@ -4,8 +4,6 @@
 //* @date  :2017/09/27
 //* @author:K.Yamamoto
 //************************************************/
-#include <simplemath.h>
-
 #include <SL_Texture.h>
 
 #include "../../Game/Game.h"

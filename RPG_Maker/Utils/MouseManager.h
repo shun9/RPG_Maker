@@ -8,12 +8,11 @@
 #include <d3d11.h>
 #include <mouse.h>
 #include <vector>
-#include <simplemath.h>
 #include <SL_Singleton.h>
-
+#include <SL_Vec2.h>
 namespace {
 	using Mouse = DirectX::Mouse;
-	using Vector2 = DirectX::SimpleMath::Vector2;
+	using Vector2 = ShunLib::Vec2;
 	using namespace ShunLib;
 	using namespace std;
 }

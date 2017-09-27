@@ -6,20 +6,16 @@
 //************************************************/
 #pragma once
 
-#include <simplemath.h>
 #include "UIBase.h"
 #include <list>
 #include <memory>
 
-
 #include "UIButton.h"
-
-namespace {
-	using Vector2 = DirectX::SimpleMath::Vector2;
-}
 
 class UIWindow : public UIBase
 {
+	using Vector2 = ShunLib::Vec2;
+
 private:
 	std::list<std::shared_ptr<UIBase>> m_buttonList;
 

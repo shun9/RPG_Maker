@@ -80,7 +80,7 @@ void GameEditor::Render()
 	auto win = ShunLib::Window::GetInstance();
 
 	ImGui_ImplDX11_NewFrame();
-	
+
 	m_button->DrawUpdate();
 
 

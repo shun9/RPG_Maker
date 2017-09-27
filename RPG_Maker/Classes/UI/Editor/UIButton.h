@@ -6,18 +6,16 @@
 //************************************************/
 #pragma once
 
-#include <simplemath.h>
+#include <SL_Vec2.h>
 #include "UIBase.h"
 #include <list>
 #include <memory>
 #include <functional>
 
-namespace {
-	using Vector2 = DirectX::SimpleMath::Vector2;
-}
-
 class UIButton : public UIBase
 {
+	using Vector2 = ShunLib::Vec2;
+
 private:
 	 std::function<void()> m_func;
 public:

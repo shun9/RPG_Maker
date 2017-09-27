@@ -6,16 +6,14 @@
 //************************************************/
 #pragma once
 
-#include <simplemath.h>
+#include <SL_Vec2.h>
 #include <list>
 #include <string>
 
-namespace {
-	using Vector2 = DirectX::SimpleMath::Vector2;
-}
-
 class UIBase
 {
+	using Vector2 = ShunLib::Vec2;
+
 protected:
 	std::string m_name;
 public:

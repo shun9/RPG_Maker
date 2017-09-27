@@ -9,6 +9,8 @@
 #include "../AppBase/AppBase.h"
 #include "../../SL_Window.h"
 #include "../UI/Editor/UIBase.h"
+#include "../Map/Map.h"
+
 #include <memory>
 
 class Game;
@@ -21,6 +23,7 @@ private:
 
 	ShunLib::Texture* m_tmp;
 
+	Map* m_map;
 public:
 	GameEditor();
 	~GameEditor();

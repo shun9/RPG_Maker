@@ -7,8 +7,8 @@
 #include "Map.h"
 #include "TileDataHolder.h"
 
-const int Map::WIDTH = 128;
-const int Map::HEIGHT = 128;
+const int Map::WIDTH = 32;
+const int Map::HEIGHT = 32;
 
 /// <summary>
 /// コンストラクタ
