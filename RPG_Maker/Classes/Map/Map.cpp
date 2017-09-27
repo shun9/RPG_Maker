@@ -5,6 +5,7 @@
 //* @author:S.Katou
 //************************************************/
 #include "Map.h"
+#include "TileDataHolder.h"
 
 const int Map::WIDTH = 128;
 const int Map::HEIGHT = 128;
@@ -14,13 +15,13 @@ const int Map::HEIGHT = 128;
 /// </summary>
 Map::Map()
 {
+	m_scrollNum = { 0.0f,0.0f };
+
 	m_map.resize(HEIGHT);
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		m_map[i].resize(WIDTH);
 	}
-	int a = 0;
-	a++;
 }
 
 /// <summary>
@@ -43,7 +44,21 @@ void Map::Draw()
 		for (int j = 0; j < WIDTH; j++)
 		{
 			Vec2 pos(i*Tile::SIZE, j*Tile::SIZE);
-			m_map[i][j].Draw(pos,Vec2::One);
+			m_map[i][j].Draw(pos - m_scrollNum, Vec2::One);
 		}
 	}
 }
+
+//bool Map::CanMoveSpecifiedDir(ShunLib::ConstantNumber::DIRECTION_2D dir)
+//{
+//	//指定方向のタイル
+//	Tile* tile = m_contactTile[dir];
+//
+//	//タイルが無ければ進めない
+//	if (tile == nullptr)
+//	{
+//		return false;
+//	}
+//
+//	return tile->CanMove();
+//}

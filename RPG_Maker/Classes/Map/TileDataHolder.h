@@ -6,39 +6,51 @@
 //************************************************/
 #pragma once
 #include <vector>
-#include "../Map/Tile.h"
+#include <SL_Singleton.h>
+#include <SL_Texture.h>
+#include <SL_ConstantNumber.h>
 
 class Enemy;
+class Tile;
 
 //タイルの情報
 struct TileData {
 	//タイル画像
-	ShunLib::Texture* m_texture;
+	ShunLib::Texture* texture;
 
 	//敵のエンカウント率
-	int m_encountRate;
+	int encountRate;
 
 	//出現する敵の構成一覧
-	Enemy** m_enemyGroup;
-
-	//接しているタイル　上下左右
-	Tile* m_contactTile[ShunLib::ConstantNumber::DIRECTION_2D::num];
+	Enemy** enemyGroup;
 
 	//プレイヤーが歩くことが出来るかどうか
 	//歩けるなら true
-	bool m_canMove;
+	bool canMove;
 };
 
+
 //タイルの情報を保持する
-class TileDataHolder
+class TileDataHolder:public ShunLib::Singleton<TileDataHolder>
 {
+	friend ShunLib::Singleton<TileDataHolder>;
+
 private:
-	//タイル一覧
-	std::vector<TileData*> m_tileData;
+	//タイル種類一覧
+	std::vector<TileData> m_tileData;
 
 public:
 	TileDataHolder() {}
 	~TileDataHolder() {}
 
-	TileData* TileData(int id) { return m_tileData[id]; }
+	//データを追加する
+	//
+	int AddData(TileData* data) {
+		m_tileData.push_back(*data);
+		return (int)(m_tileData.size()) - 1;
+	}
+
+	TileData* GetData(int id) {
+		return	&m_tileData[id];
+	}
 };
