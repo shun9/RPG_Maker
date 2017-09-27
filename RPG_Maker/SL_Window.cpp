@@ -77,11 +77,13 @@ ShunLib::Window::~Window() {
 
 	SAFE_RELEASE(m_device);
 
+	m_game[EDITOR]->Finalize();
+
 	for (int i = 0; i < typeNum; i++)
 	{
-		if (m_game[i] != nullptr)
+		//if (m_game[i] != nullptr)
 		{
-			m_game[i]->Finalize();
+			//m_game[i]->Finalize();
 		}
 	}
 }
@@ -238,7 +240,6 @@ HRESULT ShunLib::Window::InitD3D()
 	m_deviceContext->RSSetState(irs);
 	SAFE_RELEASE(irs);
 
-	ShunLib::Texture::SetDevice(m_device, m_deviceContext);
 	return S_OK;
 }
 
