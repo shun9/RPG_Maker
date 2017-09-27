@@ -243,4 +243,3 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-RPG_Maker/RPG_Maker.vcxproj.filters
