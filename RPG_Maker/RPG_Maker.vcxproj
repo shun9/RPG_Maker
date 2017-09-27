@@ -22,7 +22,7 @@
     <RootNamespace>RPG_Maker</RootNamespace>
     <ProjectGuid>{f021e90c-58e0-45d7-9124-d816d61a3410}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -69,8 +69,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLibTK\inc;C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLib\inc;C:\DirectXTK\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLibTK\Debug;C:\Users\s162044\Desktop\RPG_Maker\RPG_Maker\ShunLib\Debug;C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>ShunLib\inc;ShunLibTK\inc;C:\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\DirectXTK\Bin\Desktop_2015\Win32\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ShunLib.lib;ShunLibTK.lib;DirectXTK.lib;d3d11.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;d3dcompiler.lib;d3d11.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,11 +158,61 @@
     <ClInclude Include="Classes\AppBase\AppBase.h" />
     <ClInclude Include="Classes\Editor\GameEditor.h" />
     <ClInclude Include="Classes\Game\Game.h" />
+    <ClInclude Include="Classes\imgui\imconfig.h" />
+    <ClInclude Include="Classes\imgui\imgui.h" />
+    <ClInclude Include="Classes\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="Classes\imgui\imgui_internal.h" />
+    <ClInclude Include="Classes\imgui\stb_rect_pack.h" />
+    <ClInclude Include="Classes\imgui\stb_textedit.h" />
+    <ClInclude Include="Classes\imgui\stb_truetype.h" />
+    <ClInclude Include="Classes\Map\Map.h" />
+    <ClInclude Include="Classes\Map\Tile.h" />
+    <ClInclude Include="Classes\UI\Editor\UIBase.h" />
+    <ClInclude Include="Classes\UI\Editor\UIButton.h" />
+    <ClInclude Include="Classes\UI\Editor\UIWindow.h" />
+    <ClInclude Include="Classes\Map\TileDataHolder.h" />
+    <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
+    <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
+    <ClInclude Include="ShunLibTK\inc\SL_Texture.h" />
+    <ClInclude Include="ShunLib\inc\SL_Command.h" />
+    <ClInclude Include="ShunLib\inc\SL_CommandInput.h" />
+    <ClInclude Include="ShunLib\inc\SL_CompositeVisitor.h" />
+    <ClInclude Include="ShunLib\inc\SL_ConstantNumber.h" />
+    <ClInclude Include="ShunLib\inc\SL_Conversion.h" />
+    <ClInclude Include="ShunLib\inc\SL_Factory.h" />
+    <ClInclude Include="ShunLib\inc\SL_MacroConstants.h" />
+    <ClInclude Include="ShunLib\inc\SL_Matrix.h" />
+    <ClInclude Include="ShunLib\inc\SL_RandomNumber.h" />
+    <ClInclude Include="ShunLib\inc\SL_Singleton.h" />
+    <ClInclude Include="ShunLib\inc\SL_State.h" />
+    <ClInclude Include="ShunLib\inc\SL_StateMachine.h" />
+    <ClInclude Include="ShunLib\inc\SL_Timer.h" />
+    <ClInclude Include="ShunLib\inc\SL_Vec2.h" />
+    <ClInclude Include="ShunLib\inc\SL_Vec3.h" />
+    <ClInclude Include="ShunLib\inc\SL_Vec4.h" />
     <ClInclude Include="SL_Window.h" />
+    <ClInclude Include="Utils\MouseManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
     <ClCompile Include="Classes\Game\Game.cpp" />
+    <ClCompile Include="Classes\imgui\imgui.cpp" />
+    <ClCompile Include="Classes\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Classes\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Classes\Map\Map.cpp" />
+    <ClCompile Include="Classes\Map\Tile.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIBase.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIButton.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIWindow.cpp" />
+    <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
+    <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp" />
+    <ClCompile Include="ShunLib\src\SL_Conversion.cpp" />
+    <ClCompile Include="ShunLib\src\SL_Matrix.cpp" />
+    <ClCompile Include="ShunLib\src\SL_RandomNumber.cpp" />
+    <ClCompile Include="ShunLib\src\SL_Vec2.cpp" />
+    <ClCompile Include="ShunLib\src\SL_Vec3.cpp" />
+    <ClCompile Include="ShunLib\src\SL_Vec4.cpp" />
     <ClCompile Include="SL_Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>

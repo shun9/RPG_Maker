@@ -10,8 +10,6 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
-#include <SL_Texture.h>
-
 class AppBase;
 
 namespace ShunLib
@@ -38,15 +36,17 @@ namespace ShunLib
 		//全体で１つ
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_deviceContext;
-		IDXGISwapChain* m_swapChain;
-		ID3D11RenderTargetView* m_recderTargetView;
-		ID3D11DepthStencilView* m_depthStencilView;
 		ID3D11Texture2D* m_texture2D;
+		DXGI_SWAP_CHAIN_DESC m_sd;//スワップチェインの設定
+		D3D11_TEXTURE2D_DESC m_descDepth;//深度ステンシルビューの設定
+
+		//ウィンドウの数だけ必要
+		IDXGISwapChain* m_swapChain[typeNum];
+		ID3D11RenderTargetView* m_renderTargetView[typeNum];
+		ID3D11DepthStencilView* m_depthStencilView[typeNum];
 
 		//エディターと作成したゲーム
 		AppBase* m_game[typeNum];
-
-		Texture* m_tmp;
 
 	public:
 		//ウィンドウ作成
@@ -70,6 +70,9 @@ namespace ShunLib
 		//メッセージループ
 		void Run();
 
+		//描画するウィンドウの設定
+		void SetDrawingWindow(WINDOW_TYPE);
+
 		//Setter
 		void Width(float width) { m_width = width; }
 		void Height(float height) { m_height = height; }
@@ -80,26 +83,19 @@ namespace ShunLib
 		float Width() { return m_width; }
 		float Height() { return m_height; }
 		WCHAR* Name() { return m_name; }
-		HWND* WindouHandle() { return m_hWnd; }  //ウィンドウハンドル
+		HWND WindouHandle(WINDOW_TYPE type) { return m_hWnd[type]; }  //ウィンドウハンドル
 
 		ID3D11Device* Device() { return m_device; }
 		ID3D11DeviceContext* DeviceContext() { return m_deviceContext; }
 
+
+		//デバッガーを消す
 		void DestroyDebugger();
 
 	private:
 		//コンストラクタ＆デストラクタ
 		//シングルトンのため隠蔽
-		Window() :
-			m_width (640.0f),
-			m_height(480.0f),
-			m_name  (L"タイトル"){
-			for (int i = 0; i < typeNum; i++)
-			{
-				m_game[i] = nullptr;
-
-			}
-		}
+		Window();
 
 		~Window();
 
