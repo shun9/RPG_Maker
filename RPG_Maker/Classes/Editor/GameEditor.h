@@ -5,7 +5,6 @@
 //* @author:S.Katou
 //************************************************/
 #pragma once
-#include <SL_Texture.h>
 #include "../AppBase/AppBase.h"
 #include "../../SL_Window.h"
 #include "../UI/Editor/UIBase.h"
@@ -18,8 +17,6 @@ class GameEditor : public AppBase
 private:
 	Game* m_game;
 	std::shared_ptr<UIBase> m_button;
-
-	ShunLib::Texture* m_tmp;
 
 public:
 	GameEditor();
