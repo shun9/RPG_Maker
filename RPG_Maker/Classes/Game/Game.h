@@ -7,11 +7,18 @@
 #pragma once
 #include "../AppBase/AppBase.h"
 
+class Map;
+class Player;
+
 //ゲームクラス
 //実行ボタンで作成
 //エディターとは別のウィンドウに描画
 class Game : public AppBase
 {
+private:
+	Map* m_map;
+	Player* m_player;
+
 public:
 	Game();
 	~Game();
@@ -22,6 +29,10 @@ public:
 	void Render    ()override;
 	void Finalize  ()override;
 
+	void SetMap(Map* map) {
+		m_map = map;
+	}
+	void Player(Player* player) { m_player = player; }
 private:
 
 };

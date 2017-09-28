@@ -3,6 +3,7 @@
 #include "SL_Window.h"
 
 #include "Classes\Editor\GameEditor.h"
+#include "Utils\ImageLoader.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
@@ -30,6 +31,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpSh
 		window->Run();
 	}
 
+	ImageLoader::Destroy();
 	ShunLib::KeyManager::Destroy();
 	ShunLib::Window::Destroy();
 
