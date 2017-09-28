@@ -58,8 +58,8 @@ HRESULT InitWindow(HINSTANCE hInst)
 	auto window = ShunLib::Window::GetInstance();
 
 	//ウィンドウ情報設定
-	window->Width(1200.0f);
-	window->Height(800.0f);
+	window->Width(1664.0f);
+	window->Height(936.0f);
 	window->Name(L"RPGツクールツクール");
 
 	//ウィンドウ作成
