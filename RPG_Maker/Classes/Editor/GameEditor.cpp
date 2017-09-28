@@ -45,7 +45,7 @@ void GameEditor::Initialize()
 	//auto Il = ImageLoader::GetInstance();
 	//auto str = Il->OpenLoadingDialog();
 
-	m_tmp = new ShunLib::Texture(L"Image\\tile\\tile3.png");
+	m_tmp = new ShunLib::Texture(L"Image\\tile\\tile130.png");
 	m_tmp2 = new ShunLib::Texture(L"Image\\tile\\tile1.png");
 
 	TileData data;
