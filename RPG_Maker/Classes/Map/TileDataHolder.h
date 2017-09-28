@@ -50,7 +50,10 @@ public:
 		return (int)(m_tileData.size()) - 1;
 	}
 
+	//ƒf[ƒ^î•ñ‚ð•Ô‚·
+	//–³‚¯‚ê‚Înullptr
 	TileData* GetData(int id) {
+		if (id > (int)(m_tileData.size()) - 1)return nullptr;
 		return	&m_tileData[id];
 	}
 };

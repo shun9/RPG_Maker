@@ -22,6 +22,7 @@ private:
 	std::shared_ptr<UIBase> m_button;
 
 	ShunLib::Texture* m_tmp;
+	ShunLib::Texture* m_tmp2;
 
 	Map* m_map;
 public:

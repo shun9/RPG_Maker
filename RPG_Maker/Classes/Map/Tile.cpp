@@ -11,9 +11,24 @@
 //タイルの1辺の長さ
 const float Tile::SIZE = 32.0f;
 
-void Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2 & scale)
+//何もないタイル
+const int Tile::NONE = -1;
+
+/// <summary>
+/// 描画
+/// </summary>
+void Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2 & scale, RECT* rect)
 {
+	//情報が無ければ描画しない
+	if (m_id == NONE)
+	{
+		return;
+	}
+
 	auto data = TileDataHolder::GetInstance()->GetData(m_id);
 
-	data->texture->Draw(pos, scale);
+	if (data->texture != nullptr)
+	{
+		data->texture->Draw(pos, scale, rect);
+	}
 }
