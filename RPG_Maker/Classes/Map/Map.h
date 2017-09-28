@@ -70,4 +70,6 @@ private:
 	bool IsInRangeTile(int x, int y, int dirTile[]);
 
 	void DrawEdgeTile(int x,int y,float edge[], DIRECTION_2D dir,int dirTile[]);
+
+	void ClampScroll();
 };

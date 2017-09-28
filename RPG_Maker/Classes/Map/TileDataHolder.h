@@ -44,7 +44,6 @@ public:
 	~TileDataHolder() {}
 
 	//ƒf[ƒ^‚ğ’Ç‰Á‚·‚é
-	//
 	int AddData(TileData* data) {
 		m_tileData.push_back(*data);
 		return (int)(m_tileData.size()) - 1;

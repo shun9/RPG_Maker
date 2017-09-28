@@ -1,11 +1,11 @@
 //************************************************/
 //* @file  :GameEditor.cpp
 //* @brief :エディター
-//* @date  :2017/09/26
+//* @date  :2017/09/28
 //* @author:S.Katou
 //************************************************/
 #include "GameEditor.h"
-
+#include <Windows.h>
 #include <SL_Texture.h>
 #include <SL_KeyManager.h>
 #include "../Game/Game.h"
@@ -19,6 +19,7 @@
 #include "../../Utils/MouseManager.h"
 #include "../Map/TileDataHolder.h"
 #include "../Map/MapEditor.h"
+#include "../../Utils/ImageLoader.h"
 
 using namespace std;
 
@@ -39,8 +40,14 @@ void GameEditor::Initialize()
 	ShunLib::Texture::SetDevice(win->Device(), win->DeviceContext());
 	auto hw = win->WindouHandle(ShunLib::Window::EDITOR);
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
-	m_tmp = new ShunLib::Texture(L"Image\\sand.png");
+
+	auto Il = ImageLoader::GetInstance();
+	auto str = Il->OpenLoadingDialog();
+
+	m_tmp = new ShunLib::Texture(str.c_str());
 	m_tmp2 = new ShunLib::Texture(L"Image\\grass.png");
+
+
 	TileData data;
 	data.canMove = true;
 	data.encountRate = 40;

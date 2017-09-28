@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <SL_KeyManager.h>
+#include "../../Utils/MouseManager.h"
 #include "TileDataHolder.h"
 
 using namespace ShunLib;
@@ -41,53 +42,26 @@ Map::~Map()
 void Map::Update()
 {
 	auto key = ShunLib::KeyManager::GetInstance();
-	if (key->IsPushed(KeyManager::KEY_CODE::UP))
+
+	if		(key->IsPushed(KeyManager::KEY_CODE::UP   ))
 	{
-		//端まで行ったらスクロールしない
-		if (m_scrollNum.m_y - 1.0f < 0.0f)
-		{
-			m_scrollNum.m_y = 0.0f;
-		}
-		else
-		{
-			m_scrollNum.m_y -= 1.0f;
-		}
+		m_scrollNum.m_y -= 1.0f;
+		ClampScroll();
 	}
-	else if (key->IsPushed(KeyManager::KEY_CODE::DOWN))
+	else if (key->IsPushed(KeyManager::KEY_CODE::DOWN ))
 	{
-		//端まで行ったらスクロールしない
-		if (m_scrollNum.m_y + 1.0f > Map::HEIGHT*Tile::SIZE - m_displaySize.m_y)
-		{
-			m_scrollNum.m_y = Map::HEIGHT*Tile::SIZE - m_displaySize.m_y;
-		}
-		else
-		{
-			m_scrollNum.m_y += 1.0f;
-		}
+		m_scrollNum.m_y += 1.0f;
+		ClampScroll();
 	}
-	else if (key->IsPushed(KeyManager::KEY_CODE::LEFT))
+	else if (key->IsPushed(KeyManager::KEY_CODE::LEFT ))
 	{
-		//端まで行ったらスクロールしない
-		if (m_scrollNum.m_x - 1.0f < 0.0f)
-		{
-			m_scrollNum.m_x = 0.0f;
-		}
-		else
-		{
-			m_scrollNum.m_x -= 1.0f;
-		}
+		m_scrollNum.m_x -= 1.0f;
+		ClampScroll();
 	}
 	else if (key->IsPushed(KeyManager::KEY_CODE::RIGHT))
 	{
-		//端まで行ったらスクロールしない
-		if (m_scrollNum.m_x + 1.0f > Map::WIDTH*Tile::SIZE - m_displaySize.m_x)
-		{
-			m_scrollNum.m_x = Map::WIDTH*Tile::SIZE - m_displaySize.m_x;
-		}
-		else
-		{
-			m_scrollNum.m_x += 1.0f;
-		}
+		m_scrollNum.m_x += 1.0f;
+		ClampScroll();
 	}
 }
 
@@ -101,6 +75,7 @@ void Map::SetTileId(int id, int x, int y)
 	{
 		return;
 	}
+
 	float edge[4] = { m_firstPos.m_y,m_displaySize.m_y,m_displaySize.m_x,m_firstPos.m_x };
 	int edgeTile[DIRECTION_2D::num];
 	//画面端のマップ座標を取得
@@ -111,9 +86,8 @@ void Map::SetTileId(int id, int x, int y)
 		//張り替える
 		m_map[y][x].Id(id);
 	}
-
-
 }
+
 
 /// <summary>
 /// 描画
@@ -188,6 +162,7 @@ void Map::Draw()
 		}
 	}
 }
+
 
 /// <summary>
 /// スクリーン上の座標をマップの座標に変換する
@@ -348,5 +323,31 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 	}
 
 	m_map[y][x].Draw(pos - m_scrollNum, Vec2::One, &rect);
+
+}
+
+
+void Map::ClampScroll()
+{
+	//上端
+	if (m_scrollNum.m_y < 0.0f)
+	{
+		m_scrollNum.m_y = 0.0f;
+	}
+	//下端
+	else if (m_scrollNum.m_y > Map::HEIGHT*Tile::SIZE - m_displaySize.m_y)
+	{
+		m_scrollNum.m_y = Map::HEIGHT*Tile::SIZE - m_displaySize.m_y;
+	}
+	//左端
+	else if (m_scrollNum.m_x < 0.0f)
+	{
+		m_scrollNum.m_x = 0.0f;
+	}
+	//右端
+	else if(m_scrollNum.m_x > Map::WIDTH*Tile::SIZE - m_displaySize.m_x)
+	{
+		m_scrollNum.m_x = Map::WIDTH*Tile::SIZE - m_displaySize.m_x;
+	}
 
 }
