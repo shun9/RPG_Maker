@@ -1,6 +1,6 @@
 //************************************************/
-//* @file  :UIText.h
-//* @brief :UITextのクラス
+//* @file  :UISlider.h
+//* @brief :UISliderのクラス
 //* @date  :2017/09/27
 //* @author:K.Yamamoto
 //************************************************/
@@ -13,31 +13,25 @@
 #include <string>
 #include <functional>
 
-class UIText :public UIBase
+class UISlider :public UIBase
 {
 	using Vector2 = ShunLib::Vec2;
+private:
+	int* m_sliderNum;
+
+	int m_max;
+	int m_min;
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UIText(const std::string& name);
+	UISlider(const std::string& name, int* num, int min = 0, int max = 100);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~UIText() override;
+	virtual ~UISlider() override;
 
-	template <typename T = int>
-	void DrawUpdate(const char * fmt, ...);
+	void DrawUpdate() override;
 };
-
-// TODO:　不完全なためのちほど修正（int は可能）
-template<typename T>
-inline void UIText::DrawUpdate(const char * fmt, ...)
-{
-	va_list args;
-	va_start(args, fmt);
-	ImGui::Text(fmt, va_arg(args, T));
-	va_end(args);
-}

@@ -18,7 +18,8 @@ protected:
 	std::string m_name;
 
 public:
-	bool m_isActive;
+	bool Active;
+
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -29,6 +30,8 @@ public:
 	/// デストラクタ
 	/// </summary>
 	virtual ~UIBase();
+
+	void ChangeName(std::string name) { m_name = name; }
 
 	virtual void DrawUpdate();
 };

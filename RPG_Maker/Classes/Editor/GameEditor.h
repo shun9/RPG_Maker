@@ -8,7 +8,6 @@
 #include <SL_Texture.h>
 #include "../AppBase/AppBase.h"
 #include "../../SL_Window.h"
-#include "../UI/Editor/UITileWindow.h"
 #include "../UI/Editor/UIMenuBar.h"
 #include "../UI/Editor/UITileProperty.h"
 #include "../Map/Map.h"
@@ -23,7 +22,6 @@ class GameEditor : public AppBase
 {
 private:
 	Game* m_game;
-	std::shared_ptr<UITileWindow> m_uiWindow;
 	std::shared_ptr<UIMenuBar> m_uiMenu;
 	std::shared_ptr<UITileProperty> m_uiTileProperty;
 	ShunLib::Texture* m_tmp;
@@ -44,7 +42,6 @@ public:
 	void Finalize  ()override;
 
 	void UIChangeActive(UIBase& ui);
-	void TileWindowChangeActive() { UIChangeActive(*m_uiWindow.get()); }
 	void TilePropertyChangeActive() { UIChangeActive(*m_uiTileProperty.get()); }
 
 private:

@@ -1,5 +1,5 @@
 //************************************************/
-//* @file  :UITileWindow.h
+//* @file  :UITilePropertyEGroup.h
 //* @brief :UIのタイルウインドウクラス
 //* @date  :2017/09/27
 //* @author:K.Yamamoto
@@ -13,27 +13,27 @@
 
 #include "UIButton.h"
 
-class UITileWindow :public UIBase
+class UITilePropertyEGroup :public UIBase
 {
 	using Vector2 = ShunLib::Vec2;
 
 private:
-	std::list<std::shared_ptr<UIBase>> m_buttonList;
+	//std::shared_ptr<std::list<int, std::shared_ptr<UIButton>>> m_groupList;
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UITileWindow(const std::string& name);
+	UITilePropertyEGroup(const std::string& name);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~UITileWindow() override;
+	virtual ~UITilePropertyEGroup() override;
+
+	void AddGroup(int id);
 
 	virtual void DrawUpdate() override;
-
-	void AddUI(std::shared_ptr<UIBase> ui) { m_buttonList.push_back(ui); }
 
 	void UIDrawUpdate();
 };

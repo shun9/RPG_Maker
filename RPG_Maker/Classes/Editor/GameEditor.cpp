@@ -39,6 +39,7 @@ void GameEditor::Initialize()
 	auto win = ShunLib::Window::GetInstance();
 	ShunLib::Texture::SetDevice(win->Device(), win->DeviceContext());
 	auto hw = win->WindouHandle(ShunLib::Window::EDITOR);
+	
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
 
 	//auto Il = ImageLoader::GetInstance();
@@ -46,6 +47,9 @@ void GameEditor::Initialize()
 
 	m_tmp = new ShunLib::Texture(L"Image\\tile\\tile130.png");
 	m_tmp2 = new ShunLib::Texture(L"Image\\tile\\tile1.png");
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 
 	TileData data;
 	data.canMove = true;
@@ -68,23 +72,30 @@ void GameEditor::Initialize()
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
 
 	// SettingUI
-	m_uiWindow = make_shared<UITileWindow>(string("Tile window"));
 	m_uiMenu = make_shared<UIMenuBar>(string("menu"));
 	m_uiTileProperty = make_shared<UITileProperty>(string("Tile Property"));
 
 	{
 		m_uiMenu->SetMenuItemFunc("File", "Load");
 		m_uiMenu->SetMenuItemFunc("File", "Save");
-		m_uiMenu->SetMenuItemFunc("View", "TileWindow", [this]() {TileWindowChangeActive(); });
+
+		m_uiMenu->SetMenuItemFunc("View", "TileWindow");
 		m_uiMenu->SetMenuItemFunc("View", "TileProperty", [this]() {TilePropertyChangeActive(); });
 		m_uiMenu->SetMenuItemFunc("View", "Map");
-		m_uiMenu->SetMenuItemFunc("View", "EnemyTable");
+		
+		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData");
+		m_uiMenu->SetMenuItemFunc("DataBase", "TileData");
+		
 		m_uiMenu->SetMenuItemFunc("CreateMode", "MapCreate");
 		m_uiMenu->SetMenuItemFunc("CreateMode", "EventCreate");
+		
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/1");
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/2");
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/4");
-		m_uiMenu->SetMenuItemFunc("DrawMode", "pencil");
+		
+		m_uiMenu->SetMenuItemFunc("DrawMode", "Pencil");
+		
+		m_uiMenu->SetMenuItemFunc("Game", "Play");
 	}
 
 	auto r= TileDataHolder::GetInstance();
@@ -120,7 +131,8 @@ void GameEditor::Update()
 	mouse->Update();
 
 	// UIウインドウがアクティブでない時
-	if (!ImGui::IsAnyWindowHovered())
+	if (!ImGui::IsAnyWindowHovered()&& 
+		!ImGui::IsAnyItemActive())
 	{
 		if (mouse->GetMouseButton(MouseButton::leftButton))
 		{
@@ -162,7 +174,6 @@ void GameEditor::Render()
 	ImGui::Text("scroll x : %.3f", m_map->Scroll()->m_x);
 	ImGui::Text("scroll y : %.3f", m_map->Scroll()->m_y);
 
-	m_uiWindow->DrawUpdate();
 	m_uiMenu->DrawUpdate();
 	m_uiTileProperty->DrawUpdate();
 
@@ -188,7 +199,7 @@ void GameEditor::Finalize()
 
 void GameEditor::UIChangeActive(UIBase & ui)
 {
-	ui.m_isActive = !ui.m_isActive;
+	ui.Active = !ui.Active;
 }
 
 /// <summary>

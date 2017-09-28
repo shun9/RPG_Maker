@@ -24,4 +24,11 @@ UICheckBox::~UICheckBox()
 void UICheckBox::DrawUpdate()
 {
 	ImGui::Checkbox(m_name.c_str(), m_check);
+
+	if (*m_check) {
+		m_name = string("true");
+	}
+	else {
+		m_name = string("false");
+	}
 }

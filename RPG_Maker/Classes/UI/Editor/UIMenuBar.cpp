@@ -30,12 +30,12 @@ void UIMenuBar::SetMenuItemFunc(std::string menuKey, std::string itemKey, std::f
 
 void UIMenuBar::DrawUpdate()
 {
-	if (!m_isActive)return;
+	if (!Active)return;
 
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
 	ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(1200, 50), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(1200, 60), ImGuiSetCond_Once);
 
 	// StyleÇÃê›íË
 	auto& style = ImGui::GetStyle();
@@ -49,7 +49,7 @@ void UIMenuBar::DrawUpdate()
 		| ImGuiWindowFlags_NoTitleBar
 		| ImGuiWindowFlags_NoMove))
 	{
-		ImGui::SetWindowFontScale(2.0f);
+		ImGui::SetWindowFontScale(2.2f);
 
 		if (ImGui::BeginMenuBar())
 		{

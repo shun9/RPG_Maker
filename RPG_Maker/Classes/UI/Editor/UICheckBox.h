@@ -30,5 +30,7 @@ public:
 	/// </summary>
 	virtual ~UICheckBox() override;
 
+	void ChangeBoolean(bool* check) { m_check = check; }
+
 	virtual void DrawUpdate() override;
 };

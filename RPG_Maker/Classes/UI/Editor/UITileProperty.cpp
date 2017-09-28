@@ -12,19 +12,33 @@
 #include "../../imgui/imgui_impl_dx11.h"
 #include <vector>
 #include "UITileProperty.h"
+#include "../../Map/MapEditor.h"
 
 using namespace std;
 
-UITileProperty::UITileProperty(const string& name)
+UITileProperty::UITileProperty(const string& name,int id)
 	:UIBase(name)
 	,m_isView(true)
 {
-	m_text = make_shared<UIText>("ID");
-	//m_checkBoxIsMove = make_shared<UICheckBox>("IsMove");
+	m_CurrentTileId = id;
+	m_tileData = TileDataHolder::GetInstance()->GetData(m_CurrentTileId);
+	
+	m_encountSlider = make_unique<UISlider>("1 - 100", &m_tileData->encountRate);
+	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
+	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
+	m_removeGroupButton = make_unique<UIButton>("Remove");
+	m_addGroupButton = make_unique<UIButton>(" Add ");
 }
 
 UITileProperty::~UITileProperty()
 {
+}
+
+void UITileProperty::SetID(int id)
+{
+	m_CurrentTileId = id;
+	m_tileData = TileDataHolder::GetInstance()->GetData(m_CurrentTileId);
+	m_checkBoxIsMove->ChangeBoolean(&m_tileData->canMove);
 }
 
 void UITileProperty::DrawUpdate()
@@ -36,11 +50,11 @@ void UITileProperty::UIDrawUpdate()
 {
 	if (!m_isView)
 	{
-		m_isActive = false;
+		Active = false;
 		m_isView = true;
 	}
 
-	if (!m_isActive)return;
+	if (!Active)return;
 
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
@@ -55,15 +69,32 @@ void UITileProperty::UIDrawUpdate()
 		,ImGuiWindowFlags_NoResize 
 		| ImGuiWindowFlags_NoCollapse))
 	{
-
 		// Styleの設定
 		auto oldFramePadding = style.FramePadding;
 	
 		//フォントサイズ変更 
 		ImGui::SetWindowFontScale(1.4f);
-		
-		m_text->DrawUpdate("ID %d", 1);
-		//m_checkBoxIsMove->DrawUpdate();
+
+		ImGui::Text("ID :");
+		ImGui::SameLine(110);
+		ImGui::Text("%d", m_CurrentTileId);
+
+		ImGui::Text("Encount : ");
+		ImGui::SameLine(110);
+		m_encountSlider->DrawUpdate();
+
+		ImGui::Text("MoveFlag : ");
+		ImGui::SameLine(110);
+		m_checkBoxIsMove->DrawUpdate();
+
+		ImGui::Text("EnemyGroup : ");
+		m_groupSlider->DrawUpdate();
+
+		ImGui::Text(" ");
+		ImGui::SameLine(160);
+		m_removeGroupButton->DrawUpdate();
+		ImGui::SameLine(238);
+		m_addGroupButton->DrawUpdate();
 
 		style.FramePadding = oldFramePadding;
 	}

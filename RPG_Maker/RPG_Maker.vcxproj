@@ -175,9 +175,9 @@
     <ClInclude Include="Classes\UI\Editor\UIMenu.h" />
     <ClInclude Include="Classes\UI\Editor\UIMenuBar.h" />
     <ClInclude Include="Classes\UI\Editor\UIMenuItem.h" />
-    <ClInclude Include="Classes\UI\Editor\UIText.h" />
+    <ClInclude Include="Classes\UI\Editor\UISlider.h" />
     <ClInclude Include="Classes\UI\Editor\UITileProperty.h" />
-    <ClInclude Include="Classes\UI\Editor\UITileWindow.h" />
+    <ClInclude Include="Classes\UI\Editor\UITilePropertyEGroup.h" />
     <ClInclude Include="Classes\Map\TileDataHolder.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
@@ -219,9 +219,9 @@
     <ClCompile Include="Classes\UI\Editor\UIMenu.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIMenuBar.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIMenuItem.cpp" />
-    <ClCompile Include="Classes\UI\Editor\UIText.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UISlider.cpp" />
     <ClCompile Include="Classes\UI\Editor\UITileProperty.cpp" />
-    <ClCompile Include="Classes\UI\Editor\UITileWindow.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UITilePropertyEGroup.cpp" />
     <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
     <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp" />
     <ClCompile Include="ShunLib\src\SL_Conversion.cpp" />
