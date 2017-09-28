@@ -63,13 +63,16 @@ void GameEditor::Initialize()
 	data2.enemyGroup = nullptr;
 	data2.texture = m_tmp2;
 
-	//win->CreateSecondWindow();
-
 	int id = TileDataHolder::GetInstance()->AddData(&data);
 	int id2 = TileDataHolder::GetInstance()->AddData(&data2);
 
 	m_map = new Map();
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
+
+	//プレイヤーの作成
+	player = new Player();
+
+	m_game = new Game();
 
 	// SettingUI
 	m_uiMenu = make_shared<UIMenuBar>(string("menu"));
@@ -97,28 +100,6 @@ void GameEditor::Initialize()
 		
 		m_uiMenu->SetMenuItemFunc("Game", "Play");
 	}
-
-	auto r= TileDataHolder::GetInstance();
-	int id = r->AddData(&data);
-	m_map = new Map();
-	for (int i = 0; i < Map::HEIGHT; i++)
-	{
-		for (int j = 0; j < Map::WIDTH; j++)
-		{
-			m_map->SetTileId(id,i,j);
-		}
-	}
-
-	int id = TileDataHolder::GetInstance()->AddData(&data);
-	int id2 = TileDataHolder::GetInstance()->AddData(&data2);
-
-	m_map = new Map();
-	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
-
-	//プレイヤーの作成
-	player = new Player();
-
-	m_game = new Game();
 }
 
 //更新

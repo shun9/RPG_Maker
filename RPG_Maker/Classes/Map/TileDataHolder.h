@@ -9,6 +9,7 @@
 #include <SL_Singleton.h>
 #include <SL_Texture.h>
 #include <SL_ConstantNumber.h>
+#include "Tile.h"
 
 class Enemy;
 class Tile;
