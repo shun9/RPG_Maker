@@ -6,10 +6,10 @@
 //************************************************/
 #pragma once
 #include <d3d11.h>
-#include <Keyboard.h>
-#include "../../ShunLibTK/inc/SL_KeyManager.h"
 #include "../../ShunLib/inc/SL_Vec2.h"
-#include "../../ShunLibTK/inc/SL_Texture.h"
+#include <SL_Texture.h>
+#include "../Map/Map.h"
+#include <SL_ConstantNumber.h>
 
 //プレイヤークラス
 
@@ -22,21 +22,27 @@ public:
 	void Move();
 	void Draw();
 
+	//座標の所得
+	ShunLib::Vec2 Getpos();
+
+	ShunLib::ConstantNumber::DIRECTION_2D Getdirection();
 private:
 
 	//x座標,y座標
 	ShunLib::Vec2 pos;
 
 	//拡大率
-	float scale;
+	ShunLib::Vec2 scale;
 
 	//描画矩形
-	RECT * rect;
+	RECT rect;
 
 	//スピードの設定
 	const int speed = 4;
 
-	//キーボードの宣言
-	//ShunLib::KeyManager key;
+	//画像のデータ
+	ShunLib::Texture* player;
 
+	//向き
+	ShunLib::ConstantNumber::DIRECTION_2D dir;
 };

@@ -62,6 +62,9 @@ void GameEditor::Initialize()
 
 	m_map = new Map();
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
+
+	//プレイヤーの作成
+	player = new Player();
 }
 
 //更新
@@ -84,7 +87,13 @@ void GameEditor::Update()
 		auto p = mouse->GetMousePosition();
 		edi->ChangeTile(p);
 	}
-	m_map->Update();
+	//m_map->Update();
+
+	//プレイヤーが先に進めるかどうか
+	if (m_map->CanMoveSpecifiedDir(player->Getpos(),player->Getdirection()))
+	{
+		player->Move();
+	}
 }
 
 //描画
@@ -105,6 +114,9 @@ void GameEditor::Render()
 	// Rendering
 	//この上に描画処理を書く
 	ImGui::Render();
+
+	//プレイヤーの描画
+	player->Draw();
 }
 
 //終了
@@ -114,6 +126,7 @@ void GameEditor::Finalize()
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(m_tmp);
 	DELETE_POINTER(m_tmp2);
+	DELETE_POINTER(player);
 }
 
 /// <summary>

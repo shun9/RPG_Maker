@@ -13,6 +13,8 @@
 
 #include <memory>
 
+#include "../Player/Player.h"
+
 class Game;
 
 class GameEditor : public AppBase
@@ -23,6 +25,9 @@ private:
 
 	ShunLib::Texture* m_tmp;
 	ShunLib::Texture* m_tmp2;
+
+	//	TODO:‰¼ŽÀ‘•
+	Player * player;
 
 	Map* m_map;
 public:
