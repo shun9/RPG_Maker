@@ -16,8 +16,10 @@ class UIBase
 
 protected:
 	std::string m_name;
-public:
 
+public:
+	bool m_isActive;
+public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>

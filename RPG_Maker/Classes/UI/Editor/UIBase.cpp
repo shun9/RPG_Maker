@@ -18,6 +18,7 @@ using namespace std;
 
 UIBase::UIBase(const string& name)
 	:m_name(name)
+	,m_isActive(true)
 {
 }
 

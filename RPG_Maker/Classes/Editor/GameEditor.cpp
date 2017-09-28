@@ -12,7 +12,6 @@
 #include "../../SL_Window.h"
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_dx11.h"
-#include "../UI/Editor/UIWindow.h"
 
 #include <string>
 
@@ -60,8 +59,36 @@ void GameEditor::Initialize()
 	data2.enemyGroup = nullptr;
 	data2.texture = m_tmp2;
 
+	//win->CreateSecondWindow();
+	m_uiWindow = make_shared<UITileWindow>(string("Tile window"));
+	m_uiMenu = make_shared<UIMenuBar>(string("menu"));
+	m_uiTileProperty = make_shared<UITileProperty>(string("Tile Property"));
 
-	m_button = make_shared<UIWindow>(string("tab"),Vector2(330.0f,100.0f));
+	{
+		m_uiMenu->SetMenuItemFunc("File", "Load");
+		m_uiMenu->SetMenuItemFunc("File", "Save");
+		m_uiMenu->SetMenuItemFunc("View", "TileWindow", [this]() {TileWindowChangeActive(); });
+		m_uiMenu->SetMenuItemFunc("View", "TileProperty", [this]() {TilePropertyChangeActive(); });
+		m_uiMenu->SetMenuItemFunc("View", "Map");
+		m_uiMenu->SetMenuItemFunc("View", "EnemyTable");
+		m_uiMenu->SetMenuItemFunc("CreateMode", "MapCreate");
+		m_uiMenu->SetMenuItemFunc("CreateMode", "EventCreate");
+		m_uiMenu->SetMenuItemFunc("Scaling", "1/1");
+		m_uiMenu->SetMenuItemFunc("Scaling", "1/2");
+		m_uiMenu->SetMenuItemFunc("Scaling", "1/4");
+		m_uiMenu->SetMenuItemFunc("DrawMode", "pencil");
+	}
+
+	auto r= TileDataHolder::GetInstance();
+	int id = r->AddData(&data);
+	m_map = new Map();
+	for (int i = 0; i < Map::HEIGHT; i++)
+	{
+		for (int j = 0; j < Map::WIDTH; j++)
+		{
+			m_map->SetTileId(id,i,j);
+		}
+	}
 
 	int id = TileDataHolder::GetInstance()->AddData(&data);
 	int id2 = TileDataHolder::GetInstance()->AddData(&data2);
@@ -119,10 +146,12 @@ void GameEditor::Render()
 
 	ImGui_ImplDX11_NewFrame();
 
-	m_button->DrawUpdate();
-
 	ImGui::Text("scroll x : %.3f", m_map->Scroll()->m_x);
 	ImGui::Text("scroll y : %.3f", m_map->Scroll()->m_y);
+
+	m_uiWindow->DrawUpdate();
+	m_uiMenu->DrawUpdate();
+	m_uiTileProperty->DrawUpdate();
 
 	m_map->Draw();
 
@@ -142,6 +171,11 @@ void GameEditor::Finalize()
 	DELETE_POINTER(m_tmp);
 	DELETE_POINTER(m_tmp2);
 	DELETE_POINTER(player);
+}
+
+void GameEditor::UIChangeActive(UIBase & ui)
+{
+	ui.m_isActive = !ui.m_isActive;
 }
 
 /// <summary>
