@@ -205,7 +205,7 @@ void Map::ConvertMapPos(const Vec2& pos, int* bufX, int* bufY)
 /// <summary>
 /// 指定方向に進めるかどうか
 /// </summary>
-/// <param name="pos">現在のタイル座標</param>
+/// <param name="pos">現在座標</param>
 /// <param name="dir">進む方向</param>
 bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 {
@@ -216,6 +216,34 @@ bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 	ConvertMapPos(pos, &x, &y);
 
 	//指定方向のタイル
+	switch (dir)
+	{
+	case ShunLib::ConstantNumber::TOP:
+		y--;
+		break;
+
+	case ShunLib::ConstantNumber::BOTTOM:
+		y++;
+		break;
+
+	case ShunLib::ConstantNumber::RIGHT:
+		x++;
+		break;
+
+	case ShunLib::ConstantNumber::LEFT:
+		x--;
+		break;
+
+	default:
+		return false;
+	}
+
+	//マップ外なら進めない
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+	{
+		return false;
+	}
+
 	int id = m_map[y][x].Id();
 
 	auto data = holder->GetData(id);
