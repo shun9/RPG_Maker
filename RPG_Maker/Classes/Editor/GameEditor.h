@@ -10,6 +10,7 @@
 #include "../../SL_Window.h"
 #include "../UI/Editor/UIMenuBar.h"
 #include "../UI/Editor/UITileProperty.h"
+#include "../UI/Editor/UITileCanvas.h"
 #include "../Map/Map.h"
 
 #include <memory>
@@ -22,8 +23,9 @@ class GameEditor : public AppBase
 {
 private:
 	Game* m_game;
-	std::shared_ptr<UIMenuBar> m_uiMenu;
-	std::shared_ptr<UITileProperty> m_uiTileProperty;
+	std::unique_ptr<UIMenuBar> m_uiMenu;
+	std::unique_ptr<UITileProperty> m_uiTileProperty;
+	std::unique_ptr<UITileCanvas> m_uiTileCanvas;
 	ShunLib::Texture* m_tmp;
 	ShunLib::Texture* m_tmp2;
 
@@ -43,6 +45,7 @@ public:
 
 	void UIChangeActive(UIBase& ui);
 	void TilePropertyChangeActive() { UIChangeActive(*m_uiTileProperty.get()); }
+	void SelectedCreateTileData();
 
 private:
 	void StartDebug();

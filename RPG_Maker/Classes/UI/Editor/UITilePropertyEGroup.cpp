@@ -38,8 +38,11 @@ void UITilePropertyEGroup::DrawUpdate()
 
 void UITilePropertyEGroup::UIDrawUpdate()
 {
-	if (ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(280, 100), ImGuiWindowFlags_NoTitleBar))
+//	ImGui::BeginChild("Sub1", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 300), false, ImGuiWindowFlags_HorizontalScrollbar);
+
+	if (ImGui::BeginChild("group", ImVec2(ImGui::GetWindowContentRegionWidth() * 1.0f, 280), true,ImGuiWindowFlags_NoTitleBar))
 	{
+		//ImGui::Text("kari");
 		////フォントサイズ変更 
 		//ImGui::SetWindowFontScale(1.4f);
 		//for each (auto button in *m_groupList.get())
@@ -47,6 +50,6 @@ void UITilePropertyEGroup::UIDrawUpdate()
 		//	// 設定されているUIの更新描画
 		//	button.second->DrawUpdate();
 		//}
-		ImGui::EndChild();
 	}
+	ImGui::EndChild();
 }

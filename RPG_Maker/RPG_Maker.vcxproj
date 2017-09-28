@@ -176,6 +176,7 @@
     <ClInclude Include="Classes\UI\Editor\UIMenuBar.h" />
     <ClInclude Include="Classes\UI\Editor\UIMenuItem.h" />
     <ClInclude Include="Classes\UI\Editor\UISlider.h" />
+    <ClInclude Include="Classes\UI\Editor\UITileCanvas.h" />
     <ClInclude Include="Classes\UI\Editor\UITileProperty.h" />
     <ClInclude Include="Classes\UI\Editor\UITilePropertyEGroup.h" />
     <ClInclude Include="Classes\Map\TileDataHolder.h" />
@@ -201,6 +202,8 @@
     <ClInclude Include="SL_Window.h" />
     <ClInclude Include="Utils\ImageLoader.h" />
     <ClInclude Include="Utils\MouseManager.h" />
+    <ClInclude Include="Utils\ServiceManager.h" />
+    <ClInclude Include="Utils\TileService.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
@@ -220,6 +223,7 @@
     <ClCompile Include="Classes\UI\Editor\UIMenuBar.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIMenuItem.cpp" />
     <ClCompile Include="Classes\UI\Editor\UISlider.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UITileCanvas.cpp" />
     <ClCompile Include="Classes\UI\Editor\UITileProperty.cpp" />
     <ClCompile Include="Classes\UI\Editor\UITilePropertyEGroup.cpp" />
     <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
@@ -232,6 +236,7 @@
     <ClCompile Include="ShunLib\src\SL_Vec4.cpp" />
     <ClCompile Include="SL_Window.cpp" />
     <ClCompile Include="Utils\ImageLoader.cpp" />
+    <ClCompile Include="Utils\TileService.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>

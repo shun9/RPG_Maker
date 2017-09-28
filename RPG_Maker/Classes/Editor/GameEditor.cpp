@@ -19,6 +19,7 @@
 #include "../Map/TileDataHolder.h"
 #include "../Map/MapEditor.h"
 #include "../../Utils/ImageLoader.h"
+#include "../../Utils/ServiceManager.h"
 
 using namespace std;
 
@@ -59,7 +60,7 @@ void GameEditor::Initialize()
 
 	TileData data2;
 	data2.canMove = false;
-	data2.encountRate = 40;
+	data2.encountRate = 30;
 	data2.enemyGroup = nullptr;
 	data2.texture = m_tmp2;
 
@@ -75,16 +76,19 @@ void GameEditor::Initialize()
 	m_game = new Game();
 
 	// SettingUI
-	m_uiMenu = make_shared<UIMenuBar>(string("menu"));
-	m_uiTileProperty = make_shared<UITileProperty>(string("Tile Property"));
+	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
+	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
+	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 
 	{
-		m_uiMenu->SetMenuItemFunc("File", "Load");
-		m_uiMenu->SetMenuItemFunc("File", "Save");
+		m_uiMenu->SetMenuItemFunc("File ", "Map Load");
+		m_uiMenu->SetMenuItemFunc("File ", "Map Save");
+		m_uiMenu->SetMenuItemFunc("File ", "Tile Load", [this]() {SelectedCreateTileData(); });
+		m_uiMenu->SetMenuItemFunc("File ", "Tile Save");
 
-		m_uiMenu->SetMenuItemFunc("View", "TileWindow");
-		m_uiMenu->SetMenuItemFunc("View", "TileProperty", [this]() {TilePropertyChangeActive(); });
-		m_uiMenu->SetMenuItemFunc("View", "Map");
+		m_uiMenu->SetMenuItemFunc("View ", "TileWindow");
+		m_uiMenu->SetMenuItemFunc("View ", "TileProperty", [this]() {TilePropertyChangeActive(); });
+		m_uiMenu->SetMenuItemFunc("View ", "Map  ");
 		
 		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData");
 		m_uiMenu->SetMenuItemFunc("DataBase", "TileData");
@@ -98,7 +102,7 @@ void GameEditor::Initialize()
 		
 		m_uiMenu->SetMenuItemFunc("DrawMode", "Pencil");
 		
-		m_uiMenu->SetMenuItemFunc("Game", "Play");
+		m_uiMenu->SetMenuItemFunc("Game ", "Play");
 	}
 }
 
@@ -155,8 +159,14 @@ void GameEditor::Render()
 	ImGui::Text("scroll x : %.3f", m_map->Scroll()->m_x);
 	ImGui::Text("scroll y : %.3f", m_map->Scroll()->m_y);
 
+	ImGui::Text("mouse x : %.3f", mouse->GetMousePosition().m_x);
+	ImGui::Text("mouse y : %.3f", mouse->GetMousePosition().m_y);
+
+	ImGui::Text("tile list : %d", (int)TileDataHolder::GetInstance()->GetTileList().size());
+
 	m_uiMenu->DrawUpdate();
 	m_uiTileProperty->DrawUpdate();
+	m_uiTileCanvas->DrawUpdate();
 
 	m_map->Draw();
 
@@ -181,6 +191,18 @@ void GameEditor::Finalize()
 void GameEditor::UIChangeActive(UIBase & ui)
 {
 	ui.Active = !ui.Active;
+}
+
+void GameEditor::SelectedCreateTileData()
+{
+	auto Il = ImageLoader::GetInstance();
+	auto str = Il->OpenLoadingDialog();
+
+	if (str.c_str() != wstring(L"Image\\"))
+	{
+		TileDataHolder::GetInstance()->AddData(SVC_Tile->CreateTileData(str));
+
+	}
 }
 
 /// <summary>

@@ -6,6 +6,7 @@
 //************************************************/
 #pragma once
 #include <vector>
+#include <memory>
 #include <SL_Singleton.h>
 #include <SL_Texture.h>
 #include <SL_ConstantNumber.h>
@@ -56,5 +57,10 @@ public:
 		if (id > (int)(m_tileData.size()) - 1)return nullptr;
 		if (id == Tile::NONE)return nullptr;
 		return	&m_tileData[id];
+	}
+
+	// 全データ取得
+	const std::vector<TileData>& GetTileList() {
+		return m_tileData;
 	}
 };

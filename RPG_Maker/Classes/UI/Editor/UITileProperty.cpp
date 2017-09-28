@@ -23,11 +23,11 @@ UITileProperty::UITileProperty(const string& name,int id)
 	m_CurrentTileId = id;
 	m_tileData = TileDataHolder::GetInstance()->GetData(m_CurrentTileId);
 	
-	m_encountSlider = make_unique<UISlider>("1 - 100", &m_tileData->encountRate);
+	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
-	m_removeGroupButton = make_unique<UIButton>("Remove");
-	m_addGroupButton = make_unique<UIButton>(" Add ");
+	m_removeGroupButton = make_unique<UIButton>(" Remove ");
+	m_addGroupButton = make_unique<UIButton>("  Add  ");
 }
 
 UITileProperty::~UITileProperty()
@@ -38,7 +38,9 @@ void UITileProperty::SetID(int id)
 {
 	m_CurrentTileId = id;
 	m_tileData = TileDataHolder::GetInstance()->GetData(m_CurrentTileId);
-	m_checkBoxIsMove->ChangeBoolean(&m_tileData->canMove);
+	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
+	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
+	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
 }
 
 void UITileProperty::DrawUpdate()
@@ -58,8 +60,8 @@ void UITileProperty::UIDrawUpdate()
 
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-	ImGui::SetNextWindowPos(ImVec2(880, 450), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(300, 310), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(1250, 415), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(400, 510), ImGuiSetCond_Once);
 
 	auto& style = ImGui::GetStyle();
 
@@ -72,6 +74,8 @@ void UITileProperty::UIDrawUpdate()
 		// Styleの設定
 		auto oldFramePadding = style.FramePadding;
 	
+		style.FramePadding = ImVec2(3.0f, 4.0f);
+
 		//フォントサイズ変更 
 		ImGui::SetWindowFontScale(1.4f);
 
@@ -91,15 +95,16 @@ void UITileProperty::UIDrawUpdate()
 		m_groupSlider->DrawUpdate();
 
 		ImGui::Text(" ");
-		ImGui::SameLine(160);
+		ImGui::SameLine(235);
 		m_removeGroupButton->DrawUpdate();
-		ImGui::SameLine(238);
+		ImGui::SameLine(325);
 		m_addGroupButton->DrawUpdate();
 
 		style.FramePadding = oldFramePadding;
+	
+		ImGui::End();
 	}
 	
-	ImGui::End();
 	style.WindowPadding = oldWindowPadding;
 
 	ImGui::PopStyleColor();
