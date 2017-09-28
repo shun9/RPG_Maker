@@ -54,6 +54,7 @@ public:
 	//–³‚¯‚ê‚Înullptr
 	TileData* GetData(int id) {
 		if (id > (int)(m_tileData.size()) - 1)return nullptr;
+		if (id == Tile::NONE)return nullptr;
 		return	&m_tileData[id];
 	}
 };
