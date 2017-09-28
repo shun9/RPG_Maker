@@ -60,6 +60,14 @@ void GameEditor::Initialize()
 	data2.texture = m_tmp2;
 
 	//win->CreateSecondWindow();
+
+	int id = TileDataHolder::GetInstance()->AddData(&data);
+	int id2 = TileDataHolder::GetInstance()->AddData(&data2);
+
+	m_map = new Map();
+	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
+
+	// SettingUI
 	m_uiWindow = make_shared<UITileWindow>(string("Tile window"));
 	m_uiMenu = make_shared<UIMenuBar>(string("menu"));
 	m_uiTileProperty = make_shared<UITileProperty>(string("Tile Property"));
@@ -110,17 +118,22 @@ void GameEditor::Update()
 
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
-	if (mouse->GetMouseButton(MouseButton::leftButton))
+
+	// UIウインドウがアクティブでない時
+	if (!ImGui::IsAnyWindowHovered())
 	{
-		edi->Id(0);
-		auto p = mouse->GetMousePosition();
-		edi->ChangeTile(p);
-	}
-	else if (mouse->GetMouseButton(MouseButton::rightButton))
-	{
-		edi->Id(1);
-		auto p = mouse->GetMousePosition();
-		edi->ChangeTile(p);
+		if (mouse->GetMouseButton(MouseButton::leftButton))
+		{
+			edi->Id(0);
+			auto p = mouse->GetMousePosition();
+			edi->ChangeTile(p);
+		}
+		else if (mouse->GetMouseButton(MouseButton::rightButton))
+		{
+			edi->Id(1);
+			auto p = mouse->GetMousePosition();
+			edi->ChangeTile(p);
+		}
 	}
 	else if (mouse->GetMouseButtonDown(MouseButton::middleButton))
 	{
