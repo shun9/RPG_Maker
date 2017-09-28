@@ -30,7 +30,8 @@ GameEditor::GameEditor()
 
 GameEditor::~GameEditor()
 {
-
+	//ゲームは最後まで保持しておく
+	DELETE_POINTER(m_game);
 }
 
 //初期化
@@ -41,12 +42,11 @@ void GameEditor::Initialize()
 	auto hw = win->WindouHandle(ShunLib::Window::EDITOR);
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
 
-	auto Il = ImageLoader::GetInstance();
-	auto str = Il->OpenLoadingDialog();
+	//auto Il = ImageLoader::GetInstance();
+	//auto str = Il->OpenLoadingDialog();
 
-	m_tmp = new ShunLib::Texture(str.c_str());
-	m_tmp2 = new ShunLib::Texture(L"Image\\grass.png");
-
+	m_tmp = new ShunLib::Texture(L"Image\\tile\\tile3.png");
+	m_tmp2 = new ShunLib::Texture(L"Image\\tile\\tile1.png");
 
 	TileData data;
 	data.canMove = true;
@@ -60,7 +60,6 @@ void GameEditor::Initialize()
 	data2.enemyGroup = nullptr;
 	data2.texture = m_tmp2;
 
-	//win->CreateSecondWindow();
 
 	m_button = make_shared<UIWindow>(string("tab"),Vector2(330.0f,100.0f));
 
@@ -72,6 +71,8 @@ void GameEditor::Initialize()
 
 	//プレイヤーの作成
 	player = new Player();
+
+	m_game = new Game();
 }
 
 //更新
@@ -94,6 +95,10 @@ void GameEditor::Update()
 		auto p = mouse->GetMousePosition();
 		edi->ChangeTile(p);
 	}
+	else if (mouse->GetMouseButtonDown(MouseButton::middleButton))
+	{
+		StartDebug();
+	}
 	//m_map->Update();
 
 	//プレイヤーが先に進めるかどうか
@@ -108,6 +113,9 @@ void GameEditor::Render()
 {
 	auto mouse = MouseManager::GetInstance();
 	auto win = ShunLib::Window::GetInstance();
+
+	//描画対象をエディター用のウィンドウに戻す
+	win->SetDrawingWindow(ShunLib::Window::EDITOR);
 
 	ImGui_ImplDX11_NewFrame();
 
@@ -141,5 +149,11 @@ void GameEditor::Finalize()
 /// </summary>
 void GameEditor::StartDebug()
 {
+	m_game->SetMap(m_map);
 	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGGER);
+	auto win = ShunLib::Window::GetInstance();
+
+	//デバッグ用ウィンドウ作成
+	win->CreateSecondWindow();
+
 }

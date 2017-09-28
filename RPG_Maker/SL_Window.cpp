@@ -432,6 +432,10 @@ void ShunLib::Window::SetDrawingWindow(WINDOW_TYPE type)
 /// <param name="type"></param>
 void ShunLib::Window::SetApp(AppBase * game, WINDOW_TYPE type)
 {
+	//Šù‚ÉƒQ[ƒ€‚ª“®‚¢‚Ä‚¢‚é‚È‚ç‚Îíœ
+	DestroyDebugger();
+
+	//ƒvƒŒƒC‚·‚éƒQ[ƒ€‚ðì¬
 	m_game[type] = game;
 	m_game[type]->Initialize();
 }
@@ -441,7 +445,12 @@ void ShunLib::Window::SetApp(AppBase * game, WINDOW_TYPE type)
 /// </summary>
 void ShunLib::Window::DestroyDebugger()
 {
-	DELETE_POINTER(m_game[DEBUGGER]);
+	//ƒQ[ƒ€‚ª‘¶Ý‚µ‚Ä‚¢‚é‚È‚ç‚Îíœ
+	if (m_game[DEBUGGER] != nullptr)
+	{
+		m_game[DEBUGGER]->Finalize();
+		//m_game[DEBUGGER] = nullptr;
+	}
 }
 
 
