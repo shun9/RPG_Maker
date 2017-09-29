@@ -49,7 +49,7 @@ void GameEditor::Initialize()
 	data->texture = std::make_unique<Texture>(L"Image\\grass.png");
 	data->canMove = true;
 	data->encountRate = 20;
-	TileDataHolder::GetInstance()->AddData(move(data));
+	//TileDataHolder::GetInstance()->AddData(move(data));
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());

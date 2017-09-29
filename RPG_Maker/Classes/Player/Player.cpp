@@ -29,6 +29,9 @@ Player::Player()
 
 	//移動状態
 	state = false;
+	
+	//アニメカウントの初期化
+	animecount = 0;
 }
 
 Player::~Player()
@@ -47,6 +50,11 @@ void Player::Update()
 		state = false;
 	}
 
+	if (animecount == 32)
+	{
+		animecount = 0;
+	}
+
 }
 
 
@@ -59,21 +67,25 @@ void Player::Move()
 	if (KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::UP) && state==false || dir == ConstantNumber::TOP && state)
 	{
 		state = true;
+		animecount++;
 		pos.m_y = pos.m_y - SPEED;
 	}
 	else if (KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::DOWN) && state == false || dir == ConstantNumber::BOTTOM && state)
 	{
 		state = true;
+		animecount++;
 		pos.m_y = pos.m_y + SPEED;
 	}
 	else if(KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::RIGHT) && state == false || dir == ConstantNumber::RIGHT && state)
 	{
 		state = true;
+		animecount++;
 		pos.m_x = pos.m_x + SPEED;
 	}
 	else if (KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::LEFT) && state == false || dir == ConstantNumber::LEFT && state)
 	{
 		state = true;
+		animecount++;
 		pos.m_x = pos.m_x - SPEED;
 	}
 }
@@ -87,17 +99,89 @@ void Player::Draw()
 	switch (dir)
 	{
 	case ShunLib::ConstantNumber::TOP:
-		rect = { 0, 32, 32, 32 * 2 };
-		break;
+		if (animecount < 8)
+		{
+			rect = { 0, 32, 32, 32 * 2 };
+			break;
+		}
+		else if (animecount < 16)
+		{
+			rect = { 32, 32, 32 * 2, 32 * 2 };
+			break;
+		}
+		else if (animecount < 24)
+		{
+			rect = { 32 * 2, 32, 32 * 3, 32 * 2 };
+			break;
+		}
+		else
+		{
+			rect = { 32 * 3, 32, 32 * 4, 32 * 2 };
+			break;
+		}
 	case ShunLib::ConstantNumber::BOTTOM:
-		rect = { 0, 0, 32, 32 };
-		break;
+		if (animecount < 8)
+		{
+			rect = { 0, 0, 32, 32 };
+			break;
+		}
+		else if (animecount < 16)
+		{
+			rect = { 32, 0, 32 * 2, 32 };
+			break;
+		}
+		else if (animecount < 24)
+		{
+			rect = { 32 * 2, 0, 32 * 3, 32 };
+			break;
+		}
+		else
+		{
+			rect = { 32 * 3, 0, 32 * 4, 32 };
+			break;
+		}
 	case ShunLib::ConstantNumber::RIGHT:
-		rect = { 0, 32 * 3, 32, 32 * 4 };
-		break;
+		if (animecount < 8)
+		{
+			rect = { 0, 32 * 3, 32, 32 * 4 };
+			break;
+		}
+		else if (animecount < 16)
+		{
+			rect = { 32, 32 * 3, 32 * 2, 32 * 4 };
+			break;
+		}
+		else if (animecount < 24)
+		{
+			rect = { 32 * 2, 32 * 3, 32 * 3, 32 * 4 };
+			break;
+		}
+		else
+		{
+			rect = { 32 * 3, 32 * 3, 32 * 4, 32 * 4 };
+			break;
+		}
 	case ShunLib::ConstantNumber::LEFT:
-		rect = { 0, 32 * 2, 32, 32 * 3 };
-		break;
+		if (animecount < 8)
+		{
+			rect = { 0, 32 * 2, 32, 32 * 3 };
+			break;
+		}
+		else if (animecount < 16)
+		{
+			rect = { 32, 32 * 2, 32 * 2, 32 * 3 };
+			break;
+		}
+		else if (animecount < 24)
+		{
+			rect = { 32 * 2, 32 * 2, 32 * 3, 32 * 3 };
+			break;
+		}
+		else
+		{
+			rect = { 32 * 3, 32 * 2, 32 * 4, 32 * 3 };
+			break;
+		}
 	default:
 		break;
 	}

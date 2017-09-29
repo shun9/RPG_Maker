@@ -58,4 +58,7 @@ private:
 
 	//マスの大きさ
 	const int TROUT = 32;
+
+	//アニメカウント
+	int animecount;
 };
