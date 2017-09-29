@@ -111,7 +111,7 @@ bool GameSaver::SaveMapData(ofstream * file)
 	{
 		for (int j = 0; j < w; j++)
 		{
-			id = map[i][j].Id();
+			id = (*map)[i][j].Id();
 
 			file->write((char*)&id, sizeof(int));
 		}

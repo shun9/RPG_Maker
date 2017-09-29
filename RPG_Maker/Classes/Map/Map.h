@@ -61,7 +61,7 @@ public:
 	////敵グループからランダムに取得
 	//Enemy* GetRandamEnemy();
 
-	std::vector<std::vector<Tile>>& GetMapData() { return m_map; }
+	std::vector<std::vector<Tile>>* GetMapData() { return &m_map; }
 
 	void DisplayRange(const Vec2& leftTop, const Vec2& rightBottom) {
 		m_firstPos = leftTop;

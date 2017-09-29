@@ -114,8 +114,8 @@ bool GameLoader::LoadMapData(ifstream* file)
 	{
 		for (int j = 0; j < w; j++)
 		{
-			file->read((char*)&(map[i][j]), sizeof(int));
-			map[i][j].Id(id);
+			file->read((char*)&id, sizeof(int));
+			(*map)[i][j].Id(id);
 		}
 	}
 

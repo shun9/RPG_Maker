@@ -55,6 +55,8 @@ void GameEditor::Initialize()
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	m_map = new Map();
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
+	auto edi = MapEditor::GetInstance();
+	edi->Map(m_map);
 
 	//ƒvƒŒƒCƒ„[‚Ìì¬
 	player = new Player();
@@ -99,8 +101,6 @@ void GameEditor::Initialize()
 void GameEditor::Update()
 {
 	auto edi = MapEditor::GetInstance();
-	edi->Map(m_map);
-
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
 
