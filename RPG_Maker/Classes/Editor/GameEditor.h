@@ -31,6 +31,7 @@ private:
 	Player * player;
 
 	Map* m_map;
+
 public:
 	GameEditor();
 	~GameEditor();
@@ -44,6 +45,8 @@ public:
 	void UIChangeActive(UIBase& ui);
 	void TilePropertyChangeActive() { UIChangeActive(*m_uiTileProperty.get()); }
 	void SelectedCreateTileData();
+
+	Map* GetMap() { return m_map; }
 
 private:
 	void StartDebug();

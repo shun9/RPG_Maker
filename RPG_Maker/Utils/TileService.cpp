@@ -20,7 +20,6 @@ std::unique_ptr<TileData> TileService::CreateTileData(const wstring & path)
 
 	data->texture = make_unique<Texture>(path.c_str());
 	data->encountRate = 50;
-	data->enemyGroup = nullptr;
 	data->canMove = true;
 	return move(data);
 }

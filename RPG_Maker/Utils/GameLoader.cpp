@@ -22,7 +22,8 @@ bool GameLoader::LoadGame(GameEditor* editor)
 	ifstream file;
 	file.open("RPG_Maker.rpgm", ios::in | ios::binary);
 
-	assert(file);
+	//ファイルが無ければ読み込まない
+	if (!file)return false;
 
 	//先頭のタイトルを読み込む
 	char tmp[10];
@@ -54,7 +55,6 @@ bool GameLoader::LoadTileData(ifstream * file)
 	file->read((char*)&containerSize, sizeof(int));
 
 	//データ保存用
-	TileData data;
 	std::wstring path;
 	int size = 0;
 	wchar_t tmpr[256];
@@ -62,15 +62,34 @@ bool GameLoader::LoadTileData(ifstream * file)
 	//データ数だけループする
 	for (int i = 0; i < containerSize; i++)
 	{
+		//タイルデータを作成
+		std::unique_ptr<TileData> tileData;
+		tileData = std::make_unique<TileData>();
+
 		//テクスチャのパス　終端文字があるので+1
 		//path = data->texture->GetPath();
 		file->read((char*)&size, sizeof(int));
 		file->read((char*)tmpr, size);
+		tileData->texture = std::make_unique<ShunLib::Texture>(tmpr);
 
 		//エンカウント率
-		file->read((char*)&data.encountRate, sizeof(int));
+		file->read((char*)&tileData->encountRate, sizeof(int));
 
-		holder->AddData(&data);
+		//敵構成の種類
+		file->read((char*)&size, sizeof(int));
+		tileData->enemyGroup.resize(size);
+
+		//敵構成ID
+		for (int i = 0; i < (tileData->enemyGroup.size()); i++)
+		{
+			file->read((char*)&tileData->enemyGroup[i], sizeof(int));
+		}
+
+		//歩けるかどうかのフラグ
+		file->read((char*)&tileData->canMove, sizeof(bool));
+
+		//データを追加
+		holder->AddData(move(tileData));
 	}
 
 	return true;
@@ -79,8 +98,27 @@ bool GameLoader::LoadTileData(ifstream * file)
 /// <summary>
 //マップの情報を読み込む
 /// </summary>
-bool GameLoader::LoadMapData(ifstream * file)
+bool GameLoader::LoadMapData(ifstream* file)
 {
+	auto map = m_editor->GetMap()->GetMapData();
+	int h = 0;
+	int w = 0;
+
+	//マップサイズ
+	file->read((char*)&h, sizeof(int));
+	file->read((char*)&w, sizeof(int));
+
+	//マップチップ情報
+	int id = 0;
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++)
+		{
+			file->read((char*)&(map[i][j]), sizeof(int));
+			map[i][j].Id(id);
+		}
+	}
+
 	return true;
 }
 

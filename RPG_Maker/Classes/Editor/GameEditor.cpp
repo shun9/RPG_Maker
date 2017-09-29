@@ -45,9 +45,14 @@ void GameEditor::Initialize()
 
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
 
+	std::unique_ptr<TileData> data=std::make_unique<TileData>();
+	data->texture = std::make_unique<Texture>(L"Image\\grass.png");
+	data->canMove = true;
+	data->encountRate = 20;
+	TileDataHolder::GetInstance()->AddData(move(data));
+
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-
 	m_map = new Map();
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
 
@@ -55,6 +60,9 @@ void GameEditor::Initialize()
 	player = new Player();
 
 	m_game = new Game();
+
+	auto loader = GameLoader::GetInstance();
+	loader->LoadGame(this);
 
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
@@ -85,11 +93,6 @@ void GameEditor::Initialize()
 
 		m_uiMenu->SetMenuItemFunc("Game ", "Play");
 	}
-
-	auto saver = GameSaver::GetInstance();
-	saver->SaveGame(this);
-	auto loader = GameLoader::GetInstance();
-	loader->LoadGame(this);
 }
 
 //XV
@@ -172,6 +175,9 @@ void GameEditor::Render()
 //I—¹
 void GameEditor::Finalize()
 {
+	auto saver = GameSaver::GetInstance();
+	saver->SaveGame(this);
+
 	ImGui_ImplDX11_Shutdown();
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(player);

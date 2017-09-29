@@ -93,16 +93,36 @@ bool GameSaver::SaveTileData(ofstream* file)
 
 
 /// <summary>
-/// タイル情報の書き込み
+/// マップ情報の書き込み
 /// </summary>
 bool GameSaver::SaveMapData(ofstream * file)
 {
+	auto map = m_editor->GetMap()->GetMapData();
+	int h = Map::HEIGHT;
+	int w = Map::WIDTH;
+
+	//マップサイズ
+	file->write((char*)&h, sizeof(int));
+	file->write((char*)&w, sizeof(int));
+
+	int id = 0;
+	//マップチップ情報
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++)
+		{
+			id = map[i][j].Id();
+
+			file->write((char*)&id, sizeof(int));
+		}
+	}
+
 	return true;
 }
 
 
 /// <summary>
-/// タイル情報の書き込み
+/// プレイヤー情報の書き込み
 /// </summary>
 bool GameSaver::SavePlayerData(ofstream * file)
 {
@@ -111,7 +131,7 @@ bool GameSaver::SavePlayerData(ofstream * file)
 
 
 /// <summary>
-/// タイル情報の書き込み
+/// 敵情報の書き込み
 /// </summary>
 bool GameSaver::SaveEnemyData(ofstream * file)
 {
