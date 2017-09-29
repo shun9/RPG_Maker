@@ -268,9 +268,7 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 	float rectSize;
 
 	auto SetRectSize = [=](DIRECTION_2D dire, float pos) {
-		float rectSize = edge[dire] + pos - size*(int)((edge[dire] + pos) / size);
-
-		return rectSize;
+		return edge[dire] + pos - size*(int)((edge[dire] + pos) / size);
 	};
 
 	//’[‚É‚ ‚éƒ^ƒCƒ‹‚ð•`‰æ

@@ -66,7 +66,6 @@ void GameEditor::Initialize()
 	auto loader = GameLoader::GetInstance();
 	loader->LoadGame(this);
 
-
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
 	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"), MapEditor::GetInstance()->Id());
@@ -130,7 +129,7 @@ void GameEditor::Update()
 	{
 		StartDebug();
 	}
-	m_map->Update();
+	//m_map->Update();
 
 	//プレイヤーが先に進めるかどうか
 	if (m_map->CanMoveSpecifiedDir(player->Getpos(), player->Getdirection()) || player->Movestate())
