@@ -20,6 +20,8 @@
 #include "../Map/MapEditor.h"
 #include "../../Utils/ImageLoader.h"
 #include "../../Utils/ServiceManager.h"
+#include "../../Utils/GameSaver.h"
+#include "../../Utils/GameLoader.h"
 
 using namespace std;
 
@@ -40,7 +42,7 @@ void GameEditor::Initialize()
 	auto win = ShunLib::Window::GetInstance();
 	ShunLib::Texture::SetDevice(win->Device(), win->DeviceContext());
 	auto hw = win->WindouHandle(ShunLib::Window::EDITOR);
-	
+
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -68,21 +70,26 @@ void GameEditor::Initialize()
 		m_uiMenu->SetMenuItemFunc("View ", "TileWindow");
 		m_uiMenu->SetMenuItemFunc("View ", "TileProperty", [this]() {TilePropertyChangeActive(); });
 		m_uiMenu->SetMenuItemFunc("View ", "Map  ");
-		
+
 		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData");
 		m_uiMenu->SetMenuItemFunc("DataBase", "TileData");
-		
+
 		m_uiMenu->SetMenuItemFunc("CreateMode", "MapCreate");
 		m_uiMenu->SetMenuItemFunc("CreateMode", "EventCreate");
-		
+
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/1");
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/2");
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/4");
-		
+
 		m_uiMenu->SetMenuItemFunc("DrawMode", "Pencil");
-		
+
 		m_uiMenu->SetMenuItemFunc("Game ", "Play");
 	}
+
+	auto saver = GameSaver::GetInstance();
+	saver->SaveGame(this);
+	auto loader = GameLoader::GetInstance();
+	loader->LoadGame(this);
 }
 
 //更新
@@ -99,7 +106,7 @@ void GameEditor::Update()
 	m_uiTileProperty->IdObservation();
 
 	// UIウインドウがアクティブでない時
-	if (!ImGui::IsAnyWindowHovered()&& 
+	if (!ImGui::IsAnyWindowHovered()&&
 		!ImGui::IsAnyItemActive())
 	{
 		if (mouse->GetMouseButton(MouseButton::leftButton))

@@ -201,6 +201,7 @@
     <ClInclude Include="ShunLib\inc\SL_Vec4.h" />
     <ClInclude Include="SL_Window.h" />
     <ClInclude Include="Utils\ImageLoader.h" />
+    <ClInclude Include="Utils\GameLoader.h" />
     <ClInclude Include="Utils\GameSaver.h" />
     <ClInclude Include="Utils\MouseManager.h" />
     <ClInclude Include="Utils\ServiceManager.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="SL_Window.cpp" />
     <ClCompile Include="Utils\ImageLoader.cpp" />
     <ClCompile Include="Utils\TileService.cpp" />
+    <ClCompile Include="Utils\GameLoader.cpp" />
     <ClCompile Include="Utils\GameSaver.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>

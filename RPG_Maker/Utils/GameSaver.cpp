@@ -5,22 +5,34 @@
 //* @author:S.Katou
 //************************************************/
 #include "GameSaver.h"
+#include <iostream>
+#include <fstream>
+#include "../Classes/Editor/GameEditor.h"
 #include "../Classes/Map/TileDataHolder.h"
+
+using namespace std;
 
 bool GameSaver::SaveGame(GameEditor* editor)
 {
+	//保存するデータ
+	m_editor = editor;
+
 	//ファイルをバイナリ書き込みモードでオープン
-	FILE* file;
-	fopen_s(&file," ", "rb");
+	ofstream file;
+	file.open("RPG_Maker.rpgm", ios::out | ios::binary | ios::trunc);
 
-	if(!SaveTileData      (file)){fclose(file);return false;}
-	if(!SaveMapData       (file)){fclose(file);return false;}
-	if(!SavePlayerData    (file)){fclose(file);return false;}
-	if(!SaveEnemyData     (file)){fclose(file);return false;}
-	if(!SaveEnemyGroupData(file)){fclose(file);return false;}
 
-	//ファイルを閉じる
-	fclose(file);
+	//先頭のタイトルを書き込む
+	char tmp[] = "RPG_Maker";
+	file.write(tmp, 10);
+
+	//各データを保存
+	if(!SaveTileData      (&file)){return false;}
+	if(!SaveMapData       (&file)){return false;}
+	if(!SavePlayerData    (&file)){return false;}
+	if(!SaveEnemyData     (&file)){return false;}
+	if(!SaveEnemyGroupData(&file)){return false;}
+
 	return true;
 }
 
@@ -28,22 +40,52 @@ bool GameSaver::SaveGame(GameEditor* editor)
 /// <summary>
 /// タイル情報の書き込み
 /// </summary>
-bool GameSaver::SaveTileData(FILE * file)
+bool GameSaver::SaveTileData(ofstream* file)
 {
-	auto holder = TileDataHolder::GetInstance();
+
+	//先頭のタイトルを書き込む
+	char tmp[] = "Tile";
+	file->write(tmp, 5);
+
 
 	//データ数を書き込み
-	int size = holder->GetContainerSize();
-	fwrite(&size, sizeof(int), 1, file);
+	auto holder = TileDataHolder::GetInstance();
+	int containerSize = holder->GetContainerSize();
+	file->write((char*)&containerSize, sizeof(int));
 
 	//データ取得用
 	TileData* data;
+	std::wstring texture;
+	wchar_t* path;
+	int size =0;
 
 	//データ数だけループする
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < containerSize; i++)
 	{
 		data = holder->GetData(i);
 
+		//テクスチャのパス　終端文字があるので+1
+		texture = data->texture->GetPath();
+		size = (texture.length() + 1) * 2;
+		path = const_cast<wchar_t*>(texture.c_str());
+		file->write((char*)&size, sizeof(size));
+		file->write((char*)path, size);
+
+		//エンカウント率
+		file->write((char*)&data->encountRate, sizeof(int));
+
+		//敵構成の種類
+		size = data->enemyGroup.size();
+		file->write((char*)&size, sizeof(int));
+
+		//敵構成ID
+		for (int i = 0; i < size; i++)
+		{
+			file->write((char*)&data->enemyGroup[i], sizeof(int));
+		}
+
+		//歩けるかどうかのフラグ
+		file->write((char*)&data->canMove, sizeof(bool));
 	}
 
 	return true;
@@ -53,7 +95,7 @@ bool GameSaver::SaveTileData(FILE * file)
 /// <summary>
 /// タイル情報の書き込み
 /// </summary>
-bool GameSaver::SaveMapData(FILE * file)
+bool GameSaver::SaveMapData(ofstream * file)
 {
 	return true;
 }
@@ -62,7 +104,7 @@ bool GameSaver::SaveMapData(FILE * file)
 /// <summary>
 /// タイル情報の書き込み
 /// </summary>
-bool GameSaver::SavePlayerData(FILE * file)
+bool GameSaver::SavePlayerData(ofstream * file)
 {
 	return true;
 }
@@ -71,7 +113,7 @@ bool GameSaver::SavePlayerData(FILE * file)
 /// <summary>
 /// タイル情報の書き込み
 /// </summary>
-bool GameSaver::SaveEnemyData(FILE * file)
+bool GameSaver::SaveEnemyData(ofstream * file)
 {
 	return true;
 }
@@ -80,7 +122,7 @@ bool GameSaver::SaveEnemyData(FILE * file)
 /// <summary>
 /// 敵構成情報の書き込み
 /// </summary>
-bool GameSaver::SaveEnemyGroupData(FILE * file)
+bool GameSaver::SaveEnemyGroupData(ofstream * file)
 {
 	return true;
 }

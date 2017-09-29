@@ -33,6 +33,8 @@ void Texture::SetDevice(Microsoft::WRL::ComPtr<ID3D11Device> device,
 //＋ーーーーーーーーーーーーーー＋
 Texture::Texture(const wchar_t* texture)
 {
+	m_path = texture;
+
 	//テクスチャ読み込み
 	DirectX::CreateWICTextureFromFile(m_device.Get(), texture, nullptr, m_texture.ReleaseAndGetAddressOf());
 
