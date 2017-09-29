@@ -196,7 +196,6 @@ void GameEditor::SelectedCreateTileData()
 	if (str.c_str() != wstring(L"Image\\"))
 	{
 		TileDataHolder::GetInstance()->AddData(SVC_Tile->CreateTileData(str));
-		m_uiTileProperty->UIUpdate();
 	}
 }
 
