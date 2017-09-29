@@ -135,10 +135,11 @@ void GameEditor::Update()
 	//m_map->Update();
 
 	//プレイヤーが先に進めるかどうか
-	if (m_map->CanMoveSpecifiedDir(player->Getpos(),player->Getdirection()))
+	if (m_map->CanMoveSpecifiedDir(player->Getpos(), player->Getdirection()) || player->Movestate())
 	{
 		player->Move();
 	}
+	player->Update();
 }
 
 //描画
