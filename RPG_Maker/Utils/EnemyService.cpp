@@ -13,5 +13,35 @@ std::unique_ptr<EnemyData> EnemyService::CreateEnemyData(const wstring & path)
 {
 	auto data = make_unique<EnemyData>();
 
+	// パラメータ用サイズ確保
+	data->Param.resize(EnemyData::Param::length);
+
+	{
+		// 初期値
+		data->Param[EnemyData::Param::HP] = 10;
+		data->Param[EnemyData::Param::MP] = 10;
+		data->Param[EnemyData::Param::ATK] = 1;
+		data->Param[EnemyData::Param::DEF] = 1;
+		data->Param[EnemyData::Param::DEX] = 100;
+		data->Param[EnemyData::Param::EVA] = 0;
+		data->Param[EnemyData::Param::EXP] = 10;
+		data->Param[EnemyData::Param::MONEY] = 10;
+	}
+
+	data->Name = string("");
+
+	data->Texture = make_unique<Texture>(path.c_str());
+
+	return move(data);
+}
+
+std::unique_ptr<EnemyGroupData> EnemyService::CreateEnemyGroupData(const wstring & path)
+{
+	auto data = make_unique<EnemyGroupData>();
+
+	data->Name = string("");
+
+	data->enemyList.resize(0);
+
 	return move(data);
 }

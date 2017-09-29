@@ -19,8 +19,6 @@ class Enemy;
 
 // 敵グループの情報
 struct EnemyGroupData {
-	int Id;
-
 	std::string Name;
 
 	// 画面表示座標とEnemyDataのリスト

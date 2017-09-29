@@ -29,8 +29,6 @@ struct EnemyData {
 		length
 	};
 
-	int Id;
-
 	std::string Name;
 
 	// “G‰æ‘œ
