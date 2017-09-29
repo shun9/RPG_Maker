@@ -16,6 +16,9 @@ Player::Player()
 	player = new ShunLib::Texture(L"Image\\charcter.png");
 
 	//ポジションの初期化
+	m_posOnMap = Vec2(0, 0);
+
+	//ポジションの初期化
 	pos = Vec2(160.0, 160.0);
 
 	//画像率の初期化
@@ -207,6 +210,15 @@ ShunLib::Vec2 Player::Getpos()
 }
 
 /// <summary>
+/// 座標の設定
+/// </summary>
+/// <param name="pos">座標</param>
+void Player::Setpos(const ShunLib::Vec2& pos)
+{
+	this->pos = pos;
+}
+
+/// <summary>
 /// 向きの所得
 /// </summary>
 /// <returns>向き</returns>
@@ -232,5 +244,5 @@ ShunLib::ConstantNumber::DIRECTION_2D Player::Getdirection()
 		}
 	}
 
-	return dir;	
+	return dir;
 }
