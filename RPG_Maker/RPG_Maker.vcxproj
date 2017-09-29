@@ -171,7 +171,14 @@
     <ClInclude Include="Classes\Player\Player.h" />
     <ClInclude Include="Classes\UI\Editor\UIBase.h" />
     <ClInclude Include="Classes\UI\Editor\UIButton.h" />
-    <ClInclude Include="Classes\UI\Editor\UIWindow.h" />
+    <ClInclude Include="Classes\UI\Editor\UICheckBox.h" />
+    <ClInclude Include="Classes\UI\Editor\UIMenu.h" />
+    <ClInclude Include="Classes\UI\Editor\UIMenuBar.h" />
+    <ClInclude Include="Classes\UI\Editor\UIMenuItem.h" />
+    <ClInclude Include="Classes\UI\Editor\UISlider.h" />
+    <ClInclude Include="Classes\UI\Editor\UITileCanvas.h" />
+    <ClInclude Include="Classes\UI\Editor\UITileProperty.h" />
+    <ClInclude Include="Classes\UI\Editor\UITilePropertyEGroup.h" />
     <ClInclude Include="Classes\Map\TileDataHolder.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
@@ -195,6 +202,8 @@
     <ClInclude Include="SL_Window.h" />
     <ClInclude Include="Utils\ImageLoader.h" />
     <ClInclude Include="Utils\MouseManager.h" />
+    <ClInclude Include="Utils\ServiceManager.h" />
+    <ClInclude Include="Utils\TileService.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
@@ -209,7 +218,14 @@
     <ClCompile Include="Classes\Player\Player.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIBase.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIButton.cpp" />
-    <ClCompile Include="Classes\UI\Editor\UIWindow.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UICheckBox.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIMenu.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIMenuBar.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIMenuItem.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UISlider.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UITileCanvas.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UITileProperty.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UITilePropertyEGroup.cpp" />
     <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
     <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp" />
     <ClCompile Include="ShunLib\src\SL_Conversion.cpp" />
@@ -220,6 +236,7 @@
     <ClCompile Include="ShunLib\src\SL_Vec4.cpp" />
     <ClCompile Include="SL_Window.cpp" />
     <ClCompile Include="Utils\ImageLoader.cpp" />
+    <ClCompile Include="Utils\TileService.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>

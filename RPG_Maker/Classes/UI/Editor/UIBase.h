@@ -16,8 +16,11 @@ class UIBase
 
 protected:
 	std::string m_name;
-public:
 
+public:
+	bool Active;
+
+public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -27,6 +30,8 @@ public:
 	/// デストラクタ
 	/// </summary>
 	virtual ~UIBase();
+
+	void ChangeName(std::string name) { m_name = name; }
 
 	virtual void DrawUpdate();
 };
