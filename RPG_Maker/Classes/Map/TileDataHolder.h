@@ -23,8 +23,8 @@ struct TileData {
 	//敵のエンカウント率
 	int encountRate;
 
-	//出現する敵の構成一覧
-	Enemy** enemyGroup;
+	//出現する敵の構成一覧 ID
+	std::vector<int> enemyGroup;
 
 	//プレイヤーが歩くことが出来るかどうか
 	//歩けるなら true
@@ -62,5 +62,10 @@ public:
 	// 全データ取得
 	const std::vector<std::unique_ptr<TileData>>& GetTileList() {
 		return m_tileData;
+	}
+
+	int GetContainerSize()
+	{
+		return (int)(m_tileData.size());
 	}
 };

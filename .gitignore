@@ -245,3 +245,4 @@ ModelManifest.xml
 .fake/
 RPG_Maker/RPG_Maker.vcxproj.filters
 RPG_Maker/imgui.ini
+RPG_Maker/RPG_Maker.rpgm

@@ -20,6 +20,8 @@
 #include "../Map/MapEditor.h"
 #include "../../Utils/ImageLoader.h"
 #include "../../Utils/ServiceManager.h"
+#include "../../Utils/GameSaver.h"
+#include "../../Utils/GameLoader.h"
 
 using namespace std;
 
@@ -40,19 +42,29 @@ void GameEditor::Initialize()
 	auto win = ShunLib::Window::GetInstance();
 	ShunLib::Texture::SetDevice(win->Device(), win->DeviceContext());
 	auto hw = win->WindouHandle(ShunLib::Window::EDITOR);
-	
+
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
+
+	std::unique_ptr<TileData> data=std::make_unique<TileData>();
+	data->texture = std::make_unique<Texture>(L"Image\\grass.png");
+	data->canMove = true;
+	data->encountRate = 20;
+	TileDataHolder::GetInstance()->AddData(move(data));
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-
 	m_map = new Map();
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
+	auto edi = MapEditor::GetInstance();
+	edi->Map(m_map);
 
 	//プレイヤーの作成
 	player = new Player();
 
 	m_game = new Game();
+
+	auto loader = GameLoader::GetInstance();
+	loader->LoadGame(this);
 
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
@@ -68,19 +80,19 @@ void GameEditor::Initialize()
 		m_uiMenu->SetMenuItemFunc("View ", "TileWindow");
 		m_uiMenu->SetMenuItemFunc("View ", "TileProperty", [this]() {TilePropertyChangeActive(); });
 		m_uiMenu->SetMenuItemFunc("View ", "Map  ");
-		
+
 		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData");
 		m_uiMenu->SetMenuItemFunc("DataBase", "TileData");
-		
+
 		m_uiMenu->SetMenuItemFunc("CreateMode", "MapCreate");
 		m_uiMenu->SetMenuItemFunc("CreateMode", "EventCreate");
-		
+
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/1");
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/2");
 		m_uiMenu->SetMenuItemFunc("Scaling", "1/4");
-		
+
 		m_uiMenu->SetMenuItemFunc("DrawMode", "Pencil");
-		
+
 		m_uiMenu->SetMenuItemFunc("Game ", "Play");
 	}
 }
@@ -89,8 +101,6 @@ void GameEditor::Initialize()
 void GameEditor::Update()
 {
 	auto edi = MapEditor::GetInstance();
-	edi->Map(m_map);
-
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
 
@@ -99,7 +109,7 @@ void GameEditor::Update()
 	m_uiTileProperty->IdObservation();
 
 	// UIウインドウがアクティブでない時
-	if (!ImGui::IsAnyWindowHovered()&& 
+	if (!ImGui::IsAnyWindowHovered()&&
 		!ImGui::IsAnyItemActive())
 	{
 		if (mouse->GetMouseButton(MouseButton::leftButton))
@@ -165,6 +175,9 @@ void GameEditor::Render()
 //終了
 void GameEditor::Finalize()
 {
+	auto saver = GameSaver::GetInstance();
+	saver->SaveGame(this);
+
 	ImGui_ImplDX11_Shutdown();
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(player);

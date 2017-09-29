@@ -12,6 +12,7 @@
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>
 #include <Effects.h>
+#include <string>
 
 #include <SL_Matrix.h>
 #include <SL_Vec2.h>
@@ -44,6 +45,9 @@ namespace ShunLib
 		//ステート作成
 		std::unique_ptr<DirectX::CommonStates> m_state;
 
+		//画像のパス
+		std::wstring m_path;
+
 		/*--メンバ関数--*/
 	public:
 		Texture(const wchar_t* texture);
@@ -52,5 +56,8 @@ namespace ShunLib
 		//描画
 		void Draw(float x, float y, float scale = 1.0f, const RECT* rect = nullptr);
 		void Draw(const Vec2& pos, const Vec2& scale, const RECT* rect = nullptr);
+
+		//パスを返す
+		std::wstring GetPath() { return m_path; }
 	};
 }
