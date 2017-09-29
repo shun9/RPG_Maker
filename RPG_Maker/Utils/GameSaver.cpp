@@ -75,7 +75,7 @@ bool GameSaver::SaveTileData(ofstream* file)
 		file->write((char*)&data->encountRate, sizeof(int));
 
 		//“G\¬‚Ìí—Ş
-		size = data->enemyGroup.size();
+		size = (int)(data->enemyGroup.size());
 		file->write((char*)&size, sizeof(int));
 
 		//“G\¬ID

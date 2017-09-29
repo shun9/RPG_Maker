@@ -80,7 +80,7 @@ bool GameLoader::LoadTileData(ifstream * file)
 		tileData->enemyGroup.resize(size);
 
 		//ìGç\ê¨ID
-		for (int i = 0; i < (tileData->enemyGroup.size()); i++)
+		for (int i = 0; i < (int)(tileData->enemyGroup.size()); i++)
 		{
 			file->read((char*)&tileData->enemyGroup[i], sizeof(int));
 		}
