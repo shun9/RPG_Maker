@@ -19,8 +19,12 @@ public:
 	Player();
 	~Player();
 
+	void Update();
+
 	void Move();
 	void Draw();
+
+	bool Movestate();
 
 	//座標の所得
 	ShunLib::Vec2 Getpos();
@@ -38,11 +42,20 @@ private:
 	RECT rect;
 
 	//スピードの設定
-	const int speed = 4;
+	const int SPEED = 1;
 
 	//画像のデータ
 	ShunLib::Texture* player;
 
 	//向き
 	ShunLib::ConstantNumber::DIRECTION_2D dir;
+
+	//カウント
+	int count;
+
+	//移動の状態
+	bool state;
+
+	//マスの大きさ
+	const int TROUT = 32;
 };
