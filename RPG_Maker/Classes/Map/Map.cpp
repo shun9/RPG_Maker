@@ -97,10 +97,6 @@ void Map::SetTileId(int id, int x, int y)
 /// <summary>
 /// 描画
 /// </summary>
-/// <param name="top">描画範囲の上座標</param>
-/// <param name="bottom">描画範囲の下座標</param>
-/// /// <param name="left">描画範囲の左座標</param>
-/// <param name="right">描画範囲の右座標</param>
 void Map::Draw()
 {
 	using namespace ShunLib;
@@ -348,9 +344,9 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 void Map::ClampScroll()
 {
 	//上端
-	if (m_scrollNum.m_y < 0.0f)
+	if (m_scrollNum.m_y < -m_firstPos.m_y)
 	{
-		m_scrollNum.m_y = 0.0f;
+		m_scrollNum.m_y = -m_firstPos.m_y;
 	}
 	//下端
 	else if (m_scrollNum.m_y > Map::HEIGHT*Tile::SIZE - m_displaySize.m_y)
@@ -358,9 +354,9 @@ void Map::ClampScroll()
 		m_scrollNum.m_y = Map::HEIGHT*Tile::SIZE - m_displaySize.m_y;
 	}
 	//左端
-	else if (m_scrollNum.m_x < 0.0f)
+	else if (m_scrollNum.m_x < -m_firstPos.m_x)
 	{
-		m_scrollNum.m_x = 0.0f;
+		m_scrollNum.m_x = -m_firstPos.m_x;
 	}
 	//右端
 	else if(m_scrollNum.m_x > Map::WIDTH*Tile::SIZE - m_displaySize.m_x)

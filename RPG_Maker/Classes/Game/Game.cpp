@@ -31,9 +31,22 @@ void Game::Initialize()
 //更新
 void Game::Update()
 {
+	//プレイヤーの更新
 	if (m_player != nullptr)
 	{
-		//m_player->Move();
+		//プレイヤーが先に進めるかどうか
+		if (m_map->CanMoveSpecifiedDir(m_player->Getpos(), m_player->Getdirection()) || m_player->Movestate())
+		{
+			m_player->Move();
+		}
+
+		m_player->Update();
+	}
+
+	//マップの更新
+	if (m_map != nullptr)
+	{
+		m_map->Scroll(m_player->Getpos());
 	}
 }
 

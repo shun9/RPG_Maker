@@ -99,6 +99,7 @@ void GameEditor::Initialize()
 void GameEditor::Update()
 {
 	auto edi = MapEditor::GetInstance();
+
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
 
@@ -200,6 +201,7 @@ void GameEditor::SelectedCreateTileData()
 void GameEditor::StartDebug()
 {
 	m_game->SetMap(m_map);
+	m_game->SetPlayer(player);
 	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGGER);
 	auto win = ShunLib::Window::GetInstance();
 

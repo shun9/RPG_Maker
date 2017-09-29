@@ -1,7 +1,7 @@
 //************************************************/
 //* @file  :Game.h
 //* @brief :エディターで作成したゲーム
-//* @date  :2017/09/26
+//* @date  :2017/09/29
 //* @author:S.Katou
 //************************************************/
 #pragma once
@@ -32,7 +32,8 @@ public:
 	void SetMap(Map* map) {
 		m_map = map;
 	}
-	void Player(Player* player) { m_player = player; }
+
+	void SetPlayer(Player* player) { m_player = player; }
 private:
 
 };
