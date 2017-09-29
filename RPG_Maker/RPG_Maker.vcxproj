@@ -157,6 +157,9 @@
   <ItemGroup>
     <ClInclude Include="Classes\AppBase\AppBase.h" />
     <ClInclude Include="Classes\Editor\GameEditor.h" />
+    <ClInclude Include="Classes\Enemy\EmeyGroupDataHolder.h" />
+    <ClInclude Include="Classes\Enemy\Enemy.h" />
+    <ClInclude Include="Classes\Enemy\EnemyDataHolder.h" />
     <ClInclude Include="Classes\Game\Game.h" />
     <ClInclude Include="Classes\imgui\imconfig.h" />
     <ClInclude Include="Classes\imgui\imgui.h" />
@@ -200,6 +203,7 @@
     <ClInclude Include="ShunLib\inc\SL_Vec3.h" />
     <ClInclude Include="ShunLib\inc\SL_Vec4.h" />
     <ClInclude Include="SL_Window.h" />
+    <ClInclude Include="Utils\EnemyService.h" />
     <ClInclude Include="Utils\ImageLoader.h" />
     <ClInclude Include="Utils\GameLoader.h" />
     <ClInclude Include="Utils\GameSaver.h" />
@@ -209,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
+    <ClCompile Include="Classes\Enemy\Enemy.cpp" />
     <ClCompile Include="Classes\Game\Game.cpp" />
     <ClCompile Include="Classes\imgui\imgui.cpp" />
     <ClCompile Include="Classes\imgui\imgui_demo.cpp" />
@@ -237,6 +242,7 @@
     <ClCompile Include="ShunLib\src\SL_Vec3.cpp" />
     <ClCompile Include="ShunLib\src\SL_Vec4.cpp" />
     <ClCompile Include="SL_Window.cpp" />
+    <ClCompile Include="Utils\EnemyService.cpp" />
     <ClCompile Include="Utils\ImageLoader.cpp" />
     <ClCompile Include="Utils\TileService.cpp" />
     <ClCompile Include="Utils\GameLoader.cpp" />
