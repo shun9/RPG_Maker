@@ -23,12 +23,7 @@ UITileProperty::UITileProperty(const string& name,int id)
 	:UIBase(name)
 	,m_isView(true)
 {
-	m_currentTileId = id;
-	m_tileData = TileDataHolder::GetInstance()->GetData(m_currentTileId);
-	
-	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
-	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
-	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
+	SetID(id);
 	m_textureChangeButton = make_unique<UIButton>(" Change Image ");
 	m_removeGroupButton = make_unique<UIButton>(" Remove ");
 	m_addGroupButton = make_unique<UIButton>("  Add  ");
@@ -45,7 +40,7 @@ UITileProperty::~UITileProperty()
 void UITileProperty::SetID(int id)
 {
 	m_currentTileId = id;
-	UIUpdate();
+	if (0 <= id) UIUpdate();
 }
 
 void UITileProperty::UIUpdate()
@@ -96,16 +91,25 @@ void UITileProperty::UIDrawUpdate()
 		ImGui::SameLine(110);
 		ImGui::Text("%d", m_currentTileId);
 
-		ImGui::Text("Encount : ");
-		ImGui::SameLine(110);
-		m_encountSlider->DrawUpdate();
+		if (m_encountSlider)
+		{
+			ImGui::Text("Encount : ");
+			ImGui::SameLine(110);
+			m_encountSlider->DrawUpdate();
+		}
 
-		ImGui::Text("MoveFlag : ");
-		ImGui::SameLine(110);
-		m_checkBoxIsMove->DrawUpdate();
+		if (m_checkBoxIsMove)
+		{
+			ImGui::Text("MoveFlag : ");
+			ImGui::SameLine(110);
+			m_checkBoxIsMove->DrawUpdate();
+		}
 
-		ImGui::Text("EnemyGroup : ");
-		m_groupSlider->DrawUpdate();
+		if (m_groupSlider)
+		{
+			ImGui::Text("EnemyGroup : ");
+			m_groupSlider->DrawUpdate();
+		}
 
 		ImGui::Text(" ");
 		ImGui::SameLine(10);

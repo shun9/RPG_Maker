@@ -54,19 +54,6 @@ void GameEditor::Initialize()
 
 	m_game = new Game();
 
-	// TODO:‰¼ŽÀ‘•
-	unique_ptr<Texture> m_tmp = make_unique<ShunLib::Texture>(L"Image\\tile\\tile130.png");
-	unique_ptr<TileData> data = make_unique<TileData>();
-	data.get()->canMove = true;
-	data.get()->encountRate = 40;
-	data.get()->enemyGroup = nullptr;
-	data.get()->texture = move(m_tmp);
-
-	int id = TileDataHolder::GetInstance()->AddData(move(data));
-
-	// TODO:
-	MapEditor::GetInstance()->Id(0);
-
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
 	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"), MapEditor::GetInstance()->Id());
