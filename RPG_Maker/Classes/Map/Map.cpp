@@ -78,6 +78,7 @@ void Map::SetTileId(int id, int x, int y)
 
 	float edge[4] = { m_firstPos.m_y,m_displaySize.m_y,m_displaySize.m_x,m_firstPos.m_x };
 	int edgeTile[DIRECTION_2D::num];
+
 	//画面端のマップ座標を取得
 	ConvertMapPos(Vec2(edge[DIRECTION_2D::LEFT], edge[DIRECTION_2D::TOP]), &edgeTile[DIRECTION_2D::LEFT], &edgeTile[DIRECTION_2D::TOP]);
 	ConvertMapPos(Vec2(edge[DIRECTION_2D::RIGHT], edge[DIRECTION_2D::BOTTOM]), &edgeTile[DIRECTION_2D::RIGHT], &edgeTile[DIRECTION_2D::BOTTOM]);
@@ -238,12 +239,12 @@ bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 /// </summary>
 bool Map::IsInRangeTile(int x ,int y,int dirTile[])
 {
-	if (x <= dirTile[DIRECTION_2D::LEFT] || x >= dirTile[DIRECTION_2D::RIGHT])
+	if (x < dirTile[DIRECTION_2D::LEFT] || x >= dirTile[DIRECTION_2D::RIGHT])
 	{
 		return false;
 	}
 
-	if (y <= dirTile[DIRECTION_2D::TOP] || y >= dirTile[DIRECTION_2D::BOTTOM])
+	if (y < dirTile[DIRECTION_2D::TOP] || y >= dirTile[DIRECTION_2D::BOTTOM])
 	{
 		return false;
 	}
