@@ -13,21 +13,29 @@
 #include <vector>
 #include "UITileProperty.h"
 #include "../../Map/MapEditor.h"
+#include "../../../Utils/ImageLoader.h"
+#include <SL_Texture.h>
 
+using namespace ShunLib;
 using namespace std;
 
 UITileProperty::UITileProperty(const string& name,int id)
 	:UIBase(name)
 	,m_isView(true)
 {
-	m_CurrentTileId = id;
-	m_tileData = TileDataHolder::GetInstance()->GetData(m_CurrentTileId);
+	m_currentTileId = id;
+	m_tileData = TileDataHolder::GetInstance()->GetData(m_currentTileId);
 	
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
+	m_textureChangeButton = make_unique<UIButton>(" Change Image ");
 	m_removeGroupButton = make_unique<UIButton>(" Remove ");
 	m_addGroupButton = make_unique<UIButton>("  Add  ");
+
+	{
+		m_textureChangeButton->SetPressEvent([this]() {ChangeTexture(); });
+	}
 }
 
 UITileProperty::~UITileProperty()
@@ -36,8 +44,13 @@ UITileProperty::~UITileProperty()
 
 void UITileProperty::SetID(int id)
 {
-	m_CurrentTileId = id;
-	m_tileData = TileDataHolder::GetInstance()->GetData(m_CurrentTileId);
+	m_currentTileId = id;
+	UIUpdate();
+}
+
+void UITileProperty::UIUpdate()
+{
+	m_tileData = TileDataHolder::GetInstance()->GetData(m_currentTileId);
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
@@ -81,7 +94,7 @@ void UITileProperty::UIDrawUpdate()
 
 		ImGui::Text("ID :");
 		ImGui::SameLine(110);
-		ImGui::Text("%d", m_CurrentTileId);
+		ImGui::Text("%d", m_currentTileId);
 
 		ImGui::Text("Encount : ");
 		ImGui::SameLine(110);
@@ -95,6 +108,8 @@ void UITileProperty::UIDrawUpdate()
 		m_groupSlider->DrawUpdate();
 
 		ImGui::Text(" ");
+		ImGui::SameLine(10);
+		m_textureChangeButton->DrawUpdate();
 		ImGui::SameLine(235);
 		m_removeGroupButton->DrawUpdate();
 		ImGui::SameLine(325);
@@ -109,4 +124,26 @@ void UITileProperty::UIDrawUpdate()
 
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
+}
+
+void UITileProperty::IdObservation()
+{
+	int id = MapEditor::GetInstance()->Id();
+	if ( id != m_currentTileId)
+	{
+		SetID(id);
+	}
+}
+
+void UITileProperty::ChangeTexture()
+{
+	auto Il = ImageLoader::GetInstance();
+	auto str = Il->OpenLoadingDialog();
+
+	if (str.c_str() != wstring(L"Image\\"))
+	{
+		m_tileData->texture.reset();
+		m_tileData->texture = make_unique<Texture>(str.c_str());
+	}
+
 }

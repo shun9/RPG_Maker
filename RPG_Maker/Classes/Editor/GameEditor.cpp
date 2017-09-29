@@ -43,29 +43,8 @@ void GameEditor::Initialize()
 	
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
 
-	//auto Il = ImageLoader::GetInstance();
-	//auto str = Il->OpenLoadingDialog();
-
-	m_tmp = new ShunLib::Texture(L"Image\\tile\\tile130.png");
-	m_tmp2 = new ShunLib::Texture(L"Image\\tile\\tile1.png");
-
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-
-	TileData data;
-	data.canMove = true;
-	data.encountRate = 40;
-	data.enemyGroup = nullptr;
-	data.texture = m_tmp;
-
-	TileData data2;
-	data2.canMove = false;
-	data2.encountRate = 30;
-	data2.enemyGroup = nullptr;
-	data2.texture = m_tmp2;
-
-	int id = TileDataHolder::GetInstance()->AddData(&data);
-	int id2 = TileDataHolder::GetInstance()->AddData(&data2);
 
 	m_map = new Map();
 	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
@@ -75,9 +54,22 @@ void GameEditor::Initialize()
 
 	m_game = new Game();
 
+	// TODO:仮実装
+	unique_ptr<Texture> m_tmp = make_unique<ShunLib::Texture>(L"Image\\tile\\tile130.png");
+	unique_ptr<TileData> data = make_unique<TileData>();
+	data.get()->canMove = true;
+	data.get()->encountRate = 40;
+	data.get()->enemyGroup = nullptr;
+	data.get()->texture = move(m_tmp);
+
+	int id = TileDataHolder::GetInstance()->AddData(move(data));
+
+	// TODO:
+	MapEditor::GetInstance()->Id(0);
+
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
-	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
+	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"), MapEditor::GetInstance()->Id());
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 
 	{
@@ -114,6 +106,10 @@ void GameEditor::Update()
 
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
+
+	// TIleの設定
+	m_uiTileCanvas->SelectTile();
+	m_uiTileProperty->IdObservation();
 
 	// UIウインドウがアクティブでない時
 	if (!ImGui::IsAnyWindowHovered()&& 
@@ -183,8 +179,6 @@ void GameEditor::Finalize()
 {
 	ImGui_ImplDX11_Shutdown();
 	DELETE_POINTER(m_map);
-	DELETE_POINTER(m_tmp);
-	DELETE_POINTER(m_tmp2);
 	DELETE_POINTER(player);
 }
 
@@ -201,7 +195,7 @@ void GameEditor::SelectedCreateTileData()
 	if (str.c_str() != wstring(L"Image\\"))
 	{
 		TileDataHolder::GetInstance()->AddData(SVC_Tile->CreateTileData(str));
-
+		m_uiTileProperty->UIUpdate();
 	}
 }
 

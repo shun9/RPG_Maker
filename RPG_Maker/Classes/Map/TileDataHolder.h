@@ -18,7 +18,7 @@ class Tile;
 //タイルの情報
 struct TileData {
 	//タイル画像
-	ShunLib::Texture* texture;
+	std::unique_ptr<ShunLib::Texture> texture;
 
 	//敵のエンカウント率
 	int encountRate;
@@ -39,15 +39,15 @@ class TileDataHolder:public ShunLib::Singleton<TileDataHolder>
 
 private:
 	//タイル種類一覧
-	std::vector<TileData> m_tileData;
+	std::vector<std::unique_ptr<TileData>> m_tileData;
 
 public:
 	TileDataHolder() {}
 	~TileDataHolder() {}
 
 	//データを追加する
-	int AddData(TileData* data) {
-		m_tileData.push_back(*data);
+	int AddData(std::unique_ptr<TileData> data) {
+		m_tileData.push_back(move(data));
 		return (int)(m_tileData.size()) - 1;
 	}
 
@@ -56,11 +56,11 @@ public:
 	TileData* GetData(int id) {
 		if (id > (int)(m_tileData.size()) - 1)return nullptr;
 		if (id == Tile::NONE)return nullptr;
-		return	&m_tileData[id];
+		return	m_tileData[id].get();
 	}
 
 	// 全データ取得
-	const std::vector<TileData>& GetTileList() {
+	const std::vector<std::unique_ptr<TileData>>& GetTileList() {
 		return m_tileData;
 	}
 };

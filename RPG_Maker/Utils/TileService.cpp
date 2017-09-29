@@ -14,13 +14,13 @@ Texture * TileService::CreateTexture(const wstring& path)
 	return new Texture(path.c_str());
 }
 
-TileData * TileService::CreateTileData(const wstring & path)
+std::unique_ptr<TileData> TileService::CreateTileData(const wstring & path)
 {
-	auto* data = new TileData();
+	auto data = make_unique<TileData>();
 
-	data->texture = new Texture(path.c_str());
+	data->texture = make_unique<Texture>(path.c_str());
 	data->encountRate = 50;
 	data->enemyGroup = nullptr;
 	data->canMove = true;
-	return data;
+	return move(data);
 }

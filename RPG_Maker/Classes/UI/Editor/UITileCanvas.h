@@ -41,4 +41,12 @@ public:
 
 	virtual void DrawUpdate() override;
 
+	// 選択されたタイルを記憶
+	void SelectTile();
+
+	void ConvertCanvasPos(const Vector2 & pos, int& bufX, int& bufY);
+
+	// Tileのあたり判定
+	bool CollisionTile(const Vector2& pos, int*& id);
+
 };

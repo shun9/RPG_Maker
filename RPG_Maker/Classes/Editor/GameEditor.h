@@ -26,8 +26,6 @@ private:
 	std::unique_ptr<UIMenuBar> m_uiMenu;
 	std::unique_ptr<UITileProperty> m_uiTileProperty;
 	std::unique_ptr<UITileCanvas> m_uiTileCanvas;
-	ShunLib::Texture* m_tmp;
-	ShunLib::Texture* m_tmp2;
 
 	//	TODO:‰¼ŽÀ‘•
 	Player * player;

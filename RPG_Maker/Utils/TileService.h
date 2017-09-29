@@ -5,6 +5,7 @@
 //* @author:K,Yamamoto
 //************************************************/
 #pragma once
+#include <memory>
 #include <SL_Singleton.h>
 #include <SL_Vec2.h>
 #include <SL_Texture.h>
@@ -27,8 +28,7 @@ public:
 	Texture* CreateTexture(const wstring& path);
 
 	// TileDataçÏê¨
-	TileData* CreateTileData(const wstring& path);
-
+	std::unique_ptr<TileData> CreateTileData(const wstring& path);
 private:
 	TileService(){}
 };

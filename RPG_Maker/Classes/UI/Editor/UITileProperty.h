@@ -21,7 +21,7 @@ class UITileProperty :public UIBase
 	using Vector2 = ShunLib::Vec2;
 
 private:
-	int m_CurrentTileId;
+	int m_currentTileId;
 
 	TileData* m_tileData;
 
@@ -29,13 +29,16 @@ private:
 
 	std::unique_ptr<UICheckBox> m_checkBoxIsMove;
 
-	// TODO:スクロール
+	// スクロール
 	std::unique_ptr<UITilePropertyEGroup> m_groupSlider;
 
-	// TODO:追加ボタン
+	// 画像変更
+	std::unique_ptr<UIButton> m_textureChangeButton;
+
+	// 追加ボタン
 	std::unique_ptr<UIButton> m_addGroupButton;
 
-	// TODO:削除ボタン
+	// 削除ボタン
 	std::unique_ptr<UIButton> m_removeGroupButton;
 
 	bool m_isView;
@@ -52,8 +55,13 @@ public:
 	virtual ~UITileProperty() override;
 
 	void SetID(int id);
+	void UIUpdate();
 
 	virtual void DrawUpdate() override;
 
 	void UIDrawUpdate();
+
+	void IdObservation();
+
+	void ChangeTexture();
 };

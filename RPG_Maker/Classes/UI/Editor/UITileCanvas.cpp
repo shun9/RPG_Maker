@@ -14,12 +14,16 @@
 #include "UITileCanvas.h"
 #include "../../Map/TileDataHolder.h"
 #include "../../Map/MapEditor.h"
+#include "../../../Utils/MouseManager.h"
 
 using namespace std;
 using namespace ShunLib;
 
 namespace {
+	static const int CANVAS_WIDTH = 8;
+	static const int CANVAS_HEIGHT = 10;
 	static const Vec2 PADDING = Vec2(3.0f, 3.0f);
+	static const Vec2 IMAGE_SIZE = Vec2(324.0f, 540.0f);
 }
 
 UITileCanvas::UITileCanvas(const string& name)
@@ -38,23 +42,25 @@ void UITileCanvas::DrawUpdate()
 {
 	m_texture->Draw(m_Pos, Vec2::One);
 
-	const auto dataList = TileDataHolder::GetInstance()->GetTileList();
-
 	int x = 0, y = 0;
-	for each (const auto& data in dataList)
+	for each (const auto& data in TileDataHolder::GetInstance()->GetTileList())
 	{
 		Vec2 pos(x*Tile::SIZE + (x + 1)*PADDING.m_x, y*Tile::SIZE + (y + 1)*PADDING.m_y);
-		data.texture->Draw(m_Pos + pos, Vec2::One);
+		data->texture->Draw(m_Pos + pos, Vec2::One);
 
 		x++;
-		if (9 < x) {
+		if (CANVAS_WIDTH + 1 < x) {
 			x = 0;
 			y++;
+		}
+
+		if (CANVAS_HEIGHT + 1 < y) {
+			break;
 		}
 	}
 
 	ImGui::SetNextWindowPos(ImVec2(m_Pos.m_x, m_Pos.m_y), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(324, 540), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(IMAGE_SIZE.m_x, IMAGE_SIZE.m_y), ImGuiSetCond_Once);
 
 	auto& style = ImGui::GetStyle();
 	auto oldAlpha = style.Alpha;
@@ -72,4 +78,64 @@ void UITileCanvas::DrawUpdate()
 	}
 
 	style.Alpha = oldAlpha;
+}
+
+void UITileCanvas::SelectTile()
+{
+	if (MouseManager::GetInstance()->GetMouseButtonDown(MouseButton::leftButton))
+	{
+		// 左クリック時
+		auto pos = MouseManager::GetInstance()->GetMousePosition();
+
+		int* id = nullptr;
+
+		if (CollisionTile(pos, id)) {
+			auto tileListSize = TileDataHolder::GetInstance()->GetTileList().size();
+
+			if (*id <= (int)tileListSize - 1)
+			{
+				// タイルが当たっているとき
+				MapEditor::GetInstance()->Id(*id);
+			}
+		}
+
+		delete id;
+	}
+}
+
+/// スクリーン上の座標をCanvasの座標に変換する
+void UITileCanvas::ConvertCanvasPos(const Vec2& pos, int& bufX, int& bufY)
+{
+	auto localPos = Vec2(pos.m_x - m_Pos.m_x, pos.m_y - m_Pos.m_y);
+
+	if (localPos.m_x < 0||
+		localPos.m_y < 0
+		) 
+	{
+		bufX = -1;
+		bufY = -1;
+		return;
+	}
+
+	bufX = (int)(localPos.m_x / (Tile::SIZE + PADDING.m_x));
+	bufY = (int)(localPos.m_y / (Tile::SIZE + PADDING.m_y));
+}
+
+bool UITileCanvas::CollisionTile(const Vec2& pos,int*& id)
+{
+	int x = 0, y = 0;
+	ConvertCanvasPos(pos, x, y);
+
+	//マップのサイズを超えていたら抜ける
+	if (x > CANVAS_WIDTH || 
+		y > CANVAS_HEIGHT - 1||
+		x < 0||
+		y < 0)
+	{
+		return false;
+	}
+
+	id = new int(x * (y + 1));
+
+	return true;
 }
