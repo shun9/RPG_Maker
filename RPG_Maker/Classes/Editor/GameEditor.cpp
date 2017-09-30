@@ -48,20 +48,20 @@ void GameEditor::Initialize()
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	
-	// データの初期設定
-	DataInitialize(*win);
-
 	//プレイヤーの作成
 	player = new Player();
 	m_game = new Game();
 
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
-	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"), MapEditor::GetInstance()->Id());
+	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 	m_uiEnemyTable = make_unique<UIEnemyTable>(string("Enemy DataBase"));
 	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
 	EnemyTableChangeActive();
+
+	// データの初期設定
+	DataInitialize(*win);
 
 	{
 		m_uiMenu->SetMenuItemFunc("File ", "1.New RPGData Create (Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
@@ -165,7 +165,6 @@ void GameEditor::Render()
 //終了
 void GameEditor::Finalize()
 {
-
 	ImGui_ImplDX11_Shutdown();
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(player);
@@ -186,6 +185,9 @@ void GameEditor::DataInitialize(const Window& win)
 	//張り替えるマップを設定
 	auto edi = MapEditor::GetInstance();
 	edi->Map(m_map);
+
+	MapEditor::GetInstance()->Id(-1);
+	m_uiTileProperty->SetID(-1);
 }
 
 void GameEditor::UIChangeActive(UIBase & ui)
