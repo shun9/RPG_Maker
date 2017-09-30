@@ -50,4 +50,7 @@ public:
 
 private:
 	void StartDebug();
+
+	//プレイヤーをスクロールと同期させる
+	void PlayerScroll();
 };

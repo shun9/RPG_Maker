@@ -45,16 +45,12 @@ void GameEditor::Initialize()
 
 	ImGui_ImplDX11_Init(hw, win->Device(), win->DeviceContext());
 
-	std::unique_ptr<TileData> data=std::make_unique<TileData>();
-	data->texture = std::make_unique<Texture>(L"Image\\grass.png");
-	data->canMove = true;
-	data->encountRate = 20;
-	//TileDataHolder::GetInstance()->AddData(move(data));
-
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	m_map = new Map();
-	m_map->DisplayRange(Vec2(0.0f, 0.0f), Vec2(1200.0f, 800.0f));
+	m_map->DisplayRange(Vec2(350.0f, 66.0f), Vec2(win->Width(), win->Height()));
+
+	//張り替えるマップを設定
 	auto edi = MapEditor::GetInstance();
 	edi->Map(m_map);
 
@@ -129,14 +125,9 @@ void GameEditor::Update()
 	{
 		StartDebug();
 	}
-	//m_map->Update();
+	m_map->Update();
 
-	//プレイヤーが先に進めるかどうか
-	if (m_map->CanMoveSpecifiedDir(player->Getpos(), player->Getdirection()) || player->Movestate())
-	{
-		player->Move();
-	}
-	player->Update();
+	PlayerScroll();
 }
 
 //描画
@@ -144,6 +135,7 @@ void GameEditor::Render()
 {
 	auto mouse = MouseManager::GetInstance();
 	auto win = ShunLib::Window::GetInstance();
+
 
 	//描画対象をエディター用のウィンドウに戻す
 	win->SetDrawingWindow(ShunLib::Window::EDITOR);
@@ -164,12 +156,12 @@ void GameEditor::Render()
 
 	m_map->Draw();
 
+	//プレイヤーの描画
+	player->Draw();
+
 	// Rendering
 	//この上に描画処理を書く
 	ImGui::Render();
-
-	//プレイヤーの描画
-	player->Draw();
 }
 
 //終了
@@ -211,4 +203,15 @@ void GameEditor::StartDebug()
 	//デバッグ用ウィンドウ作成
 	win->CreateSecondWindow();
 
+}
+
+/// <summary>
+/// プレイヤーをスクロールと同期させる
+/// </summary>
+void GameEditor::PlayerScroll()
+{
+	Vec2 playerPos;
+	Vec2 tmp = player->PosOnMap();
+	m_map->ConvertScreenPos((int)tmp.m_x, (int)tmp.m_y, &playerPos);
+	player->Setpos(playerPos);
 }

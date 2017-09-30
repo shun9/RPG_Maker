@@ -39,6 +39,9 @@ Map::~Map()
 
 }
 
+/// <summary>
+/// 更新
+/// </summary>
 void Map::Update()
 {
 	auto key = ShunLib::KeyManager::GetInstance();
@@ -64,6 +67,7 @@ void Map::Update()
 		ClampScroll();
 	}
 }
+
 
 /// <summary>
 /// 指定した座標のタイルを張り替える
@@ -114,11 +118,8 @@ void Map::Draw()
 	{
 		edgeTile[i] = dirTile[i];
 	}
-
-	edgeTile[DIRECTION_2D::TOP]--;
-	edgeTile[DIRECTION_2D::BOTTOM]++;
-	edgeTile[DIRECTION_2D::LEFT]--;
 	edgeTile[DIRECTION_2D::RIGHT]++;
+	edgeTile[DIRECTION_2D::BOTTOM]++;
 
 	for (int i = 0; i < HEIGHT; i++)
 	{
@@ -159,7 +160,7 @@ void Map::Draw()
 			}
 
 			Vec2 pos(j*Tile::SIZE, i*Tile::SIZE);
-			m_map[i][j].Draw(pos - m_scrollNum, Vec2::One);
+			m_map[i][j].Draw(pos - m_scrollNum + m_firstPos, Vec2::One);
 		}
 	}
 }
@@ -173,8 +174,20 @@ void Map::Draw()
 /// <param name="bufY">Y座標格納変数</param>
 void Map::ConvertMapPos(const Vec2& pos, int* bufX, int* bufY)
 {
-	*bufX = (int)((pos.m_x + m_scrollNum.m_x) / Tile::SIZE);
-	*bufY = (int)((pos.m_y + m_scrollNum.m_y) / Tile::SIZE);
+	*bufX = (int)((pos.m_x + m_scrollNum.m_x - m_firstPos.m_x) / Tile::SIZE);
+	*bufY = (int)((pos.m_y + m_scrollNum.m_y - m_firstPos.m_y) / Tile::SIZE);
+}
+
+/// <summary>
+/// マップ座標をスクリーン座標に変換する
+/// </summary>
+/// <param name="X">X座標</param>
+/// <param name="Y">Y座標</param>
+/// <param name="buf">スクリーン座標格納変数</param>
+void Map::ConvertScreenPos(int X, int Y, Vec2* buf)
+{
+	buf->m_x = X*Tile::SIZE - m_scrollNum.m_x+m_firstPos.m_x;
+	buf->m_y = Y*Tile::SIZE - m_scrollNum.m_y+m_firstPos.m_y;
 }
 
 
@@ -264,35 +277,36 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 
 	RECT rect = {0,0,(LONG)Tile::SIZE,(LONG)Tile::SIZE };
 
-	//描画するサイズ
+	//切り取るサイズ
 	float rectSize;
 
-	auto SetRectSize = [=](DIRECTION_2D dire, float pos) {
-		return edge[dire] + pos - size*(int)((edge[dire] + pos) / size);
+	//切り取るサイズを取得
+	auto GetRectSize = [=](DIRECTION_2D dire, float pos) {
+		return pos - size*(int)(pos / (float)size);
 	};
 
 	//端にあるタイルを描画
 	switch (dir)
 	{
 	case DIRECTION_2D::TOP:
-		rectSize = SetRectSize(dir,m_scrollNum.m_y);
+		rectSize = GetRectSize(dir,m_scrollNum.m_y);
 		rect.top = (LONG)(rectSize);
 		pos.m_y += rectSize;
 		break;
 
 	case DIRECTION_2D::BOTTOM:
-		rectSize = SetRectSize(dir, m_scrollNum.m_y);
+		rectSize = GetRectSize(dir, m_scrollNum.m_y + (m_displaySize.m_y - m_firstPos.m_y));
 		rect.bottom = (LONG)(rectSize);
 		break;
 
 	case DIRECTION_2D::LEFT:
-		rectSize = SetRectSize(dir, m_scrollNum.m_x);
+		rectSize = GetRectSize(dir, m_scrollNum.m_x);
 		rect.left = (LONG)(rectSize);
 		pos.m_x += rectSize;
 		break;
 
 	case DIRECTION_2D::RIGHT:
-		rectSize = SetRectSize(dir, m_scrollNum.m_x);
+		rectSize = GetRectSize(dir, m_scrollNum.m_x + (m_displaySize.m_x - m_firstPos.m_x));
 		rect.right = (LONG)(rectSize);
 		break;
 
@@ -302,32 +316,35 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 
 	//四隅の場合は情報を追加
 	if (y == dirTile[DIRECTION_2D::TOP] && dir != DIRECTION_2D::TOP) {
-		rectSize = SetRectSize(DIRECTION_2D::TOP,m_scrollNum.m_y);
+		rectSize = GetRectSize(DIRECTION_2D::TOP,m_scrollNum.m_y);
 		rect.top = (LONG)(rectSize);
 		pos.m_y += rectSize;
 	}
 
 	if (y == dirTile[DIRECTION_2D::BOTTOM] && dir != DIRECTION_2D::BOTTOM) {
-		rectSize = SetRectSize(DIRECTION_2D::BOTTOM,m_scrollNum.m_y);
+		rectSize = GetRectSize(DIRECTION_2D::BOTTOM,m_scrollNum.m_y + (m_displaySize.m_y - m_firstPos.m_y));
 		rect.bottom = (LONG)(rectSize);
 	}
 
 	if (x == dirTile[DIRECTION_2D::LEFT] && dir != DIRECTION_2D::LEFT){
-		rectSize = SetRectSize(DIRECTION_2D::LEFT,m_scrollNum.m_x);
+		rectSize = GetRectSize(DIRECTION_2D::LEFT,m_scrollNum.m_x);
 		rect.left = (LONG)(rectSize);
 		pos.m_x += rectSize;
 	}
 
 	if (x == dirTile[DIRECTION_2D::RIGHT] && dir != DIRECTION_2D::RIGHT) {
-		rectSize = SetRectSize(DIRECTION_2D::RIGHT,m_scrollNum.m_x);
+		rectSize = GetRectSize(DIRECTION_2D::RIGHT,m_scrollNum.m_x + (m_displaySize.m_x - m_firstPos.m_x));
 		rect.right = (LONG)(rectSize);
 	}
 
-	m_map[y][x].Draw(pos - m_scrollNum, Vec2::One, &rect);
+	m_map[y][x].Draw(pos - m_scrollNum + m_firstPos, Vec2::One, &rect);
 
 }
 
 
+/// <summary>
+/// スクロールを制限する
+/// </summary>
 void Map::ClampScroll()
 {
 	//上端

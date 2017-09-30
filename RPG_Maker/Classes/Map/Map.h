@@ -51,6 +51,9 @@ public:
 	//スクリーン上の座標をマップの座標に変換する
 	void ConvertMapPos(const Vec2& pos, int* bufX, int* bufY);
 
+	//マップ座標をスクリーン座標に変換する
+	void ConvertScreenPos(int X, int Y, Vec2* buf);
+
 	/// 指定方向のタイルに移動できるかどうか
 	bool CanMoveSpecifiedDir(Vec2 pos,DIRECTION_2D dir);
 
