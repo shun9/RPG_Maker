@@ -32,10 +32,14 @@ void UIMenuBar::DrawUpdate()
 {
 	if (!Active)return;
 
-	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0.8f, 0.84f, 0.9f, 2.0f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 2.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.96f, 0.96f, 0.862f, 2.0f));
+
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.8f, 0.84f, 0.9f, 2.0f));
+
 	ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(1664.0f, 60), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(1664.0f, 30), ImGuiSetCond_Once);
 
 	// StyleÇÃê›íË
 	auto& style = ImGui::GetStyle();
@@ -43,7 +47,7 @@ void UIMenuBar::DrawUpdate()
 	auto oldAlpha = style.Alpha;
 
 	style.Alpha = 2.0f;
-	style.FramePadding = ImVec2(10.0f, 12.0f);
+	style.FramePadding = ImVec2(10.0f, 6.0f);
 
 	if(ImGui::Begin("config 1", nullptr
 		, ImGuiWindowFlags_MenuBar 
@@ -65,6 +69,8 @@ void UIMenuBar::DrawUpdate()
 	}
 	ImGui::End();
 
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 

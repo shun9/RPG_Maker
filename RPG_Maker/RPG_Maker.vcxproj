@@ -188,6 +188,7 @@
     <ClInclude Include="Classes\UI\Editor\UITileCanvas.h" />
     <ClInclude Include="Classes\UI\Editor\UITileProperty.h" />
     <ClInclude Include="Classes\UI\Editor\UITilePropertyEGroup.h" />
+    <ClInclude Include="Classes\UI\Editor\UIUnderBar.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
     <ClInclude Include="ShunLibTK\inc\SL_Texture.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="Classes\UI\Editor\UITileCanvas.cpp" />
     <ClCompile Include="Classes\UI\Editor\UITileProperty.cpp" />
     <ClCompile Include="Classes\UI\Editor\UITilePropertyEGroup.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIUnderBar.cpp" />
     <ClCompile Include="ShunLibTK\src\SL_Texture.cpp" />
     <ClCompile Include="ShunLib\src\SL_ConstantNumber.cpp" />
     <ClCompile Include="ShunLib\src\SL_Conversion.cpp" />

@@ -19,8 +19,39 @@ bool GameLoader::LoadGame(GameEditor* editor)
 	m_editor = editor;
 
 	//ファイルをバイナリ読み込みモードでオープン
+
+	OPENFILENAME ofn;
+	char szFile[MAX_PATH] = "";
+	char szFileTitle[MAX_PATH] = "";
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.lpstrFilter =
+		TEXT("RPGM(*.rpgm)\0*.rpgm\0");
+	ofn.lpstrFileTitle = (LPWSTR)szFileTitle;
+	ofn.nMaxFileTitle = MAX_PATH;
+	ofn.lpstrFile = (LPWSTR)szFile;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+	GetOpenFileName(&ofn);
+
+	// 開いたpathをマルチバイト文字に変更
+	wstring wfullpath = wstring(ofn.lpstrFileTitle);
+	string fullpath;
+	char *mbs = new char[wfullpath.length() *MB_CUR_MAX + 1];
+	wcstombs(mbs, wfullpath.c_str(), wfullpath.length() * MB_CUR_MAX + 1);
+	fullpath = mbs;
+	delete[]mbs;
+
+	// ファイル名を取得
+	int path_i = fullpath.find_last_of("\\") + 1;
+	int ext_i = fullpath.find_last_of(".");
+	std::string fileName = fullpath.substr(path_i, ext_i - path_i);
+	auto openName = fileName + string(".rpgm");	// 拡張子入り
+	editor->FileName(fileName);					// 拡張子なしを保存
+
+	// ファイルオープン
 	ifstream file;
-	file.open("RPG_Maker.rpgm", ios::in | ios::binary);
+	file.open(ofn.lpstrFileTitle, ios::in | ios::binary);
 
 	//ファイルが無ければ読み込まない
 	if (!file)return false;

@@ -7,33 +7,82 @@
 #include "GameSaver.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "../Classes/Editor/GameEditor.h"
 #include "../Classes/Data/DataBase.h"
+#include "../SL_Window.h"
 
 using namespace std;
+using namespace ShunLib;
 
-bool GameSaver::SaveGame(GameEditor* editor)
+bool GameSaver::SaveGame(const string & fileName)
 {
-	//保存するデータ
-	m_editor = editor;
-
 	//ファイルをバイナリ書き込みモードでオープン
 	ofstream file;
-	file.open("RPG_Maker.rpgm", ios::out | ios::binary | ios::trunc);
+	auto openName = fileName + string(".rpgm");
+	file.open(openName.c_str(), ios::out | ios::binary | ios::trunc);
 
+	const auto tmp = fileName.c_str();
 
-	//先頭のタイトルを書き込む
-	char tmp[] = "RPG_Maker";
 	file.write(tmp, 10);
 
 	//各データを保存
-	if(!SaveTileData      (&file)){return false;}
-	if(!SaveMapData       (&file)){return false;}
-	if(!SavePlayerData    (&file)){return false;}
-	if(!SaveEnemyData     (&file)){return false;}
-	if(!SaveEnemyGroupData(&file)){return false;}
+	if (!SaveTileData(&file)) { return false; }
+	if (!SaveMapData(&file)) { return false; }
+	if (!SavePlayerData(&file)) { return false; }
+	if (!SaveEnemyData(&file)) { return false; }
+	if (!SaveEnemyGroupData(&file)) { return false; }
 
 	return true;
+}
+
+bool GameSaver::SaveGameCurrentData(GameEditor * editor)
+{
+	m_editor = editor;
+	auto fileName = editor->FileName();
+
+	return SaveGame(fileName);
+}
+
+bool GameSaver::SaveGameFileSelect(GameEditor * editor)
+{
+	//保存するデータ
+	m_editor = editor;
+	OPENFILENAME ofn;
+	char szFile[MAX_PATH] = "";
+	char szFileTitle[MAX_PATH] = "";
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.lpstrFilter =
+		TEXT("RPGM(*.rpgm)\0*.rpgm\0");
+	ofn.lpstrFileTitle = (LPWSTR)szFileTitle;
+	ofn.nMaxFileTitle = MAX_PATH;
+	ofn.lpstrFile = (LPWSTR)szFile;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_FILEMUSTEXIST 
+		| OFN_NOCHANGEDIR 
+		| OFN_CREATEPROMPT
+		| OFN_PATHMUSTEXIST
+		| OFN_OVERWRITEPROMPT;
+	GetOpenFileName(&ofn);
+
+	// 開いたファイル名をマルチバイト文字に変更
+	wstring wfullpath = wstring(ofn.lpstrFile);
+	string fullpath;
+	char *mbs = new char[wfullpath.length() *MB_CUR_MAX + 1];
+	wcstombs(mbs, wfullpath.c_str(), wfullpath.length() * MB_CUR_MAX + 1);
+	fullpath = mbs;
+	delete[]mbs;
+
+	int path_i = fullpath.find_last_of("\\") + 1;
+	int ext_i = fullpath.find_last_of(".");
+
+	// ファイル名を取得
+	std::string fileName = fullpath.substr(path_i, ext_i - path_i);
+
+	editor->FileName(fileName);
+
+	return SaveGame(fileName);
 }
 
 

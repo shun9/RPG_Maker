@@ -500,7 +500,7 @@ void ShunLib::Window::GameRender()
 void ShunLib::Window::Clear()
 {
 	//âÊñ ÇÃêF
-	float color[4] = { 0,1,1,1 };
+	float color[4] = { 0.85, 0.9f, 0.96f, 2.0f };
 
 	for (int i = 0; i < typeNum; i++)
 	{
