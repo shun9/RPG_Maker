@@ -18,7 +18,12 @@ private:
 	GameEditor* m_editor;
 
 public:
-	bool SaveGame(GameEditor* editor);
+	bool SaveGame(const std::string& fileName);
+
+	// 現在開いているデータに保存
+	bool SaveGameCurrentData(GameEditor* editor);
+	// ファイルを選択して保存
+	bool SaveGameFileSelect(GameEditor* editor);
 
 private:
 	GameSaver() {}

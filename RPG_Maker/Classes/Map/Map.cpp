@@ -12,6 +12,7 @@
 #include "../Data/DataBase.h"
 
 using namespace ShunLib;
+using namespace std;
 
 const int Map::WIDTH = 256;
 const int Map::HEIGHT = 256;
@@ -21,6 +22,8 @@ const int Map::HEIGHT = 256;
 /// </summary>
 Map::Map()
 {
+	m_bgTile = make_unique<Texture>(L"Image\\map_bg.png");
+
 	m_scrollNum = { 0.0f,0.0f };
 	m_firstPos = { 0.0f,0.0f };
 	m_displaySize = { 1200.0f,800.0f };
@@ -156,7 +159,10 @@ void Map::Draw()
 			}
 
 			Vec2 pos(j*Tile::SIZE, i*Tile::SIZE);
-			m_map[i][j].Draw(pos - m_scrollNum + m_firstPos, Vec2::One);
+			if (! m_map[i][j].Draw(pos - m_scrollNum + m_firstPos, Vec2::One))
+			{
+				m_bgTile->Draw(pos - m_scrollNum + m_firstPos, Vec2::One);
+			}
 		}
 	}
 }
@@ -332,8 +338,10 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 		rect.right = (LONG)(rectSize);
 	}
 
-	m_map[y][x].Draw(pos - m_scrollNum + m_firstPos, Vec2::One, &rect);
-
+	if (! m_map[y][x].Draw(pos - m_scrollNum + m_firstPos, Vec2::One, &rect))
+	{
+		m_bgTile->Draw(pos - m_scrollNum + m_firstPos, Vec2::One, &rect);
+	}
 }
 
 

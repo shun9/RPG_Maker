@@ -45,7 +45,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UITileProperty(const std::string& name, int id = 0);
+	UITileProperty(const std::string& name);
 
 	/// <summary>
 	/// デストラクタ
@@ -54,6 +54,7 @@ public:
 
 	void SetID(int id);
 	void UIUpdate();
+	void UIErase();
 
 	virtual void DrawUpdate() override;
 

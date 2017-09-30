@@ -23,6 +23,9 @@ public:
 	static const int HEIGHT;
 
 protected:
+	// グリッド背景
+	std::unique_ptr<ShunLib::Texture> m_bgTile;
+
 	std::vector<std::vector<Tile>>m_map;
 
 	//スクロールした値

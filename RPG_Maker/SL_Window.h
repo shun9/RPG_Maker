@@ -80,8 +80,8 @@ namespace ShunLib
 		void SetApp(AppBase* game, WINDOW_TYPE type);
 
 		//Getter
-		float Width() { return m_width[EDITOR]; }
-		float Height() { return m_height[EDITOR]; }
+		float Width() const { return m_width[EDITOR]; }
+		float Height() const { return m_height[EDITOR]; }
 		float DebugWidth() { return m_width[DEBUGGER]; }
 		float DebugHeight() { return m_height[DEBUGGER]; }
 

@@ -22,7 +22,7 @@ namespace {
 	static const int CANVAS_WIDTH = 8;
 	static const int CANVAS_HEIGHT = 10;
 	static const Vec2 PADDING = Vec2(3.0f, 3.0f);
-	static const Vec2 IMAGE_SIZE = Vec2(324.0f, 540.0f);
+	static const Vec2 IMAGE_SIZE = Vec2(340.0f, 540.0f);
 }
 
 UITileCanvas::UITileCanvas(const string& name)
@@ -30,7 +30,7 @@ UITileCanvas::UITileCanvas(const string& name)
 {
 	m_texture = make_unique<ShunLib::Texture>(L"Image\\tile_canvas_bg.png");
 
-	m_Pos = Vec2(25.0f, 85.0f);
+	m_Pos = Vec2(5.0f, 55.0f);
 }
 
 UITileCanvas::~UITileCanvas()
@@ -39,7 +39,9 @@ UITileCanvas::~UITileCanvas()
 
 void UITileCanvas::DrawUpdate()
 {
-	m_texture->Draw(m_Pos, Vec2::One);
+	RECT rect = { (LONG)m_Pos.m_x,(LONG)m_Pos.m_y,(LONG)IMAGE_SIZE.m_x + m_Pos.m_x,(LONG)IMAGE_SIZE.m_y + m_Pos.m_y };
+
+	m_texture->Draw(m_Pos, Vec2::One, &rect);
 
 	int x = 0, y = 0;
 

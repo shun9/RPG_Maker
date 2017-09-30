@@ -21,11 +21,11 @@
 #include "../../Utils/ImageLoader.h"
 #include "../../Utils/ServiceManager.h"
 #include "../../Utils/GameSaver.h"
-#include "../../Utils/GameLoader.h"
 
 using namespace std;
 
 GameEditor::GameEditor()
+	:m_map(nullptr)
 {
 
 }
@@ -47,51 +47,44 @@ void GameEditor::Initialize()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-	m_map = new Map();
-	m_map->DisplayRange(Vec2(350.0f, 66.0f), Vec2(win->Width(), win->Height()));
-
-	//張り替えるマップを設定
-	auto edi = MapEditor::GetInstance();
-	edi->Map(m_map);
-
+	
 	//プレイヤーの作成
 	player = new Player();
-
 	m_game = new Game();
-
-	auto loader = GameLoader::GetInstance();
-	loader->LoadGame(this);
 
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
-	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"), MapEditor::GetInstance()->Id());
+	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 	m_uiEnemyTable = make_unique<UIEnemyTable>(string("Enemy DataBase"));
+	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
 	EnemyTableChangeActive();
 
+	// データの初期設定
+	DataInitialize(*win);
+
 	{
-		m_uiMenu->SetMenuItemFunc("File ", "Map Load");
-		m_uiMenu->SetMenuItemFunc("File ", "Map Save");
-		m_uiMenu->SetMenuItemFunc("File ", "Tile Load", [this]() {SelectedCreateTileData(); });
-		m_uiMenu->SetMenuItemFunc("File ", "Tile Save");
+		m_uiMenu->SetMenuItemFunc("File ", "1.New RPGData Create (Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
+		m_shortCutKey.Add(KEY_CODE::C, [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
 
-		m_uiMenu->SetMenuItemFunc("View ", "TileWindow");
-		m_uiMenu->SetMenuItemFunc("View ", "TileProperty", [this]() {TilePropertyChangeActive(); });
-		m_uiMenu->SetMenuItemFunc("View ", "Map  ");
+		m_uiMenu->SetMenuItemFunc("File ", "2.RPGData Load (Ctl+L)", [this]() { LoadData(); });
+		m_shortCutKey.Add(KEY_CODE::L, [this]() {LoadData(); });
 
-		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData", [this]() {EnemyTableChangeActive(); });
-		m_uiMenu->SetMenuItemFunc("DataBase", "TileData");
+		m_uiMenu->SetMenuItemFunc("File ", "3.Save RPGData overwrite (Ctl+S)", [this]() {SaveDataOverwrite(); });
+		m_shortCutKey.Add(KEY_CODE::S, [this]() {SaveDataOverwrite(); });
 
-		m_uiMenu->SetMenuItemFunc("CreateMode", "MapCreate");
-		m_uiMenu->SetMenuItemFunc("CreateMode", "EventCreate");
+		m_uiMenu->SetMenuItemFunc("File ", "2.Save RPGData as (Ctl+A)", [this]() {SaveDataAs(); });
+		m_shortCutKey.Add(KEY_CODE::A, [this]() {SaveDataAs(); });
 
-		m_uiMenu->SetMenuItemFunc("Scaling", "1/1");
-		m_uiMenu->SetMenuItemFunc("Scaling", "1/2");
-		m_uiMenu->SetMenuItemFunc("Scaling", "1/4");
+		m_uiMenu->SetMenuItemFunc("File ", "4.Tile Load", [this]() {SelectedCreateTileData(); });
 
-		m_uiMenu->SetMenuItemFunc("DrawMode", "Pencil");
+		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+P)", [this]() {TilePropertyChangeActive(); });
+		m_shortCutKey.Add(KEY_CODE::P, [this]() {TilePropertyChangeActive(); });
 
-		m_uiMenu->SetMenuItemFunc("Game ", "Play");
+		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() {EnemyTableChangeActive(); });
+		m_shortCutKey.Add(KEY_CODE::E, [this]() {EnemyTableChangeActive(); });
+
+		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)");
 	}
 }
 
@@ -109,6 +102,8 @@ void GameEditor::Update()
 
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
+
+	m_shortCutKey.Update();
 
 	// TIleの設定
 	m_uiTileCanvas->SelectTile();
@@ -152,6 +147,10 @@ void GameEditor::Render()
 
 	ImGui_ImplDX11_NewFrame();
 
+	//タイル座標取得
+	int mapX, mapY;
+	m_map->ConvertMapPos(mouse->GetMousePosition(), &mapX, &mapY);
+
 	ImGui::Text("scroll x : %.3f", m_map->Scroll()->m_x);
 	ImGui::Text("scroll y : %.3f", m_map->Scroll()->m_y);
 
@@ -169,6 +168,7 @@ void GameEditor::Render()
 	m_uiTileProperty->DrawUpdate();
 	m_uiTileCanvas->DrawUpdate();
 	m_uiEnemyTable->DrawUpdate();
+	m_uiUnderBar->DrawUpdate(m_fileName, mapX, mapY);
 
 	// Rendering
 	//この上に描画処理を書く
@@ -178,12 +178,29 @@ void GameEditor::Render()
 //終了
 void GameEditor::Finalize()
 {
-	auto saver = GameSaver::GetInstance();
-	saver->SaveGame(this);
-
 	ImGui_ImplDX11_Shutdown();
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(player);
+}
+
+// データ作成時の設定
+void GameEditor::DataInitialize(const Window& win)
+{
+	FileName("");
+
+	// データベースの初期化
+	DB->Reset();
+
+	DELETE_POINTER(m_map);
+	m_map = new Map();
+	m_map->DisplayRange(Vec2(350.0f, 55.0f), Vec2(1658, 917));
+
+	//張り替えるマップを設定
+	auto edi = MapEditor::GetInstance();
+	edi->Map(m_map);
+
+	MapEditor::GetInstance()->Id(-1);
+	m_uiTileProperty->SetID(-1);
 }
 
 void GameEditor::UIChangeActive(UIBase & ui)

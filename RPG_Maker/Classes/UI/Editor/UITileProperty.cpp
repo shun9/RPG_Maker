@@ -19,10 +19,10 @@
 using namespace ShunLib;
 using namespace std;
 
-UITileProperty::UITileProperty(const string& name,int id)
+UITileProperty::UITileProperty(const string& name)
 	:UIBase(name)
+	,m_tileData(nullptr)
 {
-	SetID(id);
 	m_textureChangeButton = make_unique<UIButton>(" Change Image ");
 	m_removeGroupButton = make_unique<UIButton>(" Remove ");
 	m_addGroupButton = make_unique<UIButton>("  Add  ");
@@ -40,6 +40,7 @@ void UITileProperty::SetID(int id)
 {
 	m_currentTileId = id;
 	if (0 <= id) UIUpdate();
+	else UIErase();
 }
 
 void UITileProperty::UIUpdate()
@@ -48,6 +49,17 @@ void UITileProperty::UIUpdate()
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
+}
+
+void UITileProperty::UIErase()
+{
+	m_tileData = nullptr;
+	m_encountSlider.release();
+	m_encountSlider = nullptr;
+	m_checkBoxIsMove.release();
+	m_checkBoxIsMove = nullptr;
+	m_groupSlider.release();
+	m_groupSlider = nullptr;
 }
 
 void UITileProperty::DrawUpdate()
@@ -80,9 +92,18 @@ void UITileProperty::UIDrawUpdate()
 		//フォントサイズ変更 
 		ImGui::SetWindowFontScale(1.4f);
 
-		ImGui::Text("ID :");
-		ImGui::SameLine(110);
-		ImGui::Text("%d", m_currentTileId);
+		if (0 < m_currentTileId)
+		{
+			ImGui::Text("ID :");
+			ImGui::SameLine(110);
+			ImGui::Text("%d", m_currentTileId);
+		}
+		else 
+		{
+			ImGui::Text("ID :");
+			ImGui::SameLine(110);
+			ImGui::Text("No Data");
+		}
 
 		if (m_encountSlider)
 		{
@@ -134,6 +155,8 @@ void UITileProperty::IdObservation()
 
 void UITileProperty::ChangeTexture()
 {
+	if (m_tileData == nullptr) return;
+
 	auto Il = ImageLoader::GetInstance();
 	auto str = Il->OpenLoadingDialog();
 

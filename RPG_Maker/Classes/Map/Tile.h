@@ -32,7 +32,7 @@ public:
 	~Tile() {}
 
 	//•`‰æ
-	void Draw(const ShunLib::Vec2& pos, const ShunLib::Vec2& scale, RECT* rect = nullptr);
+	bool Draw(const ShunLib::Vec2& pos, const ShunLib::Vec2& scale, RECT* rect = nullptr);
 
 	void Id(int id) { m_id = id; }
 	int Id()const { return m_id; };
