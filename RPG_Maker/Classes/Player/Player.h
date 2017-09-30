@@ -68,4 +68,7 @@ private:
 
 	//アニメカウント
 	int animecount;
+
+public:
+	void operator=(const Player& p);
 };

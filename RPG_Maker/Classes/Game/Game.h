@@ -29,11 +29,9 @@ public:
 	void Render    ()override;
 	void Finalize  ()override;
 
-	void SetMap(Map* map) {
-		m_map = map;
-	}
+	void SetMap(Map* map);
 
-	void SetPlayer(Player* player) { m_player = player; }
+	void SetPlayer(Player* player);
 private:
 
 };

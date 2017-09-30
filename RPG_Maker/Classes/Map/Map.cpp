@@ -344,9 +344,9 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 void Map::ClampScroll()
 {
 	//上端
-	if (m_scrollNum.m_y < -m_firstPos.m_y)
+	if (m_scrollNum.m_y < 0.0f)
 	{
-		m_scrollNum.m_y = -m_firstPos.m_y;
+		m_scrollNum.m_y = 0.0f;
 	}
 	//下端
 	else if (m_scrollNum.m_y > Map::HEIGHT*Tile::SIZE - m_displaySize.m_y)
@@ -354,9 +354,9 @@ void Map::ClampScroll()
 		m_scrollNum.m_y = Map::HEIGHT*Tile::SIZE - m_displaySize.m_y;
 	}
 	//左端
-	else if (m_scrollNum.m_x < -m_firstPos.m_x)
+	else if (m_scrollNum.m_x < 0.0f)
 	{
-		m_scrollNum.m_x = -m_firstPos.m_x;
+		m_scrollNum.m_x = 0.0f;
 	}
 	//右端
 	else if(m_scrollNum.m_x > Map::WIDTH*Tile::SIZE - m_displaySize.m_x)
@@ -364,4 +364,17 @@ void Map::ClampScroll()
 		m_scrollNum.m_x = Map::WIDTH*Tile::SIZE - m_displaySize.m_x;
 	}
 
+}
+
+void Map::operator=(const Map & m)
+{
+	int id = 0;
+	for (int i = 0; i < Map::HEIGHT; i++)
+	{
+		for (int j = 0; j < Map::WIDTH; j++)
+		{
+			id = m.m_map[i][j].Id();
+			this->m_map[i][j].Id(id);
+		}
+	}
 }

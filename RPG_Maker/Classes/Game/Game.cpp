@@ -5,17 +5,21 @@
 //* @author:S.Katou
 //************************************************/
 #include "Game.h"
+#include <SL_MacroConstants.h>
 #include "../../SL_Window.h"
 #include "../Map/Map.h"
 #include "../Player/Player.h"
 
 Game::Game()
 {
+	m_map = new Map();
+	m_player = new Player();
 }
 
 Game::~Game()
 {
-
+	DELETE_POINTER(m_map);
+	DELETE_POINTER(m_player);
 }
 
 //初期化
@@ -46,7 +50,7 @@ void Game::Update()
 	//マップの更新
 	if (m_map != nullptr)
 	{
-		m_map->Scroll(m_player->Getpos());
+		//m_map->Scroll(m_player->Getpos());
 	}
 }
 
@@ -58,15 +62,16 @@ void Game::Render()
 	//描画対象をデバッグ用のウィンドウに切り替える
 	win->SetDrawingWindow(ShunLib::Window::DEBUGGER);
 
+	if (m_map != nullptr)
+	{
+		m_map->Draw();
+	}
+
 	if (m_player != nullptr)
 	{
 		m_player->Draw();
 	}
 
-	if (m_map != nullptr)
-	{
-		m_map->Draw();
-	}
 
 	//描画対象をエディター用のウィンドウに戻す
 	win->SetDrawingWindow(ShunLib::Window::EDITOR);
@@ -75,4 +80,17 @@ void Game::Render()
 //終了
 void Game::Finalize()
 {
+
+}
+
+
+void Game::SetMap(Map* map)
+{
+	(*m_map) = (*map);
+}
+
+void Game::SetPlayer(Player * player)
+{
+
+	(*m_player) = (*player);
 }

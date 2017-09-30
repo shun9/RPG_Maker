@@ -77,4 +77,8 @@ private:
 	void DrawEdgeTile(int x,int y,float edge[], DIRECTION_2D dir,int dirTile[]);
 
 	void ClampScroll();
+
+public:
+	void operator=(const Map& m);
+
 };

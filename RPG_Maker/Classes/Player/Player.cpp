@@ -32,7 +32,7 @@ Player::Player()
 
 	//移動状態
 	state = false;
-	
+
 	//アニメカウントの初期化
 	animecount = 0;
 }
@@ -245,4 +245,28 @@ ShunLib::ConstantNumber::DIRECTION_2D Player::Getdirection()
 	}
 
 	return dir;
+}
+
+void Player::operator=(const Player& p)
+{
+	//マップ座標上の位置
+	this->m_posOnMap = p.m_posOnMap;
+
+	//x座標,y座標
+	this->pos = p.pos;
+
+	//拡大率
+	this->scale = p.scale;
+
+	//向き
+	this->dir = p.dir;
+
+	//カウント
+	this->count = p.count;
+
+	//移動の状態
+	this->state = p.state;
+
+	//アニメカウント
+	this->animecount = p.animecount;
 }
