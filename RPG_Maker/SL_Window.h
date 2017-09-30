@@ -82,6 +82,9 @@ namespace ShunLib
 		//Getter
 		float Width() { return m_width[EDITOR]; }
 		float Height() { return m_height[EDITOR]; }
+		float DebugWidth() { return m_width[DEBUGGER]; }
+		float DebugHeight() { return m_height[DEBUGGER]; }
+
 		WCHAR* Name(WINDOW_TYPE type) { return m_name[type]; }
 		HWND WindouHandle(WINDOW_TYPE type) { return m_hWnd[type]; }  //ウィンドウハンドル
 

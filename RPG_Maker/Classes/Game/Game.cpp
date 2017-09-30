@@ -7,13 +7,16 @@
 #include "Game.h"
 #include <SL_MacroConstants.h>
 #include "../../SL_Window.h"
+#include "../Map/DebugMap.h"
 #include "../Map/Map.h"
 #include "../Player/Player.h"
 
 Game::Game():
 	m_isPlaying(false)
 {
-	m_map = new Map();
+	m_map = new DebugMap();
+	auto win = ShunLib::Window::GetInstance();
+	m_map->DisplayRange(ShunLib::Vec2(0.0f, 0.0f), ShunLib::Vec2(win->DebugWidth(),win->DebugHeight()));
 	m_player = new Player();
 }
 
@@ -26,10 +29,14 @@ Game::~Game()
 //初期化
 void Game::Initialize()
 {
-	if (m_map != nullptr)
+	auto win = ShunLib::Window::GetInstance();
+
+	if (m_map != nullptr && m_player != nullptr)
 	{
-		//マップをプレイヤーの初期位置分スクロール
-		m_map->Scroll();
+		//プレイヤーの初期位置を決定
+		ShunLib::Vec2 pos = m_player->PosOnMap();
+		m_map->DebugConvertScreenPos((int)pos.m_x,(int)pos.m_y,&pos);
+		m_player->Setpos(pos);
 	}
 
 	m_isPlaying = true;
@@ -49,18 +56,20 @@ void Game::Update()
 	if (m_player != nullptr)
 	{
 		//プレイヤーが先に進めるかどうか
-		if (m_map->CanMoveSpecifiedDir(m_player->Getpos(), m_player->Getdirection()) || m_player->Movestate())
+		if (m_map->DebugCanMoveSpecifiedDir(m_player->Getpos(), m_player->Getdirection()) || m_player->Movestate())
 		{
 			m_player->Move();
 		}
 
 		m_player->Update();
+		ClampScroll();
+		m_player->Scroll(m_scrollNum);
 	}
 
 	//マップの更新
 	if (m_map != nullptr)
 	{
-		//m_map->Scroll(m_player->Getpos());
+		m_map->Scroll(m_scrollNum);
 	}
 }
 
@@ -96,9 +105,23 @@ void Game::Finalize()
 
 void Game::SetMap(Map* map)
 {
-	(*m_map) = (*map);
+	int id = 0;
+	auto data = m_map->GetMapData();
+	auto copy = map->GetMapData();
+	for (int i = 0; i < Map::HEIGHT; i++)
+	{
+		for (int j = 0; j < Map::WIDTH; j++)
+		{
+			id = (*copy)[i][j].Id();
+			(*data)[i][j].Id(id);
+		}
+	}
 }
 
+/// <summary>
+/// プレイヤーの設定
+/// </summary>
+/// <param name="player"></param>
 void Game::SetPlayer(Player * player)
 {
 
@@ -111,4 +134,44 @@ void Game::SetPlayer(Player * player)
 bool Game::IsPlaying()
 {
 	return m_isPlaying;
+}
+
+
+/// <summary>
+/// スクロール量の制限
+/// </summary>
+void Game::ClampScroll()
+{
+	auto win = ShunLib::Window::GetInstance();
+	float scrollX = m_player->Getpos().m_x - win->DebugWidth() / 2;
+	float scrollY = m_player->Getpos().m_y - win->DebugHeight() / 2;
+	float maxX = Tile::SIZE*Map::WIDTH;
+	float maxY = Tile::SIZE*Map::HEIGHT;
+
+	//左端を制限
+	if (scrollX < 0.0f)
+	{
+		scrollX = 0.0f;
+	}
+
+	//上端を制限
+	if (scrollY < 0.0f)
+	{
+		scrollY = 0.0f;
+	}
+
+	//右端を制限
+	if (scrollX > maxX)
+	{
+		scrollX = maxX;
+	}
+
+	//下端を制限
+	if (scrollY > maxY)
+	{
+		scrollY = maxY;
+	}
+	m_scrollNum.m_x = scrollX;
+	m_scrollNum.m_y = scrollY;
+
 }

@@ -13,6 +13,7 @@
 
 class Map
 {
+protected:
 	using Vec2 = ShunLib::Vec2;
 	using DIRECTION_2D = ShunLib::ConstantNumber::DIRECTION_2D;
 
@@ -21,7 +22,7 @@ public:
 	static const int WIDTH;
 	static const int HEIGHT;
 
-private:
+protected:
 	std::vector<std::vector<Tile>>m_map;
 
 	//スクロールした値
@@ -33,7 +34,7 @@ private:
 
 public:
 	Map();
-	~Map();
+	virtual ~Map();
 
 	//キー入力でスクロールする
 	void Update();
@@ -76,7 +77,7 @@ private:
 
 	void DrawEdgeTile(int x,int y,float edge[], DIRECTION_2D dir,int dirTile[]);
 
-	void ClampScroll();
+	virtual void ClampScroll();
 
 public:
 	void operator=(const Map& m);

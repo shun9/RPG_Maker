@@ -208,7 +208,7 @@ void GameEditor::SelectedCreateTileData()
 void GameEditor::StartDebug()
 {
 	m_game->SetMap(m_map);
-	//m_game->SetPlayer(player);
+	m_game->SetPlayer(player);
 	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGGER);
 	auto win = ShunLib::Window::GetInstance();
 

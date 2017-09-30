@@ -186,7 +186,6 @@ void Map::ConvertScreenPos(int X, int Y, Vec2* buf)
 	buf->m_y = Y*Tile::SIZE - m_scrollNum.m_y+m_firstPos.m_y;
 }
 
-
 /// <summary>
 /// w’è•ûŒü‚Éi‚ß‚é‚©‚Ç‚¤‚©
 /// </summary>
