@@ -16,6 +16,7 @@
 #include "../Map/Map.h"
 #include "../../Utils/GameLoader.h"
 #include "../../Utils/GameSaver.h"
+#include "ShortCutKey.h"
 
 #include <memory>
 
@@ -43,6 +44,8 @@ private:
 
 	Map* m_map;
 
+	ShortCutKey m_shortCutKey;
+
 public:
 	GameEditor();
 	~GameEditor();
@@ -69,7 +72,9 @@ public:
 	// データのセーブ
 	void SaveDataAs() { GameSaver::GetInstance()->SaveGameFileSelect(this); }
 	// データの上書きセーブ
-	void SaveDataOverwrite() { GameSaver::GetInstance()->SaveGameCurrentData(this); }
+	void SaveDataOverwrite() {
+		if (m_fileName != "") GameSaver::GetInstance()->SaveGameCurrentData(this);;
+	}
 
 	Map* GetMap() { return m_map; }
 

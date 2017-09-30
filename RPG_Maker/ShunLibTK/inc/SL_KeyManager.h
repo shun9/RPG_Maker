@@ -19,6 +19,12 @@ namespace ShunLib
 	public:
 		enum KEY_CODE
 		{
+			A = DirectX::Keyboard::Keys::A,
+			C = DirectX::Keyboard::Keys::C,
+			E = DirectX::Keyboard::Keys::E,
+			L = DirectX::Keyboard::Keys::L,
+			P = DirectX::Keyboard::Keys::P,
+			S = DirectX::Keyboard::Keys::S,
 			Z     = DirectX::Keyboard::Keys::Z,
 			X     = DirectX::Keyboard::Keys::X,
 			LEFT  = DirectX::Keyboard::Keys::Left,
@@ -26,6 +32,8 @@ namespace ShunLib
 			RIGHT = DirectX::Keyboard::Keys::Right,
 			DOWN  = DirectX::Keyboard::Keys::Down ,
 			SPACE = DirectX::Keyboard::Keys::Space,
+			L_CTRL = DirectX::Keyboard::Keys::LeftControl,
+			R_CTRL = DirectX::Keyboard::Keys::LeftControl,
 		};
 
 	private:

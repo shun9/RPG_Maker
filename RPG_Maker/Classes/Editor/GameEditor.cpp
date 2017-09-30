@@ -65,13 +65,24 @@ void GameEditor::Initialize()
 
 	{
 		m_uiMenu->SetMenuItemFunc("File ", "1.New RPGData Create (Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
+		m_shortCutKey.Add(KEY_CODE::C, [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
+
 		m_uiMenu->SetMenuItemFunc("File ", "2.RPGData Load (Ctl+L)", [this]() { LoadData(); });
+		m_shortCutKey.Add(KEY_CODE::L, [this]() {LoadData(); });
+
 		m_uiMenu->SetMenuItemFunc("File ", "3.Save RPGData overwrite (Ctl+S)", [this]() {SaveDataOverwrite(); });
+		m_shortCutKey.Add(KEY_CODE::S, [this]() {SaveDataOverwrite(); });
+
 		m_uiMenu->SetMenuItemFunc("File ", "2.Save RPGData as (Ctl+A)", [this]() {SaveDataAs(); });
+		m_shortCutKey.Add(KEY_CODE::A, [this]() {SaveDataAs(); });
+
 		m_uiMenu->SetMenuItemFunc("File ", "4.Tile Load", [this]() {SelectedCreateTileData(); });
 
 		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+P)", [this]() {TilePropertyChangeActive(); });
+		m_shortCutKey.Add(KEY_CODE::P, [this]() {TilePropertyChangeActive(); });
+
 		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() {EnemyTableChangeActive(); });
+		m_shortCutKey.Add(KEY_CODE::E, [this]() {EnemyTableChangeActive(); });
 
 		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)");
 	}
@@ -91,6 +102,8 @@ void GameEditor::Update()
 
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
+
+	m_shortCutKey.Update();
 
 	// TIle‚ÌÝ’è
 	m_uiTileCanvas->SelectTile();
