@@ -6,6 +6,7 @@
 //************************************************/
 #pragma once
 #include "ImageLoader.h"
+#include "../Classes/Map/Tile.h"
 
 std::wstring ImageLoader::OpenLoadingDialog()
 {
@@ -29,7 +30,7 @@ std::wstring ImageLoader::OpenLoadingDialog()
 	GetOpenFileName(&ofn);
 
 	char szPath[MAX_PATH] = "";
-	std::wstring tmp = L"Image\\";
+	std::wstring tmp = Tile::PATH;
 	tmp += ofn.lpstrFileTitle;
 	tmp.push_back(*L"\0");
 

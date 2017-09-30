@@ -21,6 +21,9 @@ public:
 	//何もないタイル
 	static const int NONE;
 
+	// パス
+	static const wchar_t* PATH;
+
 private:
 	int m_id;
 

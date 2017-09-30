@@ -188,7 +188,7 @@ void GameEditor::SelectedCreateTileData()
 	auto Il = ImageLoader::GetInstance();
 	auto str = Il->OpenLoadingDialog();
 
-	if (str.c_str() != wstring(L"Image\\"))
+	if (str.c_str() != wstring(Tile::PATH))
 	{
 		DB_Tile.AddData(SVC_Tile->CreateTileData(str));
 	}

@@ -14,6 +14,7 @@
 #include "../../../Utils/ImageLoader.h"
 #include "../../Map/MapEditor.h"
 #include "../../Data/DataBase.h"
+#include "../../Map/Tile.h"
 
 using namespace ShunLib;
 using namespace std;
@@ -136,7 +137,7 @@ void UITileProperty::ChangeTexture()
 	auto Il = ImageLoader::GetInstance();
 	auto str = Il->OpenLoadingDialog();
 
-	if (str.c_str() != wstring(L"Image\\"))
+	if (str.c_str() != wstring(Tile::PATH))
 	{
 		m_tileData->texture.reset();
 		m_tileData->texture = make_unique<Texture>(str.c_str());
