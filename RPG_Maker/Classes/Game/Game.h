@@ -19,6 +19,9 @@ private:
 	Map* m_map;
 	Player* m_player;
 
+	//é¿çsíÜÇ©Ç«Ç§Ç©
+	bool m_isPlaying;
+
 public:
 	Game();
 	~Game();
@@ -32,6 +35,9 @@ public:
 	void SetMap(Map* map);
 
 	void SetPlayer(Player* player);
+
+	//é¿çsíÜÇ©Ç«Ç§Ç©
+	bool IsPlaying();
 private:
 
 };

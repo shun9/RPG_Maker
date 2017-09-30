@@ -21,9 +21,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 /// コンストラクタ　初期設定
 /// </summary>
 ShunLib::Window::Window():
-	m_width(640.0f),
-	m_height(480.0f),
-	m_name(L"タイトル")
+	m_width{800.0f,800.0f},
+	m_height{ 600.0f,600.0f }
 {
 	for (int i = 0; i < typeNum; i++)
 	{
@@ -130,8 +129,8 @@ HRESULT ShunLib::Window::CreateSecondWindow()
 	pDXGI->GetAdapter(&pAdapter);
 	pAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&pFactory);
 
-	m_sd.BufferDesc.Width = (UINT)m_width;              //画面横幅
-	m_sd.BufferDesc.Height = (UINT)m_height;            //画面縦幅
+	m_sd.BufferDesc.Width = (UINT)m_width[DEBUGGER];              //画面横幅
+	m_sd.BufferDesc.Height = (UINT)m_height[DEBUGGER];            //画面縦幅
 	m_sd.OutputWindow = m_hWnd[DEBUGGER];
 	pFactory->CreateSwapChain(m_device, &m_sd, &m_swapChain[DEBUGGER]);
 
@@ -145,8 +144,8 @@ HRESULT ShunLib::Window::CreateSecondWindow()
 
 	//深度ステンシルビューの作成
 	//Zバッファとステンシルバッファに対するビュー
-	m_descDepth.Width = (UINT)m_width;
-	m_descDepth.Height = (UINT)m_height;
+	m_descDepth.Width = (UINT)m_width[DEBUGGER];
+	m_descDepth.Height = (UINT)m_height[DEBUGGER];
 	m_device->CreateTexture2D(&m_descDepth, NULL, &m_texture2D);
 	m_device->CreateDepthStencilView(m_texture2D, NULL, &m_depthStencilView[DEBUGGER]);
 
@@ -167,8 +166,8 @@ HRESULT ShunLib::Window::CreateSecondWindow()
 HRESULT ShunLib::Window::InitD3D()
 {
 	// デバイスとスワップチェーンの作成
-	m_sd.BufferDesc.Width = (UINT)m_width;              //画面横幅
-	m_sd.BufferDesc.Height = (UINT)m_height;            //画面縦幅
+	m_sd.BufferDesc.Width = (UINT)m_width[EDITOR];              //画面横幅
+	m_sd.BufferDesc.Height = (UINT)m_height[EDITOR];            //画面縦幅
 	m_sd.OutputWindow = m_hWnd[EDITOR];
 
 	D3D_FEATURE_LEVEL featureLevels = D3D_FEATURE_LEVEL_11_0;
@@ -207,8 +206,8 @@ HRESULT ShunLib::Window::InitD3D()
 
 	//深度ステンシルビューの作成
 	//Zバッファとステンシルバッファに対するビュー
-	m_descDepth.Width = (UINT)m_width;
-	m_descDepth.Height = (UINT)m_height;
+	m_descDepth.Width = (UINT)m_width[EDITOR];
+	m_descDepth.Height = (UINT)m_height[EDITOR];
 
 	m_device->CreateTexture2D(&m_descDepth, NULL, &m_texture2D);
 	m_device->CreateDepthStencilView(m_texture2D, NULL, &m_depthStencilView[EDITOR]);
@@ -218,8 +217,8 @@ HRESULT ShunLib::Window::InitD3D()
 
 	//ビューポートの設定
 	D3D11_VIEWPORT vp;
-	vp.Width = (FLOAT)m_width;  //画面幅
-	vp.Height = (FLOAT)m_height;//画面幅
+	vp.Width = (FLOAT)m_width[EDITOR];  //画面幅
+	vp.Height = (FLOAT)m_height[EDITOR];//画面幅
 	vp.MinDepth = 0.0f;         //Z軸の幅
 	vp.MaxDepth = 1.0f;         //Z軸の幅
 	vp.TopLeftX = 0;            //左上の座標
@@ -534,7 +533,7 @@ HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-	wc.lpszClassName = m_name;
+	wc.lpszClassName = m_name[type];
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
 	//ウィンドウの登録
@@ -543,13 +542,13 @@ HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
 	RECT rc;
 	rc.top = 0;
 	rc.left = 0;
-	rc.right = static_cast<LONG>(m_width);
-	rc.bottom = static_cast<LONG>(m_height);
+	rc.right = static_cast<LONG>(m_width[type]);
+	rc.bottom = static_cast<LONG>(m_height[type]);
 
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 	//ウィンドウを作成
-	m_hWnd[type] = CreateWindow(m_name, m_name, WS_OVERLAPPEDWINDOW &~ WS_THICKFRAME &~ WS_MAXIMIZEBOX, 0, 0, rc.right-rc.left, rc.bottom-rc.top, 0, 0, m_instApp, 0);
+	m_hWnd[type] = CreateWindow(m_name[type], m_name[type], WS_OVERLAPPEDWINDOW &~ WS_THICKFRAME &~ WS_MAXIMIZEBOX, 0, 0, rc.right-rc.left, rc.bottom-rc.top, 0, 0, m_instApp, 0);
 
 	//作成に失敗したらエラー
 	if (!m_hWnd[type])return E_FAIL;

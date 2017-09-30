@@ -10,7 +10,8 @@
 #include "../Map/Map.h"
 #include "../Player/Player.h"
 
-Game::Game()
+Game::Game():
+	m_isPlaying(false)
 {
 	m_map = new Map();
 	m_player = new Player();
@@ -30,11 +31,20 @@ void Game::Initialize()
 		//マップをプレイヤーの初期位置分スクロール
 		m_map->Scroll();
 	}
+
+	m_isPlaying = true;
 }
 
 //更新
 void Game::Update()
 {
+	//デバッグウィンドウがアクティブでない場合更新しない
+	auto win = ShunLib::Window::GetInstance();
+	if (GetActiveWindow() != win->WindouHandle(ShunLib::Window::WINDOW_TYPE::DEBUGGER))
+	{
+		return;
+	}
+
 	//プレイヤーの更新
 	if (m_player != nullptr)
 	{
@@ -80,7 +90,7 @@ void Game::Render()
 //終了
 void Game::Finalize()
 {
-
+	m_isPlaying = false;
 }
 
 
@@ -93,4 +103,12 @@ void Game::SetPlayer(Player * player)
 {
 
 	(*m_player) = (*player);
+}
+
+/// <summary>
+/// 実行中かどうか
+/// </summary>
+bool Game::IsPlaying()
+{
+	return m_isPlaying;
 }
