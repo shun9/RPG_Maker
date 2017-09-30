@@ -29,7 +29,7 @@ public:
 	//–³‚¯‚ê‚Înullptr
 	T* GetData(int id) const {
 		if (id > (int)(m_DataList.size()) - 1)return nullptr;
-		if (0 < id)return nullptr;
+		if (0 > id)return nullptr;
 		return	m_DataList[id].get();
 	}
 
