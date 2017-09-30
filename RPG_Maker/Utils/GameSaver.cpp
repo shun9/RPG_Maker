@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include "../Classes/Editor/GameEditor.h"
-#include "../Classes/Map/TileDataHolder.h"
+#include "../Classes/Data/DataBase.h"
 
 using namespace std;
 
@@ -49,12 +49,11 @@ bool GameSaver::SaveTileData(ofstream* file)
 
 
 	//データ数を書き込み
-	auto holder = TileDataHolder::GetInstance();
-	int containerSize = holder->GetContainerSize();
+	const auto& holder = DB_Tile;
+	int containerSize = holder.GetContainerSize();
 	file->write((char*)&containerSize, sizeof(int));
 
 	//データ取得用
-	TileData* data;
 	std::wstring texture;
 	wchar_t* path;
 	int size =0;
@@ -62,7 +61,7 @@ bool GameSaver::SaveTileData(ofstream* file)
 	//データ数だけループする
 	for (int i = 0; i < containerSize; i++)
 	{
-		data = holder->GetData(i);
+		auto data = holder.GetData(i);
 
 		//テクスチャのパス　終端文字があるので+1
 		texture = data->texture->GetPath();

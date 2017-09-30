@@ -14,7 +14,6 @@
 #include "UICheckBox.h"
 #include "UISlider.h"
 #include "UITilePropertyEGroup.h"
-#include "../../Map/TileDataHolder.h"
 #include <SL_Texture.h>
 
 class UITileCanvas :public UIBase

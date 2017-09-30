@@ -9,7 +9,7 @@
 #include <functional>
 #include <SL_KeyManager.h>
 #include "../../Utils/MouseManager.h"
-#include "TileDataHolder.h"
+#include "../Data/DataBase.h"
 
 using namespace ShunLib;
 
@@ -198,7 +198,7 @@ void Map::ConvertScreenPos(int X, int Y, Vec2* buf)
 /// <param name="dir">進む方向</param>
 bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 {
-	auto holder = TileDataHolder::GetInstance();
+	const auto& holder = DB_Tile;
 
 	//タイル座標取得
 	int x,y;
@@ -235,7 +235,7 @@ bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 
 	int id = m_map[y][x].Id();
 
-	auto data = holder->GetData(id);
+	auto data = holder.GetData(id);
 
 	//タイルが無ければ進めない
 	if (data == nullptr)

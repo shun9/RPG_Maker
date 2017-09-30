@@ -6,7 +6,6 @@
 //************************************************/
 #include "Enemy.h"
 #include <SL_RandomNumber.h>
-#include "EnemyDataHolder.h"
 
 /// <summary>
 /// •`‰æ

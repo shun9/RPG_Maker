@@ -156,10 +156,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Classes\AppBase\AppBase.h" />
+    <ClInclude Include="Classes\Data\Data.h" />
+    <ClInclude Include="Classes\Data\DataBase.h" />
+    <ClInclude Include="Classes\Data\DataHolder.h" />
+    <ClInclude Include="Classes\Data\EmeyGroupData.h" />
+    <ClInclude Include="Classes\Data\EnemyData.h" />
+    <ClInclude Include="Classes\Data\TileData.h" />
     <ClInclude Include="Classes\Editor\GameEditor.h" />
-    <ClInclude Include="Classes\Enemy\EmeyGroupDataHolder.h" />
     <ClInclude Include="Classes\Enemy\Enemy.h" />
-    <ClInclude Include="Classes\Enemy\EnemyDataHolder.h" />
     <ClInclude Include="Classes\Game\Game.h" />
     <ClInclude Include="Classes\imgui\imconfig.h" />
     <ClInclude Include="Classes\imgui\imgui.h" />
@@ -183,7 +187,6 @@
     <ClInclude Include="Classes\UI\Editor\UITileCanvas.h" />
     <ClInclude Include="Classes\UI\Editor\UITileProperty.h" />
     <ClInclude Include="Classes\UI\Editor\UITilePropertyEGroup.h" />
-    <ClInclude Include="Classes\Map\TileDataHolder.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
     <ClInclude Include="ShunLibTK\inc\SL_Texture.h" />

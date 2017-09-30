@@ -5,16 +5,15 @@
 //* @author:K.Yamamoto
 //************************************************/
 #include <SL_Texture.h>
+#include <vector>
 
-#include "../../Game/Game.h"
-#include "../../SL_Window.h"
+#include "UITileCanvas.h"
 #include "../../imgui/imgui.h"
 #include "../../imgui/imgui_impl_dx11.h"
-#include <vector>
-#include "UITileCanvas.h"
-#include "../../Map/TileDataHolder.h"
 #include "../../Map/MapEditor.h"
 #include "../../../Utils/MouseManager.h"
+#include "../../Data/DataBase.h"
+#include "../../Map/Tile.h"
 
 using namespace std;
 using namespace ShunLib;
@@ -43,7 +42,8 @@ void UITileCanvas::DrawUpdate()
 	m_texture->Draw(m_Pos, Vec2::One);
 
 	int x = 0, y = 0;
-	for each (const auto& data in TileDataHolder::GetInstance()->GetTileList())
+
+	for each (const auto& data in DB_Tile.GetTileList())
 	{
 		Vec2 pos(x*Tile::SIZE + (x + 1)*PADDING.m_x, y*Tile::SIZE + (y + 1)*PADDING.m_y);
 		data->texture->Draw(m_Pos + pos, Vec2::One);
@@ -90,7 +90,7 @@ void UITileCanvas::SelectTile()
 		int* id = nullptr;
 
 		if (CollisionTile(pos, id)) {
-			auto tileListSize = TileDataHolder::GetInstance()->GetTileList().size();
+			auto tileListSize = DB_Tile.GetTileList().size();
 
 			if (*id <= (int)tileListSize - 1)
 			{

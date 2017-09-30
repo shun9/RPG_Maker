@@ -6,7 +6,7 @@
 //************************************************/
 #include "Tile.h"
 #include <SL_RandomNumber.h>
-#include "TileDataHolder.h"
+#include "../Data/DataBase.h"
 
 //ƒ^ƒCƒ‹‚Ì1•Ó‚Ì’·‚³
 const float Tile::SIZE = 32.0f;
@@ -25,7 +25,7 @@ void Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2 & scale, RECT* re
 		return;
 	}
 
-	auto data = TileDataHolder::GetInstance()->GetData(m_id);
+	auto data = DB_Tile.GetData(m_id);
 
 	if (data->texture != nullptr)
 	{

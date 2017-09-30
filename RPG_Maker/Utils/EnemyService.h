@@ -9,8 +9,7 @@
 #include <SL_Singleton.h>
 #include <SL_Vec2.h>
 #include <SL_Texture.h>
-#include "../Classes/Enemy/EmeyGroupDataHolder.h"
-#include "../Classes/Enemy/EnemyDataHolder.h"
+#include "../Classes/Data/DataBase.h"
 
 namespace {
 	using namespace ShunLib;
