@@ -14,3 +14,11 @@ void MapEditor::ChangeTile(const ShunLib::Vec2 & pos)
 	m_map->ConvertMapPos(pos, &x, &y);
 	m_map->SetTileId(m_id, x, y);
 }
+
+void MapEditor::EraserTile(const ShunLib::Vec2 & pos)
+{
+	int x = 0;
+	int y = 0;
+	m_map->ConvertMapPos(pos, &x, &y);
+	m_map->SetTileId(-1, x, y);
+}

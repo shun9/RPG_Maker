@@ -32,6 +32,8 @@ public:
 	//指定位置のタイルを塗り替える
 	void ChangeTile(const ShunLib::Vec2& pos);
 
+	// 指定位置のタイルを消す
+	void EraserTile(const ShunLib::Vec2& pos);
 private:
 	MapEditor():m_id(-1) {}
 	~MapEditor() {}

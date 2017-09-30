@@ -115,6 +115,13 @@ void GameEditor::Update()
 			auto p = mouse->GetMousePosition();
 			edi->ChangeTile(p);
 		}
+		else if (mouse->GetMouseButton(MouseButton::rightButton))
+		{
+			// Á‚µƒSƒ€‹@”\
+			auto p = mouse->GetMousePosition();
+			MapEditor::GetInstance()->EraserTile(p);
+		}
+
 	}
 	else if (mouse->GetMouseButtonDown(MouseButton::middleButton))
 	{
