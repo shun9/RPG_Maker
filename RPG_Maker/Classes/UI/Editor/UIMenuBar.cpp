@@ -39,7 +39,7 @@ void UIMenuBar::DrawUpdate()
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.8f, 0.84f, 0.9f, 2.0f));
 
 	ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(1664.0f, 30), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(1664.0f, 43), ImGuiSetCond_Once);
 
 	// StyleÇÃê›íË
 	auto& style = ImGui::GetStyle();
@@ -47,10 +47,11 @@ void UIMenuBar::DrawUpdate()
 	auto oldAlpha = style.Alpha;
 
 	style.Alpha = 2.0f;
-	style.FramePadding = ImVec2(10.0f, 6.0f);
+	style.FramePadding = ImVec2(10.0f, 1.0f);
 
 	if(ImGui::Begin("config 1", nullptr
 		, ImGuiWindowFlags_MenuBar 
+		| ImGuiWindowFlags_ShowBorders
 		| ImGuiWindowFlags_NoResize 
 		| ImGuiWindowFlags_NoTitleBar
 		| ImGuiWindowFlags_NoMove))
