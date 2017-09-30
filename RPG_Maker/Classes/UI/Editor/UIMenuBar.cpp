@@ -40,7 +40,9 @@ void UIMenuBar::DrawUpdate()
 	// StyleÇÃê›íË
 	auto& style = ImGui::GetStyle();
 	auto oldPadding = style.FramePadding;
+	auto oldAlpha = style.Alpha;
 
+	style.Alpha = 2.0f;
 	style.FramePadding = ImVec2(10.0f, 12.0f);
 
 	if(ImGui::Begin("config 1", nullptr
@@ -68,6 +70,7 @@ void UIMenuBar::DrawUpdate()
 
 	{
 		// ê›íËÇµÇΩÇ‡ÇÃÇñﬂÇ∑
+		style.Alpha = oldAlpha;
 		style.FramePadding = oldPadding;
 	}
 }
