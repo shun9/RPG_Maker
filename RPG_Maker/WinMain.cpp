@@ -62,7 +62,8 @@ HRESULT InitWindow(HINSTANCE hInst)
 	//ウィンドウ情報設定
 	window->Width(1664.0f);
 	window->Height(936.0f);
-	window->Name(L"RPGツクールツクール");
+	window->Name(L"RPGツクールツクール", window->WINDOW_TYPE::EDITOR);
+	window->Name(L"実行中", window->WINDOW_TYPE::DEBUGGER);
 
 	//ウィンドウ作成
 	if (SUCCEEDED(window->Create(hInst)))

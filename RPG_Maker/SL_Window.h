@@ -27,9 +27,9 @@ namespace ShunLib
 
 	private:
 		//ウィンドウサイズ
-		float m_width;         //横
-		float m_height;        //縦
-		WCHAR* m_name;         //ウィンドウ名
+		float m_width[typeNum];         //横
+		float m_height[typeNum];        //縦
+		WCHAR* m_name[typeNum];//ウィンドウ名
 		HWND m_hWnd[typeNum];  //ウィンドウハンドル
 		HINSTANCE m_instApp;   //このウィンドウを作成したアプリケーション
 
@@ -74,15 +74,18 @@ namespace ShunLib
 		void SetDrawingWindow(WINDOW_TYPE);
 
 		//Setter
-		void Width(float width) { m_width = width; }
-		void Height(float height) { m_height = height; }
-		void Name(WCHAR* name) { m_name = name; }
+		void Width(float width) { m_width[EDITOR] = width; }
+		void Height(float height) { m_height[EDITOR] = height; }
+		void Name(WCHAR* name,WINDOW_TYPE type) { m_name[type] = name; }
 		void SetApp(AppBase* game, WINDOW_TYPE type);
 
 		//Getter
-		float Width() { return m_width; }
-		float Height() { return m_height; }
-		WCHAR* Name() { return m_name; }
+		float Width() { return m_width[EDITOR]; }
+		float Height() { return m_height[EDITOR]; }
+		float DebugWidth() { return m_width[DEBUGGER]; }
+		float DebugHeight() { return m_height[DEBUGGER]; }
+
+		WCHAR* Name(WINDOW_TYPE type) { return m_name[type]; }
 		HWND WindouHandle(WINDOW_TYPE type) { return m_hWnd[type]; }  //ウィンドウハンドル
 
 		ID3D11Device* Device() { return m_device; }

@@ -98,7 +98,15 @@ void GameEditor::Initialize()
 //更新
 void GameEditor::Update()
 {
+	//エディターウィンドウがアクティブでない場合更新しない
+	auto win = ShunLib::Window::GetInstance();
+	if (GetActiveWindow() != win->WindouHandle(Window::WINDOW_TYPE::EDITOR))
+	{
+		return;
+	}
+
 	auto edi = MapEditor::GetInstance();
+
 	auto mouse = MouseManager::GetInstance();
 	mouse->Update();
 
@@ -200,6 +208,7 @@ void GameEditor::SelectedCreateTileData()
 void GameEditor::StartDebug()
 {
 	m_game->SetMap(m_map);
+	m_game->SetPlayer(player);
 	ShunLib::Window::GetInstance()->SetApp(m_game, ShunLib::Window::WINDOW_TYPE::DEBUGGER);
 	auto win = ShunLib::Window::GetInstance();
 

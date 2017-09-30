@@ -17,9 +17,10 @@ Player::Player()
 
 	//ポジションの初期化
 	m_posOnMap = Vec2(0, 0);
+	m_scrollNum = Vec2(0, 0);
 
 	//ポジションの初期化
-	pos = Vec2(160.0, 160.0);
+	pos = Vec2(0.0, 0.0);
 
 	//画像率の初期化
 	scale = Vec2(1.0, 1.0);
@@ -32,7 +33,7 @@ Player::Player()
 
 	//移動状態
 	state = false;
-	
+
 	//アニメカウントの初期化
 	animecount = 0;
 }
@@ -45,7 +46,7 @@ void Player::Update()
 {
 	if (state == true)
 	{
-		count++;
+		count += SPEED;
 	}
 	if (count == TROUT)
 	{
@@ -70,25 +71,25 @@ void Player::Move()
 	if (KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::UP) && state==false || dir == ConstantNumber::TOP && state)
 	{
 		state = true;
-		animecount++;
+		animecount += SPEED;
 		pos.m_y = pos.m_y - SPEED;
 	}
 	else if (KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::DOWN) && state == false || dir == ConstantNumber::BOTTOM && state)
 	{
 		state = true;
-		animecount++;
+		animecount += SPEED;
 		pos.m_y = pos.m_y + SPEED;
 	}
 	else if(KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::RIGHT) && state == false || dir == ConstantNumber::RIGHT && state)
 	{
 		state = true;
-		animecount++;
+		animecount += SPEED;
 		pos.m_x = pos.m_x + SPEED;
 	}
 	else if (KeyManager::GetInstance()->IsPushed(KeyManager::KEY_CODE::LEFT) && state == false || dir == ConstantNumber::LEFT && state)
 	{
 		state = true;
-		animecount++;
+		animecount += SPEED;
 		pos.m_x = pos.m_x - SPEED;
 	}
 }
@@ -188,7 +189,7 @@ void Player::Draw()
 	default:
 		break;
 	}
-	player->Draw(pos, scale, &rect);
+	player->Draw(pos-m_scrollNum, scale, &rect);
 }
 
 /// <summary>
@@ -245,4 +246,28 @@ ShunLib::ConstantNumber::DIRECTION_2D Player::Getdirection()
 	}
 
 	return dir;
+}
+
+void Player::operator=(const Player& p)
+{
+	//マップ座標上の位置
+	this->m_posOnMap = p.m_posOnMap;
+
+	//x座標,y座標
+	this->pos = p.pos;
+
+	//拡大率
+	this->scale = p.scale;
+
+	//向き
+	this->dir = p.dir;
+
+	//カウント
+	this->count = p.count;
+
+	//移動の状態
+	this->state = p.state;
+
+	//アニメカウント
+	this->animecount = p.animecount;
 }

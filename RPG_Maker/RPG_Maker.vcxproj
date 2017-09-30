@@ -172,6 +172,7 @@
     <ClInclude Include="Classes\imgui\stb_rect_pack.h" />
     <ClInclude Include="Classes\imgui\stb_textedit.h" />
     <ClInclude Include="Classes\imgui\stb_truetype.h" />
+    <ClInclude Include="Classes\Map\DebugMap.h" />
     <ClInclude Include="Classes\Map\Map.h" />
     <ClInclude Include="Classes\Map\MapEditor.h" />
     <ClInclude Include="Classes\Map\Tile.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="Classes\imgui\imgui_demo.cpp" />
     <ClCompile Include="Classes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Classes\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Classes\Map\DebugMap.cpp" />
     <ClCompile Include="Classes\Map\Map.cpp" />
     <ClCompile Include="Classes\Map\MapEditor.cpp" />
     <ClCompile Include="Classes\Map\Tile.cpp" />

@@ -97,10 +97,6 @@ void Map::SetTileId(int id, int x, int y)
 /// <summary>
 /// 描画
 /// </summary>
-/// <param name="top">描画範囲の上座標</param>
-/// <param name="bottom">描画範囲の下座標</param>
-/// /// <param name="left">描画範囲の左座標</param>
-/// <param name="right">描画範囲の右座標</param>
 void Map::Draw()
 {
 	using namespace ShunLib;
@@ -189,7 +185,6 @@ void Map::ConvertScreenPos(int X, int Y, Vec2* buf)
 	buf->m_x = X*Tile::SIZE - m_scrollNum.m_x+m_firstPos.m_x;
 	buf->m_y = Y*Tile::SIZE - m_scrollNum.m_y+m_firstPos.m_y;
 }
-
 
 /// <summary>
 /// 指定方向に進めるかどうか
@@ -368,4 +363,17 @@ void Map::ClampScroll()
 		m_scrollNum.m_x = Map::WIDTH*Tile::SIZE - m_displaySize.m_x;
 	}
 
+}
+
+void Map::operator=(const Map & m)
+{
+	int id = 0;
+	for (int i = 0; i < Map::HEIGHT; i++)
+	{
+		for (int j = 0; j < Map::WIDTH; j++)
+		{
+			id = m.m_map[i][j].Id();
+			this->m_map[i][j].Id(id);
+		}
+	}
 }
