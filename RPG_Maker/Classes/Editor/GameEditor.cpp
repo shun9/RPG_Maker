@@ -150,14 +150,14 @@ void GameEditor::Render()
 
 	ImGui::Text("tile list : %d", (int)TileDataHolder::GetInstance()->GetTileList().size());
 
-	m_uiMenu->DrawUpdate();
-	m_uiTileProperty->DrawUpdate();
-	m_uiTileCanvas->DrawUpdate();
-
 	m_map->Draw();
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	player->Draw();
+
+	m_uiMenu->DrawUpdate();
+	m_uiTileProperty->DrawUpdate();
+	m_uiTileCanvas->DrawUpdate();
 
 	// Rendering
 	//‚±‚Ìã‚É•`‰æˆ—‚ğ‘‚­
