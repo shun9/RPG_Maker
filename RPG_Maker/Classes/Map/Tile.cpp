@@ -14,6 +14,9 @@ const float Tile::SIZE = 32.0f;
 //何もないタイル
 const int Tile::NONE = -1;
 
+// タイルのパス
+const wchar_t* Tile::PATH = L"Image\\tile\\";
+
 /// <summary>
 /// 描画
 /// </summary>
