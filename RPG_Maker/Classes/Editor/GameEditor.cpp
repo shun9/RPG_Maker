@@ -4,20 +4,20 @@
 //* @date  :2017/09/28
 //* @author:S.Katou
 //************************************************/
-#include "GameEditor.h"
 #include <Windows.h>
+#include <string>
 #include <SL_Texture.h>
 #include <SL_KeyManager.h>
+
+#include "GameEditor.h"
 #include "../Game/Game.h"
 #include "../../SL_Window.h"
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_dx11.h"
 
-#include <string>
-
-#include "../../Utils/MouseManager.h"
-#include "../Map/TileDataHolder.h"
+#include "../Data/DataBase.h"
 #include "../Map/MapEditor.h"
+#include "../../Utils/MouseManager.h"
 #include "../../Utils/ImageLoader.h"
 #include "../../Utils/ServiceManager.h"
 #include "../../Utils/GameSaver.h"
@@ -66,6 +66,8 @@ void GameEditor::Initialize()
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
 	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"), MapEditor::GetInstance()->Id());
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
+	m_uiEnemyTable = make_unique<UIEnemyTable>(string("Enemy DataBase"));
+	EnemyTableChangeActive();
 
 	{
 		m_uiMenu->SetMenuItemFunc("File ", "Map Load");
@@ -77,7 +79,7 @@ void GameEditor::Initialize()
 		m_uiMenu->SetMenuItemFunc("View ", "TileProperty", [this]() {TilePropertyChangeActive(); });
 		m_uiMenu->SetMenuItemFunc("View ", "Map  ");
 
-		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData");
+		m_uiMenu->SetMenuItemFunc("DataBase", "EnemyData", [this]() {EnemyTableChangeActive(); });
 		m_uiMenu->SetMenuItemFunc("DataBase", "TileData");
 
 		m_uiMenu->SetMenuItemFunc("CreateMode", "MapCreate");
@@ -148,16 +150,17 @@ void GameEditor::Render()
 	ImGui::Text("mouse x : %.3f", mouse->GetMousePosition().m_x);
 	ImGui::Text("mouse y : %.3f", mouse->GetMousePosition().m_y);
 
-	ImGui::Text("tile list : %d", (int)TileDataHolder::GetInstance()->GetTileList().size());
-
-	m_uiMenu->DrawUpdate();
-	m_uiTileProperty->DrawUpdate();
-	m_uiTileCanvas->DrawUpdate();
+	ImGui::Text("tile list : %d", DB_Tile.GetContainerSize());
 
 	m_map->Draw();
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	player->Draw();
+
+	m_uiMenu->DrawUpdate();
+	m_uiTileProperty->DrawUpdate();
+	m_uiTileCanvas->DrawUpdate();
+	m_uiEnemyTable->DrawUpdate();
 
 	// Rendering
 	//‚±‚Ìã‚É•`‰æˆ—‚ð‘‚­
@@ -187,7 +190,7 @@ void GameEditor::SelectedCreateTileData()
 
 	if (str.c_str() != wstring(L"Image\\"))
 	{
-		TileDataHolder::GetInstance()->AddData(SVC_Tile->CreateTileData(str));
+		DB_Tile.AddData(SVC_Tile->CreateTileData(str));
 	}
 }
 

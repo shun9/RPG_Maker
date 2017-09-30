@@ -9,7 +9,7 @@
 #include <SL_Singleton.h>
 #include <SL_Vec2.h>
 #include <SL_Texture.h>
-#include "../Classes/Map/TileDataHolder.h"
+#include "../Classes/Data/TileData.h"
 
 namespace {
 	using namespace ShunLib;

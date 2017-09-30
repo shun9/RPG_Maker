@@ -5,23 +5,21 @@
 //* @author:K.Yamamoto
 //************************************************/
 #include <SL_Texture.h>
+#include <vector>
 
-#include "../../Game/Game.h"
-#include "../../SL_Window.h"
+#include "UITileProperty.h"
 #include "../../imgui/imgui.h"
 #include "../../imgui/imgui_impl_dx11.h"
-#include <vector>
-#include "UITileProperty.h"
-#include "../../Map/MapEditor.h"
+
 #include "../../../Utils/ImageLoader.h"
-#include <SL_Texture.h>
+#include "../../Map/MapEditor.h"
+#include "../../Data/DataBase.h"
 
 using namespace ShunLib;
 using namespace std;
 
 UITileProperty::UITileProperty(const string& name,int id)
 	:UIBase(name)
-	,m_isView(true)
 {
 	SetID(id);
 	m_textureChangeButton = make_unique<UIButton>(" Change Image ");
@@ -45,7 +43,7 @@ void UITileProperty::SetID(int id)
 
 void UITileProperty::UIUpdate()
 {
-	m_tileData = TileDataHolder::GetInstance()->GetData(m_currentTileId);
+	m_tileData = DB_Tile.GetData(m_currentTileId);
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
@@ -58,12 +56,6 @@ void UITileProperty::DrawUpdate()
 
 void UITileProperty::UIDrawUpdate()
 {
-	if (!m_isView)
-	{
-		Active = false;
-		m_isView = true;
-	}
-
 	if (!Active)return;
 
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));

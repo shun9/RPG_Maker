@@ -14,7 +14,7 @@
 #include "UICheckBox.h"
 #include "UISlider.h"
 #include "UITilePropertyEGroup.h"
-#include "../../Map/TileDataHolder.h"
+#include "../../Data/TileData.h"
 
 class UITileProperty :public UIBase
 {
@@ -40,8 +40,6 @@ private:
 
 	// çÌèúÉ{É^Éì
 	std::unique_ptr<UIButton> m_removeGroupButton;
-
-	bool m_isView;
 public:
 
 	/// <summary>

@@ -8,7 +8,7 @@
 
 #include <assert.h>
 #include "../Classes/Editor/GameEditor.h"
-#include "../Classes/Map/TileDataHolder.h"
+#include "../Classes/Data/DataBase.h"
 
 using namespace std;
 
@@ -44,7 +44,7 @@ bool GameLoader::LoadGame(GameEditor* editor)
 /// </summary>
 bool GameLoader::LoadTileData(ifstream * file)
 {
-	auto holder = TileDataHolder::GetInstance();
+	auto& holder = DB_Tile;
 
 	//先頭のタイトルを書き込む
 	char tmp[5];
@@ -89,7 +89,7 @@ bool GameLoader::LoadTileData(ifstream * file)
 		file->read((char*)&tileData->canMove, sizeof(bool));
 
 		//データを追加
-		holder->AddData(move(tileData));
+		holder.AddData(move(tileData));
 	}
 
 	return true;
