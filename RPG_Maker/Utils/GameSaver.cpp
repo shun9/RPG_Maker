@@ -17,6 +17,8 @@ using namespace ShunLib;
 
 bool GameSaver::SaveGame(const string & fileName)
 {
+	if (fileName == "")return false;
+
 	//ファイルをバイナリ書き込みモードでオープン
 	ofstream file;
 	auto openName = fileName + string(".rpgm");
