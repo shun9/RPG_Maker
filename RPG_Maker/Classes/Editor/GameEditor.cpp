@@ -181,7 +181,7 @@ void GameEditor::DataInitialize(const Window& win)
 
 	DELETE_POINTER(m_map);
 	m_map = new Map();
-	m_map->DisplayRange(Vec2(350.0f, 66.0f), Vec2(win.Width(), win.Height()));
+	m_map->DisplayRange(Vec2(350.0f, 55.0f), Vec2(1658, 917));
 
 	//’£‚è‘Ö‚¦‚éƒ}ƒbƒv‚ğİ’è
 	auto edi = MapEditor::GetInstance();

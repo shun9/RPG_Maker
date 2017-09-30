@@ -20,12 +20,12 @@ const wchar_t* Tile::PATH = L"Image\\tile\\";
 /// <summary>
 /// •`‰æ
 /// </summary>
-void Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2 & scale, RECT* rect)
+bool Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2 & scale, RECT* rect)
 {
 	//î•ñ‚ª–³‚¯‚ê‚Î•`‰æ‚µ‚È‚¢
 	if (m_id == NONE)
 	{
-		return;
+		return false;
 	}
 
 	auto data = DB_Tile.GetData(m_id);
@@ -34,4 +34,5 @@ void Tile::Draw(const ShunLib::Vec2 & pos, const ShunLib::Vec2 & scale, RECT* re
 	{
 		data->texture->Draw(pos, scale, rect);
 	}
+	return true;
 }
