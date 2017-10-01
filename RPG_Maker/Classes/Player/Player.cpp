@@ -5,6 +5,7 @@
 //* @author:Y.mano
 //************************************************/
 #include "Player.h"
+#include "PlayerAction.h"
 #include <SL_KeyManager.h>
 #include <SL_Texture.h>
 
@@ -14,6 +15,10 @@ using namespace ShunLib;
 Player::Player()
 {
 	player = new ShunLib::Texture(L"Image\\charcter.png");
+
+	//パラメータ作成
+	m_param.resize(Player::PARAM::length, 10);
+	m_actionList.List().push_back(new PlayerAtackAction);
 
 	//ポジションの初期化
 	m_posOnMap = Vec2(0, 0);
@@ -36,6 +41,7 @@ Player::Player()
 
 	//アニメカウントの初期化
 	animecount = 0;
+	m_endMoveMoment = false;
 }
 
 Player::~Player()
@@ -48,10 +54,16 @@ void Player::Update()
 	{
 		count += SPEED;
 	}
+
 	if (count == TROUT)
 	{
 		count = 0;
 		state = false;
+		m_endMoveMoment = true;
+	}
+	else
+	{
+		m_endMoveMoment = false;
 	}
 
 	if (animecount == 32)

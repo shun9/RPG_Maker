@@ -12,13 +12,13 @@
 #include <memory>
 #include <functional>
 
-#define KEY_CODE ShunLib::KeyManager::KEY_CODE
+#define KEY ShunLib::KeyManager::KEY_CODE
 
 class ShortCutKey
 {
 private:
 
-	std::list<std::unique_ptr<std::pair<KEY_CODE, std::function<void()>>>> m_shortCutList;
+	std::list<std::unique_ptr<std::pair<KEY, std::function<void()>>>> m_shortCutList;
 
 public:
 
@@ -32,7 +32,7 @@ public:
 	/// </summary>
 	virtual ~ShortCutKey();
 
-	void Add(KEY_CODE keyList, std::function<void()> func);
+	void Add(KEY keyList, std::function<void()> func);
 
 	bool Update();
 };

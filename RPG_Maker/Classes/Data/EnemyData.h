@@ -9,12 +9,13 @@
 #include <memory>
 #include <SL_Texture.h>
 #include "Data.h"
+#include "../Battle/Action.h"
 
 class Enemy;
 
 // “G‚Ìî•ñ
 struct EnemyData :public Data{
-
+public:
 	enum Param {
 		HP,
 		MP,

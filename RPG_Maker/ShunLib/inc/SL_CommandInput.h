@@ -13,15 +13,15 @@
 
 namespace ShunLib
 {
-	template <class KEY, class T>
+	template <class _KEY, class T>
 	class CommandInput
 	{
 	private:
-		std::map<KEY, Command<T>*>m_commandList;
+		std::map<_KEY, Command<T>*>m_commandList;
 
 	public:
 		//引数のキーが設定されていたらコマンドを返す
-		Command<T>* HandleInput(const KEY& key) {
+		Command<T>* HandleInput(const _KEY& key) {
 			auto itr = m_commandList.find(key);
 			if (itr != m_commandList.end()) {
 				return (itr)->second;
@@ -32,13 +32,13 @@ namespace ShunLib
 		}
 
 		//コマンドの設定
-		void SetCommand(const KEY& key, Command<T>* command){
+		void SetCommand(const _KEY& key, Command<T>* command){
 			m_commandList[key] = command;
 		}
 
 		//キーのリストを返す
-		std::vector<KEY> GetKeyList() {
-			std::vector<KEY>keyList;
+		std::vector<_KEY> GetKeyList() {
+			std::vector<_KEY>keyList;
 			for (auto itr = m_commandList.begin(); itr != m_commandList.end(); itr++){
 				keyList.push_back((itr)->first);
 			}

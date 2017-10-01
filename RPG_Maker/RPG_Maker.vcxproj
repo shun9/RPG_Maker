@@ -156,6 +156,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Classes\AppBase\AppBase.h" />
+    <ClInclude Include="Classes\Battle\Action.h" />
+    <ClInclude Include="Classes\Battle\BattleManager.h" />
+    <ClInclude Include="Classes\Battle\BattleSystem.h" />
     <ClInclude Include="Classes\Data\Data.h" />
     <ClInclude Include="Classes\Data\DataBase.h" />
     <ClInclude Include="Classes\Data\DataHolder.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="Classes\Editor\GameEditor.h" />
     <ClInclude Include="Classes\Editor\ShortCutKey.h" />
     <ClInclude Include="Classes\Enemy\Enemy.h" />
+    <ClInclude Include="Classes\Enemy\EnemyAction.h" />
     <ClInclude Include="Classes\Game\Game.h" />
     <ClInclude Include="Classes\imgui\imconfig.h" />
     <ClInclude Include="Classes\imgui\imgui.h" />
@@ -182,6 +186,7 @@
     <ClInclude Include="Classes\UI\Editor\EnemyData\UIEnemyDataParam.h" />
     <ClInclude Include="Classes\UI\Editor\EnemyData\UIEnemyGroupDataParam.h" />
     <ClInclude Include="Classes\UI\Editor\EnemyData\UIEnemyGroupTable.h" />
+    <ClInclude Include="Classes\Player\PlayerAction.h" />
     <ClInclude Include="Classes\UI\Editor\EnemyData\UIEnemyTable.h" />
     <ClInclude Include="Classes\UI\Editor\UIBase.h" />
     <ClInclude Include="Classes\UI\Editor\UIButton.h" />
@@ -226,9 +231,12 @@
     <ClInclude Include="Utils\TileService.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Classes\Battle\BattleManager.cpp" />
+    <ClCompile Include="Classes\Battle\BattleSystem.cpp" />
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
     <ClCompile Include="Classes\Editor\ShortCutKey.cpp" />
     <ClCompile Include="Classes\Enemy\Enemy.cpp" />
+    <ClCompile Include="Classes\Enemy\EnemyAction.cpp" />
     <ClCompile Include="Classes\Game\Game.cpp" />
     <ClCompile Include="Classes\imgui\imgui.cpp" />
     <ClCompile Include="Classes\imgui\imgui_demo.cpp" />
@@ -242,6 +250,7 @@
     <ClCompile Include="Classes\UI\Editor\EnemyData\UIEnemyDataParam.cpp" />
     <ClCompile Include="Classes\UI\Editor\EnemyData\UIEnemyGroupDataParam.cpp" />
     <ClCompile Include="Classes\UI\Editor\EnemyData\UIEnemyGroupTable.cpp" />
+    <ClCompile Include="Classes\Player\PlayerAction.cpp" />
     <ClCompile Include="Classes\UI\Editor\EnemyData\UIEnemyTable.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIBase.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIButton.cpp" />

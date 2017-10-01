@@ -10,11 +10,24 @@
 #include <SL_Texture.h>
 #include "../Map/Map.h"
 #include <SL_ConstantNumber.h>
+#include "../Battle/Action.h"
 
 //プレイヤークラス
-
 class Player
 {
+public:
+	enum PARAM {
+		HP,
+		MP,
+		ATK,
+		DEF,
+		DEX,
+		SPD,
+		EXP,
+		MONEY,
+		length
+	};
+
 public:
 	Player();
 	~Player();
@@ -38,6 +51,12 @@ public:
 	void Setpos(const ShunLib::Vec2&);
 
 	ShunLib::ConstantNumber::DIRECTION_2D Getdirection();
+
+	ActionList& GetActionList() { return m_actionList; }
+	std::vector<int>& GetParam() { return m_param; }
+
+	bool IsEndMoveMoment() { return m_endMoveMoment; }
+
 private:
 	//マップ座標上の位置
 	ShunLib::Vec2 m_posOnMap;
@@ -75,6 +94,11 @@ private:
 	//アニメカウント
 	int animecount;
 
+	std::vector<int> m_param;
+	ActionList m_actionList;
+
+	//移動が終わった瞬間のみtrue
+	bool m_endMoveMoment;
 public:
 	void operator=(const Player& p);
 };
