@@ -8,6 +8,7 @@
 #include <SL_MacroConstants.h>
 #include "../Player/Player.h"
 #include "../Data/EnemyData.h"
+#include "BattleText.h"
 
 using namespace ShunLib;
 
@@ -24,7 +25,7 @@ BattleSystem::BattleSystem():
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::SPACE, new SelectDecideCommand);
 
 	m_enemyAction.List().push_back(new EnemyAttackAction);
-	m_arrowPos = { 0.0f,100.0f };
+	m_arrowPos = { 0.0f,60.0f };
 }
 
 BattleSystem::~BattleSystem()
@@ -37,6 +38,7 @@ void BattleSystem::Start()
 {
 	m_actionNum = 0;
 	m_exeAction = 0;
+
 	m_succesedEscape = false;
 }
 
@@ -140,16 +142,22 @@ bool BattleSystem::ExecuteAction()
 /// <returns></returns>
 bool BattleSystem::IsEnded()
 {
-	return true;
+	return false;
 }
+
 
 /// <summary>
 /// •`‰æ
 /// </summary>
 void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 {
-	m_backGround->Draw(pos, ShunLib::Vec2(0.8f, 0.8f));
-	m_arrow->Draw(m_arrowPos*m_actionNum+pos, ShunLib::Vec2(2.0f, 2.0f));
+	m_backGround->Draw(pos, ShunLib::Vec2(0.94f, 0.94f));
+
+	auto text = BattleText::GetInstance();
+
+	text->Draw(pos);
+
+	m_arrow->Draw(m_arrowPos*m_actionNum+ShunLib::Vec2(pos.m_x,405.0f), ShunLib::Vec2(2.0f, 2.0f));
 }
 
 

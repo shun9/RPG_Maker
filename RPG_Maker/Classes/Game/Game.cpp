@@ -88,7 +88,7 @@ void Game::Render()
 
 	if (m_isDuringBattle)
 	{
-		m_battle->Draw(ShunLib::Vec2(100.0f, 100.0f));
+		m_battle->Draw(ShunLib::Vec2(25.0f, 17.5f));
 	}
 	//描画対象をエディター用のウィンドウに戻す
 	win->SetDrawingWindow(ShunLib::Window::EDITOR);

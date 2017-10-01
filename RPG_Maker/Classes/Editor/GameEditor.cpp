@@ -149,14 +149,6 @@ void GameEditor::Render()
 	int mapX, mapY;
 	m_map->ConvertMapPos(mouse->GetMousePosition(), &mapX, &mapY);
 
-	ImGui::Text("scroll x : %.3f", m_map->Scroll()->m_x);
-	ImGui::Text("scroll y : %.3f", m_map->Scroll()->m_y);
-
-	ImGui::Text("mouse x : %.3f", mouse->GetMousePosition().m_x);
-	ImGui::Text("mouse y : %.3f", mouse->GetMousePosition().m_y);
-
-	ImGui::Text("tile list : %d", DB_Tile.GetContainerSize());
-
 	m_map->Draw();
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ

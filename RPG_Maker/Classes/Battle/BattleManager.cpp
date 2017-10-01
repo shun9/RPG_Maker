@@ -6,8 +6,13 @@
 //************************************************/
 #include "BattleManager.h"
 
+#include "BattleText.h"
+
 void BattleManager::Update()
 {
+	auto text = BattleText::GetInstance();
+	text->Update();
+
 	//s“®‚Ì‘I‘ğ
 	if (!m_isSelected)
 	{

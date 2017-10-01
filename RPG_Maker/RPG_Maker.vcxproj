@@ -159,6 +159,7 @@
     <ClInclude Include="Classes\Battle\Action.h" />
     <ClInclude Include="Classes\Battle\BattleManager.h" />
     <ClInclude Include="Classes\Battle\BattleSystem.h" />
+    <ClInclude Include="Classes\Battle\BattleText.h" />
     <ClInclude Include="Classes\Data\Data.h" />
     <ClInclude Include="Classes\Data\DataBase.h" />
     <ClInclude Include="Classes\Data\DataHolder.h" />
@@ -233,6 +234,7 @@
   <ItemGroup>
     <ClCompile Include="Classes\Battle\BattleManager.cpp" />
     <ClCompile Include="Classes\Battle\BattleSystem.cpp" />
+    <ClCompile Include="Classes\Battle\BattleText.cpp" />
     <ClCompile Include="Classes\Editor\GameEditor.cpp" />
     <ClCompile Include="Classes\Editor\ShortCutKey.cpp" />
     <ClCompile Include="Classes\Enemy\Enemy.cpp" />
