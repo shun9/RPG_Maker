@@ -18,7 +18,9 @@ Player::Player()
 
 	//パラメータ作成
 	m_param.resize(Player::PARAM::length, 10);
-	m_actionList.List().push_back(new PlayerAtackAction);
+	m_actionList.List().push_back(new PlayerAttackAction);
+	m_actionList.List().push_back(new PlayerDefenseAction);
+	m_actionList.List().push_back(new PlayerEscapeAction);
 
 	//ポジションの初期化
 	m_posOnMap = Vec2(0, 0);

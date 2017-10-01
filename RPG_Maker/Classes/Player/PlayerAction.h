@@ -8,10 +8,26 @@
 #include "../Battle/Action.h"
 #include <SL_MacroConstants.h>
 
-class PlayerAtackAction :public Action
+class PlayerAttackAction :public Action
 {
 public:
-	PlayerAtackAction() {}
-	~PlayerAtackAction() {}
+	PlayerAttackAction() {}
+	~PlayerAttackAction() {}
+	bool Execute(BattleSystem* obj)override;
+};
+
+class PlayerDefenseAction :public Action
+{
+public:
+	PlayerDefenseAction() {}
+	~PlayerDefenseAction() {}
+	bool Execute(BattleSystem* obj)override;
+};
+
+class PlayerEscapeAction :public Action
+{
+public:
+	PlayerEscapeAction() {}
+	~PlayerEscapeAction() {}
 	bool Execute(BattleSystem* obj)override;
 };

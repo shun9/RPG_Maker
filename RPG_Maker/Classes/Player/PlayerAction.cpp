@@ -7,9 +7,19 @@
 #include "PlayerAction.h"
 #include "../Battle/BattleSystem.h"
 
-bool PlayerAtackAction::Execute(BattleSystem * obj)
+bool PlayerAttackAction::Execute(BattleSystem * obj)
 {
 	//UŒ‚
 	obj->Player();
+	return true;
+}
+
+bool PlayerDefenseAction::Execute(BattleSystem * obj)
+{
+	return true;
+}
+
+bool PlayerEscapeAction::Execute(BattleSystem * obj)
+{
 	return true;
 }

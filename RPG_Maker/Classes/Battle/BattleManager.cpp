@@ -21,7 +21,7 @@ void BattleManager::Update()
 	}
 
 	//ƒ^[ƒ“‚ªI—¹‚µ‚½‚çÅ‰‚É–ß‚é
-	if (m_isExecuted || m_system.Enemy() == nullptr)
+	if (m_isExecuted)// || m_system.Enemy() == nullptr)
 	{
 		m_isSelected = false;
 		m_isExecuted = false;

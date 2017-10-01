@@ -171,7 +171,6 @@ void Game::ClampScroll()
 	}
 	m_scrollNum.m_x = scrollX;
 	m_scrollNum.m_y = scrollY;
-
 }
 
 /// <summary>
@@ -205,7 +204,7 @@ void Game::FieldUpdate()
 		if (m_player->IsEndMoveMoment() && m_map->IsEncount(m_player->Getpos()))
 		{
 			int enemyID = m_map->GetRandamEnemy(m_player->Getpos());
-			if (enemyID != -1)
+			//if (enemyID != -1)
 			{
 				m_isDuringBattle = true;
 				m_battle->SetPlayer(m_player);

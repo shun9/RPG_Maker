@@ -21,6 +21,7 @@ class BattleSystem
 private:
 	ShunLib::Texture* m_backGround;
 	ShunLib::Texture* m_arrow;
+	ShunLib::Vec2 m_arrowPos;
 
 	Player* m_player;
 	EnemyGroupData* m_enemy;

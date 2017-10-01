@@ -24,6 +24,7 @@ BattleSystem::BattleSystem():
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::SPACE, new SelectDecideCommand);
 
 	m_enemyAction.List().push_back(new EnemyAttackAction);
+	m_arrowPos = { 0.0f,100.0f };
 }
 
 BattleSystem::~BattleSystem()
@@ -96,8 +97,8 @@ void BattleSystem::StackAction()
 	int spd = m_player->GetParam()[Player::PARAM::SPD];
 	m_actionList.insert(std::make_pair(spd, list[m_actionNum]));
 
-	auto enemyList = m_enemy->enemyList;
-	for (int i = 0; i < (int)(enemyList.size()); i++)
+	//auto enemyList = m_enemy->enemyList;
+	for (int i = 0; i < (int)(2); i++)
 	{
 		m_actionList.insert(std::make_pair(0, m_enemyAction.List()[0]));
 	}
@@ -109,7 +110,7 @@ void BattleSystem::StackAction()
 /// <returns>実行が終わったらtrue</returns>
 bool BattleSystem::ExecuteAction()
 {
-	auto action = m_actionList.begin();
+	auto action = m_actionList.rbegin();
 
 	//現在実行中の行動まで進める
 	for (int i = 0; i < m_exeAction; i++)
@@ -119,7 +120,7 @@ bool BattleSystem::ExecuteAction()
 
 	//行動の実行
 	bool isEnded = true;
-	if (action != m_actionList.end())
+	if (action != m_actionList.rend())
 	{
 		isEnded = action->second->Execute(this);
 
@@ -148,7 +149,7 @@ bool BattleSystem::IsEnded()
 void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 {
 	m_backGround->Draw(pos, ShunLib::Vec2(0.8f, 0.8f));
-	m_arrow->Draw(pos, ShunLib::Vec2(1.0f, 1.0f));
+	m_arrow->Draw(m_arrowPos*m_actionNum+pos, ShunLib::Vec2(2.0f, 2.0f));
 }
 
 
