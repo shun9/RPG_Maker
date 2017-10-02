@@ -6,6 +6,7 @@
 //************************************************/
 #include "BattleSystem.h"
 #include <SL_MacroConstants.h>
+#include <SL_RandomNumber.h>
 #include "../Player/Player.h"
 #include "../Data/EnemyData.h"
 #include "BattleText.h"
@@ -14,7 +15,6 @@ using namespace ShunLib;
 
 BattleSystem::BattleSystem():
 	m_player(nullptr),
-	m_enemy(nullptr),
 	m_succesedEscape(false),
 	m_isExecuteAction(false)
 {
@@ -24,6 +24,21 @@ BattleSystem::BattleSystem():
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::UP, new SelectUpCommand);
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::DOWN, new SelectDownCommand);
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::SPACE, new SelectDecideCommand);
+
+	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::RIGHT, new SelectUpTarget);
+	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::LEFT, new SelectDownTarget);
+	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::SPACE, new SelectDecideTarget);
+
+	EnemyData data;
+	data.Param.resize(EnemyData::Param::length);
+	data.Param[EnemyData::HP] = 10;
+	data.Param[EnemyData::ATK] = 10;
+	data.Param[EnemyData::DEF] = 10;
+	data.Param[EnemyData::EVA] = 10;
+	m_enemy.enemyList.push_back(std::make_pair(ShunLib::Vec2(50.0f, 0.0f), &data));
+	m_enemy.enemyList.push_back(std::make_pair(ShunLib::Vec2(150.0f, 0.0f), &data));
+	m_enemy.enemyList.push_back(std::make_pair(ShunLib::Vec2(250.0f, 0.0f), &data));
+
 
 	m_enemyAction.List().push_back(new EnemyAttackAction);
 	m_arrowPos = { 0.0f,60.0f };
@@ -42,8 +57,10 @@ void BattleSystem::Start()
 {
 	m_actionNum = 0;
 	m_exeAction = 0;
+	m_targetNum = 0;
 	m_isExecuteAction = false;
 	m_succesedEscape = false;
+	m_isSelectTarget = false;
 }
 
 /// <summary>
@@ -57,24 +74,16 @@ bool BattleSystem::SelectAction()
 	//決定したかどうか
 	bool isDecided = false;
 	m_isExecuteAction = false;
-	auto keyList = m_commandInput.GetKeyList();
-	for (int i = 0; i < (int)keyList.size(); i++)
+	if (!m_isSelectTarget)
 	{
-		//キーが押されていたら実行
-		if (key->IsTracker(keyList[i]))
-		{
-			isDecided = m_commandInput.HandleInput(keyList[i])->Execute(this);
-		}
-
-		//行動が決定したらtrue
-		if (isDecided)
-		{
-			//行動を積む
-			StackAction();
-			return true;
-		}
+		isDecided = SelectCommand();
 	}
-	return false;
+	else
+	{
+		isDecided = SelectTarget();
+	}
+
+	return isDecided;
 }
 
 /// <summary>
@@ -95,19 +104,42 @@ void BattleSystem::ShiftOption(int num)
 }
 
 /// <summary>
+/// ターゲットを変更
+/// </summary>
+/// <param name="num">移動する値</param>
+void BattleSystem::ShiftTarget(int num)
+{
+	m_targetNum += num;
+	int listSize = (int)(m_enemy.enemyList.size()) - 1;
+
+	if (m_targetNum < 0) {
+		m_targetNum = listSize;
+	}
+	else if (m_targetNum > listSize) {
+		m_targetNum = 0;
+	}
+}
+
+/// <summary>
 /// 行動を積む
 /// </summary>
 void BattleSystem::StackAction()
 {
 	m_actionList.clear();
+	m_charactorList.clear();
 
 	auto list = m_player->GetActionList().List();
 	int spd = m_player->GetParam()[Player::PARAM::SPD];
 	m_actionList.insert(std::make_pair(spd, list[m_actionNum]));
+	m_charactorList.insert(std::make_pair(spd, m_player));
+	m_isSelectTarget = list[m_actionNum]->ShouldSelectTarget();
 
-	for (int i = 0; i < (int)(2); i++)
+	for (int i = 0; i < (int)(m_enemy.enemyList.size()); i++)
 	{
-		m_actionList.insert(std::make_pair(0, m_enemyAction.List()[0]));
+		ShunLib::RandomNumber rn;
+		int num = rn(0, m_enemyAction.List().size() - 1);
+		m_actionList.insert(std::make_pair(0, m_enemyAction.List()[num]));
+		m_charactorList.insert(std::make_pair(0,m_enemy.enemyList[i].second));
 	}
 
 	//ターンごとに初期化
@@ -119,6 +151,7 @@ void BattleSystem::StackAction()
 	m_isExecuteAction = true;
 }
 
+
 /// <summary>
 /// 行動を実行する
 /// </summary>
@@ -126,18 +159,20 @@ void BattleSystem::StackAction()
 bool BattleSystem::ExecuteAction()
 {
 	auto action = m_actionList.rbegin();
+	auto charactor = m_charactorList.rbegin();
 
 	//現在実行中の行動まで進める
 	for (int i = 0; i < m_exeAction; i++)
 	{
 		action++;
+		charactor++;
 	}
 
 	//行動の実行
 	bool isEnded = true;
 	if (action != m_actionList.rend())
 	{
-		isEnded = action->second->Execute(this);
+		isEnded = action->second->Execute(this, (charactor)->second);
 
 		//行動が終わったら次の行動に移る
 		if (isEnded)
@@ -163,6 +198,10 @@ bool BattleSystem::ExecuteAction()
 /// <returns></returns>
 bool BattleSystem::IsEnded()
 {
+	if (m_succesedEscape)
+	{
+		return true;
+	}
 	return false;
 }
 
@@ -182,10 +221,84 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 	}
 	else {
 		text->CommandDraw(pos);
-		m_arrow->Draw(m_arrowPos*m_actionNum + ShunLib::Vec2(pos.m_x, 405.0f), ShunLib::Vec2(2.0f, 2.0f));
+		if (!m_isSelectTarget)
+		{
+			m_arrow->Draw(m_arrowPos*m_actionNum + ShunLib::Vec2(pos.m_x, 405.0f), ShunLib::Vec2(2.0f, 2.0f));
+		}
+		else
+		{
+			auto tarPos = m_enemy.enemyList[m_targetNum].first;
+			m_arrow->Draw(tarPos + ShunLib::Vec2(0.0f, 400.0f), ShunLib::Vec2(2.0f, 2.0f));
+		}
 	}
 
 }
+
+/// <summary>
+/// コマンドの選択
+/// </summary>
+bool BattleSystem::SelectCommand()
+{
+	auto key = ShunLib::KeyManager::GetInstance();
+
+	//決定したかどうか
+	bool isDecided = false;
+	m_isExecuteAction = false;
+	auto keyList = m_commandInput.GetKeyList();
+	for (int i = 0; i < (int)keyList.size(); i++)
+	{
+		//キーが押されていたら実行
+		if (key->IsTracker(keyList[i]))
+		{
+			isDecided = m_commandInput.HandleInput(keyList[i])->Execute(this);
+		}
+
+		//行動が決定したらtrue
+		if (isDecided)
+		{
+			//行動を積む
+			StackAction();
+
+			if (m_isSelectTarget)isDecided = false;
+			break;
+		}
+	}
+	return isDecided;
+}
+
+/// <summary>
+/// ターゲット選択
+/// </summary>
+bool BattleSystem::SelectTarget()
+{
+	auto key = ShunLib::KeyManager::GetInstance();
+
+	//決定したかどうか
+	bool isDecided = false;
+	m_isExecuteAction = false;
+	auto keyList = m_targetSelectInput.GetKeyList();
+
+	for (int i = 0; i < (int)keyList.size(); i++)
+	{
+		//キーが押されていたら実行
+		if (key->IsTracker(keyList[i]))
+		{
+			isDecided = m_targetSelectInput.HandleInput(keyList[i])->Execute(this);
+		}
+
+		//決定したらターゲットを設定
+		if (isDecided)
+		{
+			auto list = m_player->GetActionList().List();
+			list[m_actionNum]->Target(m_targetNum);
+			m_isExecuteAction = true;
+			break;
+		}
+	}
+	return isDecided;
+}
+
+
 
 
 //選択肢を1つ上に移動する
@@ -204,6 +317,26 @@ bool SelectDownCommand::Execute(BattleSystem * obj)
 
 //選択肢を決定する
 bool SelectDecideCommand::Execute(BattleSystem * obj)
+{
+	return true;
+}
+
+//ターゲットを1つ上に移動する
+bool SelectUpTarget::Execute(BattleSystem * obj)
+{
+	obj->ShiftTarget(+1);
+	return false;
+}
+
+//ターゲットを1つ下に移動する
+bool SelectDownTarget::Execute(BattleSystem * obj)
+{
+	obj->ShiftTarget(-1);
+	return false;
+}
+
+//ターゲットを決定
+bool SelectDecideTarget::Execute(BattleSystem * obj)
 {
 	return true;
 }

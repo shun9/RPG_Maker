@@ -44,6 +44,12 @@ void BattleManager::Update()
 	{
 
 	}
+
+	//“¦‚°‚Ä‚¢‚½‚çI—¹
+	if (!m_isEnded)
+	{
+		m_isEnded = m_system.IsEscape();
+	}
 }
 
 void BattleManager::Draw(const ShunLib::Vec2 & pos)

@@ -13,7 +13,7 @@ class EnemyAttackAction:public Action
 public:
 	EnemyAttackAction() {}
 	~EnemyAttackAction() {}
-	bool Execute(BattleSystem* obj)override;
+	bool Execute(BattleSystem* obj, void* own)override;
 	void Start()override {
 		m_isSetText = false;
 	};

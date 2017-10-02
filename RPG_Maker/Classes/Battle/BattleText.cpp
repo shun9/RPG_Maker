@@ -6,9 +6,13 @@
 //************************************************/
 #include "BattleText.h"
 #include <string>
+#include <SL_KeyManager.h>
 #include "../../SL_Window.h"
 #include "BattleTextPreset.h"
 
+/// <summary>
+/// 更新
+/// </summary>
 void BattleText::Update()
 {
 	//タイマーの更新
@@ -27,6 +31,9 @@ void BattleText::Update()
 	}
 }
 
+/// <summary>
+/// テキストの描画
+/// </summary>
 void BattleText::Draw(const ShunLib::Vec2 & pos)
 {
 	auto win = ShunLib::Window::GetInstance();
@@ -131,10 +138,18 @@ void BattleText::CommandDraw(const ShunLib::Vec2 & pos)
 /// <returns></returns>
 bool BattleText::IsEnded()
 {
+	bool isEnd = false;
+	auto key = ShunLib::KeyManager::GetInstance();
+	if (key->IsTracker(ShunLib::KeyManager::KEY_CODE::SPACE))
+	{
+		isEnd = m_timer.back().IsEnded();
+	}
+
 	//最後のタイマーが終了していたら終わっている
-	return m_timer.back().IsEnded();
+	return isEnd;
 }
 
+//描画するテキストを描画
 void BattleText::SetString(std::string str)
 {
 	m_text.push_back(str);
@@ -152,7 +167,7 @@ void BattleText::Reset()
 
 BattleText::BattleText() :
 	m_isEnded(false),
-	DRAWING_TIME(90.0f)
+	DRAWING_TIME(60.0f)
 {
 
 }

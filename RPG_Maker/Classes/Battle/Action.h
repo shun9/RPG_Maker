@@ -15,11 +15,17 @@ class Action
 {
 protected:
 	bool m_isSetText;
+	bool m_shouldSelectTarget;
+	int m_target;
+
 public:
-	Action():m_isSetText(false){}
+	Action():m_isSetText(false), m_shouldSelectTarget(false){}
 	virtual ~Action() {}
-	virtual bool Execute(BattleSystem* obj) = 0;
+	virtual bool Execute(BattleSystem* obj,void* own) = 0;
 	virtual void Start() = 0;
+
+	bool ShouldSelectTarget() { return m_shouldSelectTarget; }
+	void Target(int tar) { m_target = tar; }
 };
 
 class ActionList

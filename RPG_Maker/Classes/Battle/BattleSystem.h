@@ -24,17 +24,22 @@ private:
 	ShunLib::Vec2 m_arrowPos;
 
 	Player* m_player;
-	EnemyGroupData* m_enemy;
+	EnemyGroupData m_enemy;
 	ActionList m_enemyAction;
 
 	//プレイヤーの実行する行動一覧
 	std::multimap<int, Action*>m_actionList;
+	std::multimap<int, void*>m_charactorList;
 
 	//プレイヤーが実行する行動の番号
 	int m_actionNum;
+	int m_targetNum;
 
 	//実行中の行動
 	int m_exeAction;
+
+	//ターゲットを選択中かどうか
+	bool m_isSelectTarget;
 
 	//行動を実行中かどうか
 	bool m_isExecuteAction;
@@ -44,6 +49,7 @@ private:
 
 	//キー入力
 	ShunLib::CommandInput<ShunLib::KeyManager::KEY_CODE, BattleSystem>m_commandInput;
+	ShunLib::CommandInput<ShunLib::KeyManager::KEY_CODE, BattleSystem>m_targetSelectInput;
 
 	//プレイヤーが勝ったかどうか
 	bool m_isWinPlayer;
@@ -59,6 +65,7 @@ public:
 
 	//選択肢を移動する
 	void ShiftOption(int num);
+	void ShiftTarget(int num);
 
 	//行動を積む
 	void StackAction();
@@ -74,13 +81,17 @@ public:
 
 	//戦うキャラクターを設定
 	void SetPlayer(Player* p) { m_player = p; }
-	void SetEnemy(int id) { m_enemy = DB_EnemyGroup.GetData(id); }
+	void SetEnemy(int id) { m_enemy = *DB_EnemyGroup.GetData(id); }
 
 	//戦うキャラクターを取得
 	Player* Player() { return m_player; }
-	EnemyGroupData* Enemy() { return m_enemy; }
+	EnemyGroupData* Enemy() { return &m_enemy; }
 
+	void Escape() { m_succesedEscape = true; }
+	bool IsEscape() { return m_succesedEscape; }
 private:
+	bool SelectCommand();
+	bool SelectTarget();
 };
 
 
@@ -110,6 +121,35 @@ class SelectDecideCommand :public ShunLib::Command<BattleSystem>
 public:
 	SelectDecideCommand() {}
 	~SelectDecideCommand() {}
+	bool Execute(BattleSystem* obj)override;
+};
+
+//選択肢を1つ上に移動する
+class SelectUpTarget :public ShunLib::Command<BattleSystem>
+{
+public:
+	SelectUpTarget() {}
+	~SelectUpTarget() {}
+	bool Execute(BattleSystem* obj)override;
+};
+
+
+//選択肢を1つ下に移動する
+class SelectDownTarget :public ShunLib::Command<BattleSystem>
+{
+public:
+	SelectDownTarget() {}
+	~SelectDownTarget() {}
+	bool Execute(BattleSystem* obj)override;
+};
+
+
+//選択肢を決定する
+class SelectDecideTarget :public ShunLib::Command<BattleSystem>
+{
+public:
+	SelectDecideTarget() {}
+	~SelectDecideTarget() {}
 	bool Execute(BattleSystem* obj)override;
 };
 
