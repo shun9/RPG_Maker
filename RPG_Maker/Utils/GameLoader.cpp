@@ -168,6 +168,40 @@ bool GameLoader::LoadPlayerData(ifstream * file)
 /// </summary>
 bool GameLoader::LoadEnemyData(ifstream * file)
 {
+	auto& holder = DB_Enemy;
+	auto containerSize = holder.GetContainerSize();
+
+	std::wstring texture;
+	wchar_t* path;
+	int size = 0;
+	char nameBuf[255];
+
+	for (int i = 0; i < containerSize; i++)
+	{
+		//敵データを作成
+		std::unique_ptr<EnemyData> data;
+		data = std::make_unique<EnemyData>();
+
+		//敵の名前
+		file->read((char*)&size, sizeof(size));
+		file->read((char*)nameBuf, size);
+		data->Name = nameBuf;
+
+		//テクスチャのパス　終端文字があるので+1
+		file->read((char*)&size, sizeof(size));
+		file->read((char*)path, size);
+		data->Texture = std::make_unique<ShunLib::Texture>(path);
+
+		//能力値
+		data->Param.resize(EnemyData::Param::length);
+		for (int j = 0; j < (int)data->Param.size(); j++)
+		{
+			file->read((char*)&data->Param[i], sizeof(int));
+		}
+
+		holder.AddData(move(data));
+	}
+
 	return true;
 }
 

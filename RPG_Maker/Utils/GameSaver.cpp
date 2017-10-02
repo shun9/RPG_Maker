@@ -107,11 +107,12 @@ bool GameSaver::SaveTileData(ofstream* file)
 	std::wstring texture;
 	wchar_t* path;
 	int size =0;
+	TileData* data;
 
 	//データ数だけループする
 	for (int i = 0; i < containerSize; i++)
 	{
-		auto data = holder.GetData(i);
+		data = holder.GetData(i);
 
 		//テクスチャのパス　終端文字があるので+1
 		texture = data->texture->GetPath();
@@ -184,6 +185,36 @@ bool GameSaver::SavePlayerData(ofstream * file)
 /// </summary>
 bool GameSaver::SaveEnemyData(ofstream * file)
 {
+	const auto& holder = DB_Enemy;
+	auto containerSize = holder.GetContainerSize();
+
+	EnemyData* data;
+	std::wstring texture;
+	wchar_t* path;
+	int size = 0;
+
+	for (int i = 0; i < containerSize; i++)
+	{
+		data = holder.GetData(i);
+
+		//敵の名前
+		size = data->Name.length();
+		file->write((char*)&size, sizeof(size));
+		file->write(data->Name.c_str(), size);
+
+		//テクスチャのパス　終端文字があるので+1
+		texture = data->Texture->GetPath();
+		size = (texture.length() + 1) * 2;
+		path = const_cast<wchar_t*>(texture.c_str());
+		file->write((char*)&size, sizeof(size));
+		file->write((char*)path, size);
+
+		//能力値
+		for (int j = 0; j < (int)data->Param.size(); j++)
+		{
+			file->write((char*)&data->Param[i], sizeof(int));
+		}
+	}
 	return true;
 }
 
