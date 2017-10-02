@@ -15,7 +15,7 @@
 
 using namespace ShunLib;
 
-BattleSystem::BattleSystem():
+BattleSystem::BattleSystem() :
 	m_player(nullptr),
 	m_succesedEscape(false),
 	m_isExecuteAction(false)
@@ -36,12 +36,12 @@ BattleSystem::BattleSystem():
 
 	tmp = std::make_unique<EnemyGroupData>();
 
-	tmp->enemyList.push_back(std::make_pair(ShunLib::Vec2(150.0f, 300.0f), db.GetData(id)));
-	tmp->enemyList.push_back(std::make_pair(ShunLib::Vec2(350.0f, 300.0f), db.GetData(id)));
-	tmp->enemyList.push_back(std::make_pair(ShunLib::Vec2(550.0f, 300.0f), db.GetData(id)));
+	tmp->enemyList.push_back(std::make_pair(id, ShunLib::Vec2(150.0f, 300.0f)));
+	tmp->enemyList.push_back(std::make_pair(id, ShunLib::Vec2(350.0f, 300.0f)));
+	tmp->enemyList.push_back(std::make_pair(id, ShunLib::Vec2(550.0f, 300.0f)));
 
 	id = DB_EnemyGroup.AddData(move(tmp));
-	m_enemy = *DB_EnemyGroup.GetData(id);
+	this->SetEnemy(id);
 
 	m_enemyAction.List().push_back(new EnemyAttackAction);
 
@@ -86,8 +86,7 @@ bool BattleSystem::SelectAction()
 	{
 		isDecided = SelectCommand();
 	}
-
-	if (m_isSelectTarget)
+	else if (m_isSelectTarget)
 	{
 		isDecided = SelectTarget();
 	}
@@ -105,10 +104,10 @@ void BattleSystem::ShiftOption(int num)
 	m_actionNum += num;
 	int listSize = (int)(m_player->GetActionList().List().size()) - 1;
 
-	if (m_actionNum < 0){
+	if (m_actionNum < 0) {
 		m_actionNum = listSize;
 	}
-	else if (m_actionNum > listSize){
+	else if (m_actionNum > listSize) {
 		m_actionNum = 0;
 	}
 }
@@ -121,13 +120,26 @@ void BattleSystem::ShiftOption(int num)
 void BattleSystem::ShiftTarget(int num)
 {
 	m_targetNum += num;
-	int listSize = (int)(m_enemy.enemyList.size()) - 1;
+
+	int listSize = (int)(m_enemy->enemyList.size()) - 1;
 
 	if (m_targetNum < 0) {
 		m_targetNum = listSize;
 	}
 	else if (m_targetNum > listSize) {
 		m_targetNum = 0;
+	}
+
+	while (m_enemyHp[m_targetNum] <= 0)
+	{
+		m_targetNum += num;
+
+		if (m_targetNum < 0) {
+			m_targetNum = listSize;
+		}
+		else if (m_targetNum > listSize) {
+			m_targetNum = 0;
+		}
 	}
 }
 
@@ -141,17 +153,24 @@ void BattleSystem::StackAction()
 	m_charactorList.clear();
 
 	auto list = m_player->GetActionList().List();
-	int spd = m_player->GetParam()[Player::PARAM::SPD];
+	int spd = -1;// m_player->GetParam()[Player::PARAM::SPD];
 	m_actionList.insert(std::make_pair(spd, list[m_actionNum]));
 	m_charactorList.insert(std::make_pair(spd, m_player));
 	m_isSelectTarget = list[m_actionNum]->ShouldSelectTarget();
 
-	for (int i = 0; i < (int)(m_enemy.enemyList.size()); i++)
+	auto& db = DB_Enemy;
+	ShunLib::RandomNumber rn;
+	EnemyData* enemy;
+	for (int i = 0; i < (int)(m_enemy->enemyList.size()); i++)
 	{
-		ShunLib::RandomNumber rn;
-		int num = rn(0, m_enemyAction.List().size() - 1);
-		m_actionList.insert(std::make_pair(0, m_enemyAction.List()[num]));
-		m_charactorList.insert(std::make_pair(0,m_enemy.enemyList[i].second));
+		//死んでる敵の行動は積まない
+		if (m_enemyHp[i] > 0)
+		{
+			enemy = db.GetData(m_enemy->enemyList[i].first);
+			int num = rn(0, m_enemyAction.List().size() - 1);
+			m_actionList.insert(std::make_pair(enemy->Param[EnemyData::Param::DEX], m_enemyAction.List()[num]));
+			m_charactorList.insert(std::make_pair(enemy->Param[EnemyData::Param::DEX], enemy));
+		}
 	}
 
 	//ターンごとに初期化
@@ -196,7 +215,6 @@ bool BattleSystem::ExecuteAction()
 			}
 
 			auto next = (++action);
-
 			//次の行動があるなら初期化
 			if (next != m_actionList.rend())
 			{
@@ -225,7 +243,16 @@ bool BattleSystem::IsEnded()
 	{
 		return true;
 	}
-	return false;
+
+	for (int i = 0; i < m_enemyHp.size(); i++)
+	{
+		if (m_enemyHp[i] > 0)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
@@ -250,22 +277,33 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		}
 		else
 		{
-			auto tarPos = m_enemy.enemyList[m_targetNum].first;
+			auto tarPos = m_enemy->enemyList[m_targetNum].second;
 			m_arrow->Draw(tarPos + ShunLib::Vec2(0.0f, 50.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
 
-	ShunLib::Vec2 enemyPos;
 	auto& ds = DB_Enemy;
-
-	for (int i = 0; i < (int)(m_enemy.enemyList.size()); i++)
+	ShunLib::Vec2 enemyPos;
+	EnemyData* enemy;
+	for (int i = 0; i < (int)(m_enemy->enemyList.size()); i++)
 	{
-		if (m_enemy.enemyList[i].second->Param[EnemyData::HP] > 0)
+		enemy = DB_Enemy.GetData(m_enemy->enemyList[i].first);
+		if (m_enemyHp[i] > 0)
 		{
-			enemyPos = m_enemy.enemyList[i].first;
-			m_enemy.enemyList[i].second->Texture->Draw(enemyPos, ShunLib::Vec2::One);
+			enemyPos = m_enemy->enemyList[i].second;
+			enemy->Texture->Draw(enemyPos, ShunLib::Vec2::One);
 		}
 	}
+}
+
+
+/// <summary>
+/// 敵にダメージを与える
+/// </summary>
+int BattleSystem::TakeDamageEnemy(int damage)
+{
+	m_enemyHp[m_targetNum] -= damage;
+	return damage;
 }
 
 /// <summary>

@@ -77,13 +77,13 @@ void GameEditor::Initialize()
 		m_uiMenu->SetMenuItemFunc("File ", "4.Tile Load", [this]() {SelectedCreateTileData(); });
 
 		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+T)", [this]() {TilePropertyChangeActive(); });
-		m_shortCutKey.Add(KEY_CODE::T, [this]() {TilePropertyChangeActive(); });
+		m_shortCutKey.Add(KEY::T, [this]() {TilePropertyChangeActive(); });
 
 		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() { });
 
 
 		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)", [this]() {StartDebug(); });
-		m_shortCutKey.Add(KEY_CODE::P, [this]() {StartDebug(); });
+		m_shortCutKey.Add(KEY::P, [this]() {StartDebug(); });
 	}
 }
 

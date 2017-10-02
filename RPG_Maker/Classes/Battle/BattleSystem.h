@@ -25,12 +25,14 @@ private:
 	Player* m_player;
 
 	std::unique_ptr<EnemyGroupData> tmp;
-	EnemyGroupData m_enemy;
+	EnemyGroupData* m_enemy;
 	ActionList m_enemyAction;
 
 	//プレイヤーの実行する行動一覧
 	std::multimap<int, Action*>m_actionList;
 	std::multimap<int, void*>m_charactorList;
+
+	std::vector<int>m_enemyHp;
 
 	//プレイヤーが実行する行動の番号
 	int m_actionNum;
@@ -83,16 +85,27 @@ public:
 
 	//戦うキャラクターを設定
 	void SetPlayer(Player* p) {m_player = p;}
-	void SetEnemy(int id) { m_enemy = *DB_EnemyGroup.GetData(id); }
+	void SetEnemy(int id) {
+		auto& db = DB_Enemy;
+		m_enemy = DB_EnemyGroup.GetData(id);
+		//HPを保存
+		for (int i = 0; i < m_enemy->enemyList.size(); i++)
+		{
+			m_enemyHp.push_back(db.GetData(m_enemy->enemyList[i].first)->Param[EnemyData::Param::HP]);
+		}
+	}
 
 	//戦うキャラクターを取得
 	Player* Player() { return m_player; }
-	EnemyGroupData* Enemy() { return &m_enemy; }
+	EnemyGroupData* Enemy() { return m_enemy; }
 
 	void Escape() { m_succesedEscape = true; }
 	bool IsEscape() { return m_succesedEscape; }
 
-
+	int TakeDamageEnemy(int damage);
+	EnemyData* GetTarget() {
+		return DB_Enemy.GetData(m_enemy->enemyList[m_targetNum].first);
+	}
 private:
 	bool SelectCommand();
 	bool SelectTarget();

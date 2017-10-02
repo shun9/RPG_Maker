@@ -23,10 +23,14 @@ bool PlayerAttackAction::Execute(BattleSystem * obj, void* own)
 	//UŒ‚
 	if (!m_isSetText)
 	{
+		int damage = obj->TakeDamageEnemy(player->GetParam()[Player::ATK]);
+
 		text->Reset();
 		m_isSetText = true;
 		std::string str = u8"ƒvƒŒƒCƒ„[";
 		text->SetString(ATTACK_TEXT(str));
+		text->SetString(TAKE_DAMEGE_TEXT(obj->GetTarget()->Name,GetNumberText(damage)));
+
 		player->ChangeDefence(false);
 	}
 	else
