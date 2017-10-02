@@ -6,15 +6,20 @@
 //************************************************/
 #pragma once
 #include <vector>
+#include <string>
 #include <SL_MacroConstants.h>
 
 class BattleSystem;
+
 class Action
 {
+protected:
+	bool m_isSetText;
 public:
-	Action() {}
+	Action():m_isSetText(false){}
 	virtual ~Action() {}
 	virtual bool Execute(BattleSystem* obj) = 0;
+	virtual void Start() = 0;
 };
 
 class ActionList

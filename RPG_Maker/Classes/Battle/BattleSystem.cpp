@@ -15,7 +15,8 @@ using namespace ShunLib;
 BattleSystem::BattleSystem():
 	m_player(nullptr),
 	m_enemy(nullptr),
-	m_succesedEscape(false)
+	m_succesedEscape(false),
+	m_isExecuteAction(false)
 {
 	m_backGround = new ShunLib::Texture(L"Image\\Prairie.png");
 	m_arrow = new ShunLib::Texture(L"Image\\arrow.png");
@@ -34,11 +35,14 @@ BattleSystem::~BattleSystem()
 	DELETE_POINTER(m_arrow);
 }
 
+/// <summary>
+/// ターンごとの初期化
+/// </summary>
 void BattleSystem::Start()
 {
 	m_actionNum = 0;
 	m_exeAction = 0;
-
+	m_isExecuteAction = false;
 	m_succesedEscape = false;
 }
 
@@ -52,7 +56,7 @@ bool BattleSystem::SelectAction()
 
 	//決定したかどうか
 	bool isDecided = false;
-
+	m_isExecuteAction = false;
 	auto keyList = m_commandInput.GetKeyList();
 	for (int i = 0; i < (int)keyList.size(); i++)
 	{
@@ -95,15 +99,24 @@ void BattleSystem::ShiftOption(int num)
 /// </summary>
 void BattleSystem::StackAction()
 {
+	m_actionList.clear();
+
 	auto list = m_player->GetActionList().List();
 	int spd = m_player->GetParam()[Player::PARAM::SPD];
 	m_actionList.insert(std::make_pair(spd, list[m_actionNum]));
 
-	//auto enemyList = m_enemy->enemyList;
 	for (int i = 0; i < (int)(2); i++)
 	{
 		m_actionList.insert(std::make_pair(0, m_enemyAction.List()[0]));
 	}
+
+	//ターンごとに初期化
+	for (auto itr = m_actionList.begin(); itr != m_actionList.end(); itr++)
+	{
+		(*itr).second->Start();
+	}
+
+	m_isExecuteAction = true;
 }
 
 /// <summary>
@@ -129,10 +142,18 @@ bool BattleSystem::ExecuteAction()
 		//行動が終わったら次の行動に移る
 		if (isEnded)
 		{
-			m_exeAction++;
-			isEnded = false;
+			auto next = (++action);
+
+			//次の行動があるなら初期化
+			if (next != m_actionList.rend())
+			{
+				next->second->Start();
+				isEnded = false;
+				m_exeAction++;
+			}
 		}
 	}
+
 	return isEnded;
 }
 
@@ -155,9 +176,15 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 
 	auto text = BattleText::GetInstance();
 
-	text->Draw(pos);
+	if (m_isExecuteAction)
+	{
+		text->Draw(pos);
+	}
+	else {
+		text->CommandDraw(pos);
+		m_arrow->Draw(m_arrowPos*m_actionNum + ShunLib::Vec2(pos.m_x, 405.0f), ShunLib::Vec2(2.0f, 2.0f));
+	}
 
-	m_arrow->Draw(m_arrowPos*m_actionNum+ShunLib::Vec2(pos.m_x,405.0f), ShunLib::Vec2(2.0f, 2.0f));
 }
 
 

@@ -13,6 +13,13 @@ void BattleManager::Update()
 	auto text = BattleText::GetInstance();
 	text->Update();
 
+	//ターンごとの初期化
+	if (m_isTurnEnd)
+	{
+		m_system.Start();
+		m_isTurnEnd = false;
+	}
+
 	//行動の選択
 	if (!m_isSelected)
 	{
@@ -22,14 +29,13 @@ void BattleManager::Update()
 	//行動を実行する
 	if (m_isSelected)
 	{
-		m_isExecuted = m_system.ExecuteAction();
+		m_isTurnEnd = m_system.ExecuteAction();
 	}
 
 	//ターンが終了したら最初に戻る
-	if (m_isExecuted)// || m_system.Enemy() == nullptr)
+	if (m_isTurnEnd)// || m_system.Enemy() == nullptr)
 	{
 		m_isSelected = false;
-		m_isExecuted = false;
 		m_isEnded = m_system.IsEnded();
 	}
 

@@ -23,7 +23,6 @@
 #include "../../Utils/GameSaver.h"
 
 using namespace std;
-
 GameEditor::GameEditor()
 	:m_map(nullptr)
 {
@@ -63,7 +62,7 @@ void GameEditor::Initialize()
 	DataInitialize(*win);
 
 	{
-		m_uiMenu->SetMenuItemFunc("File ", "1.New RPGData Create (Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
+		m_uiMenu->SetMenuItemFunc("File ", u8"1.ƒf[ƒ^ì¬(Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
 		m_shortCutKey.Add(KEY::C, [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
 
 		m_uiMenu->SetMenuItemFunc("File ", "2.RPGData Load (Ctl+L)", [this]() { LoadData(); });

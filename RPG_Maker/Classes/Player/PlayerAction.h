@@ -14,6 +14,9 @@ public:
 	PlayerAttackAction() {}
 	~PlayerAttackAction() {}
 	bool Execute(BattleSystem* obj)override;
+	void Start()override {
+		m_isSetText = false;
+	};
 };
 
 class PlayerDefenseAction :public Action
@@ -22,6 +25,9 @@ public:
 	PlayerDefenseAction() {}
 	~PlayerDefenseAction() {}
 	bool Execute(BattleSystem* obj)override;
+	void Start()override {
+		m_isSetText = false;
+	};
 };
 
 class PlayerEscapeAction :public Action
@@ -30,4 +36,7 @@ public:
 	PlayerEscapeAction() {}
 	~PlayerEscapeAction() {}
 	bool Execute(BattleSystem* obj)override;
+	void Start()override {
+		m_isSetText = false;
+	};
 };

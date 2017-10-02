@@ -7,6 +7,7 @@
 #include "BattleText.h"
 #include <string>
 #include "../../SL_Window.h"
+#include "BattleTextPreset.h"
 
 void BattleText::Update()
 {
@@ -58,14 +59,14 @@ void BattleText::Draw(const ShunLib::Vec2 & pos)
 			ImGui::SetWindowFontScale(fontScale);
 
 			count = m_timer[i].GetNowCount();
-			size = m_text[i].size();
+			size = m_text[i].size()/3;
 
 			//表示する割合
-			rate=(int)((count / DRAWING_TIME)*size);
-			tmp = m_text[i].substr(0, rate);
-			ImGui::Text(tmp.c_str());
-		}
+			rate = (int)((count / DRAWING_TIME)*size)*3;
 
+			tmp = m_text[i].substr(0, rate);
+			ImGui::Text((tmp.c_str()));
+		}
 		ImGui::End();
 	}
 
@@ -96,7 +97,7 @@ void BattleText::CommandDraw(const ShunLib::Vec2 & pos)
 	if (ImGui::Begin("command", nullptr
 		, ImGuiWindowFlags_NoTitleBar
 		| ImGuiWindowFlags_NoCollapse
-		|ImGuiWindowFlags_NoResize ))
+		| ImGuiWindowFlags_NoResize))
 	{
 		float fontScale = 1.8f;
 		float space = 1.0f;
@@ -124,9 +125,14 @@ void BattleText::CommandDraw(const ShunLib::Vec2 & pos)
 
 }
 
+/// <summary>
+/// 描画が終わっているかどうか
+/// </summary>
+/// <returns></returns>
 bool BattleText::IsEnded()
 {
-	return false;
+	//最後のタイマーが終了していたら終わっている
+	return m_timer.back().IsEnded();
 }
 
 void BattleText::SetString(std::string str)
@@ -136,16 +142,19 @@ void BattleText::SetString(std::string str)
 	m_timer.back().SetTime(DRAWING_TIME);
 }
 
+void BattleText::Reset()
+{
+	m_timer.clear();
+	m_timer.shrink_to_fit();
+	m_text.clear();
+	m_text.shrink_to_fit();
+}
+
 BattleText::BattleText() :
 	m_isEnded(false),
-	DRAWING_TIME(120.0f)
+	DRAWING_TIME(90.0f)
 {
-	std::string str = "Player's Attack!! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-	this->SetString(str);
-	str = "Enemy's Attack!! URWJVWKJVJWHJDSIVDSKVNSVHSBVB";
-	this->SetString(str);
-	str = "Player Win!! YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY";
-	this->SetString(str);
+
 }
 
 BattleText::~BattleText()

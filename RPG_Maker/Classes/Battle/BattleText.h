@@ -34,6 +34,8 @@ public:
 	bool IsEnded();
 
 	void SetString(std::string str);
+
+	void Reset();
 private:
 	BattleText();
 	~BattleText();

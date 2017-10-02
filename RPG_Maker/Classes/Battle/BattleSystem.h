@@ -36,6 +36,9 @@ private:
 	//実行中の行動
 	int m_exeAction;
 
+	//行動を実行中かどうか
+	bool m_isExecuteAction;
+
 	//逃走に成功したかどうか
 	bool m_succesedEscape;
 

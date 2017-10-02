@@ -22,7 +22,7 @@ private:
 	BattleSystem m_system;
 
 	bool m_isSelected;
-	bool m_isExecuted;
+	bool m_isTurnEnd;
 
 	//í“¬‚ªI‚í‚Á‚½‚©‚Ç‚¤‚©
 	bool m_isEnded;
@@ -34,7 +34,9 @@ public:
 	void SetEnemy(int id) {m_system.SetEnemy(id); }
 
 	void BattleStart() {
-		m_isEnded = false;
+		m_isSelected  = false; //‘I‘ğˆI‚í‚Á‚½‚çtrue
+		m_isEnded   = false;
+		m_isTurnEnd = true;//Å‰‚Ì‰Šú‰»‚Ì‚½‚ßtrue
 		m_system.Start();
 	}
 	void Update();
