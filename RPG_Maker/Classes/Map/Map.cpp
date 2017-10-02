@@ -10,6 +10,7 @@
 #include <SL_KeyManager.h>
 #include "../../Utils/MouseManager.h"
 #include "../Data/DataBase.h"
+#include "../../SL_Window.h"
 
 using namespace ShunLib;
 using namespace std;
@@ -32,6 +33,7 @@ Map::Map()
 	{
 		m_map[i].resize(WIDTH);
 	}
+	m_emphasisMap = make_unique<ShunLib::Texture>(L"Image\\tileEmphasis.png");
 }
 
 /// <summary>
@@ -163,6 +165,10 @@ void Map::Draw()
 			{
 				m_bgTile->Draw(pos - m_scrollNum + m_firstPos, Vec2::One);
 			}
+			else if(GetActiveWindow() == Window::GetInstance()->WindouHandle(Window::EDITOR))
+			{
+				EmphasisMapDraw(m_map[i][j].Id(), pos - m_scrollNum + m_firstPos, Vec2::One);
+			}		
 		}
 	}
 }
@@ -247,6 +253,17 @@ bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 	return data->canMove;
 }
 
+/// <summary>
+/// 選択されているマップの強調
+/// </summary>
+void Map::EmphasisMapDraw(int id, const ShunLib::Vec2& pos, const ShunLib::Vec2& scale, RECT* rect)
+{
+	if (m_choiceId != id
+		&& id != -1)
+	{
+		m_emphasisMap->Draw(pos, scale, rect);
+	}
+}
 
 /// <summary>
 /// 指定座標のタイルが指定範囲内かどうか
@@ -341,6 +358,10 @@ void Map::DrawEdgeTile(int x, int y, float edge[], DIRECTION_2D dir, int dirTile
 	if (! m_map[y][x].Draw(pos - m_scrollNum + m_firstPos, Vec2::One, &rect))
 	{
 		m_bgTile->Draw(pos - m_scrollNum + m_firstPos, Vec2::One, &rect);
+	}
+	else if(GetActiveWindow() == Window::GetInstance()->WindouHandle(Window::EDITOR))
+	{
+		EmphasisMapDraw(m_map[y][x].Id(), pos - m_scrollNum + m_firstPos, Vec2::One, &rect);
 	}
 }
 
