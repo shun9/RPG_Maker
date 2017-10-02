@@ -44,6 +44,8 @@ Player::Player()
 	//アニメカウントの初期化
 	animecount = 0;
 	m_endMoveMoment = false;
+
+	this->ChangeDefence(false);
 }
 
 Player::~Player()
@@ -262,6 +264,29 @@ ShunLib::ConstantNumber::DIRECTION_2D Player::Getdirection()
 	return dir;
 }
 
+
+/// <summary>
+/// ダメージを受ける
+/// </summary>
+/// <param name="damage">ダメージ</param>
+/// <returns>最終的なダメージ量</returns>
+int Player::TakeDamage(int damage)
+{
+	int d = damage;// -m_param[DEF];
+
+	if (d < 0)
+	{
+		d = 0;
+	}
+
+	if (m_isDefence)
+	{
+		d /= 2;
+	}
+	m_param[HP] -= d;
+	return d;
+}
+
 void Player::operator=(const Player& p)
 {
 	//マップ座標上の位置
@@ -284,4 +309,7 @@ void Player::operator=(const Player& p)
 
 	//アニメカウント
 	this->animecount = p.animecount;
+
+	this->m_param = p.m_param;
+	this->m_maxHp = this->m_param[HP];
 }

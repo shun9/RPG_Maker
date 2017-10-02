@@ -57,6 +57,16 @@ public:
 
 	bool IsEndMoveMoment() { return m_endMoveMoment; }
 
+	int TakeDamage(int damage);
+
+	void ChangeDefence(bool d) { m_isDefence = d; }
+
+	bool IsDead() {
+		return m_param[HP] <= 0;
+	}
+
+	void Revive() { m_param[HP] = m_maxHp; }
+
 private:
 	//マップ座標上の位置
 	ShunLib::Vec2 m_posOnMap;
@@ -99,6 +109,12 @@ private:
 
 	//移動が終わった瞬間のみtrue
 	bool m_endMoveMoment;
+
+	//防御状態かどうか
+	bool m_isDefence;
+
+	int m_maxHp;
+
 public:
 	void operator=(const Player& p);
 };

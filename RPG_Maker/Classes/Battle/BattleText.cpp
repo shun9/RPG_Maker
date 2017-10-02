@@ -167,7 +167,7 @@ void BattleText::Reset()
 
 BattleText::BattleText() :
 	m_isEnded(false),
-	DRAWING_TIME(60.0f)
+	DRAWING_TIME(30.0f)
 {
 
 }

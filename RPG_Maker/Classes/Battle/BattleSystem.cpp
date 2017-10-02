@@ -7,9 +7,11 @@
 #include "BattleSystem.h"
 #include <SL_MacroConstants.h>
 #include <SL_RandomNumber.h>
+#include "../../Utils/EnemyService.h"
 #include "../Player/Player.h"
 #include "../Data/EnemyData.h"
 #include "BattleText.h"
+#include "../Data/DataBase.h"
 
 using namespace ShunLib;
 
@@ -29,26 +31,31 @@ BattleSystem::BattleSystem():
 	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::LEFT, new SelectDownTarget);
 	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::SPACE, new SelectDecideTarget);
 
-	EnemyData data;
-	data.Param.resize(EnemyData::Param::length);
-	data.Param[EnemyData::HP] = 10;
-	data.Param[EnemyData::ATK] = 10;
-	data.Param[EnemyData::DEF] = 10;
-	data.Param[EnemyData::EVA] = 10;
-	m_enemy.enemyList.push_back(std::make_pair(ShunLib::Vec2(50.0f, 0.0f), &data));
-	m_enemy.enemyList.push_back(std::make_pair(ShunLib::Vec2(150.0f, 0.0f), &data));
-	m_enemy.enemyList.push_back(std::make_pair(ShunLib::Vec2(250.0f, 0.0f), &data));
+	auto& db = DB_Enemy;
+	int id = db.AddData(EnemyService::GetInstance()->CreateEnemyData(L"Image\\cute-slime-Pixel.png"));
 
+	tmp = std::make_unique<EnemyGroupData>();
+
+	tmp->enemyList.push_back(std::make_pair(ShunLib::Vec2(150.0f, 300.0f), db.GetData(id)));
+	tmp->enemyList.push_back(std::make_pair(ShunLib::Vec2(350.0f, 300.0f), db.GetData(id)));
+	tmp->enemyList.push_back(std::make_pair(ShunLib::Vec2(550.0f, 300.0f), db.GetData(id)));
+
+	id = DB_EnemyGroup.AddData(move(tmp));
+	m_enemy = *DB_EnemyGroup.GetData(id);
 
 	m_enemyAction.List().push_back(new EnemyAttackAction);
+
+	auto& db2 = DB_Enemy;
 	m_arrowPos = { 0.0f,60.0f };
 }
+
 
 BattleSystem::~BattleSystem()
 {
 	DELETE_POINTER(m_backGround);
 	DELETE_POINTER(m_arrow);
 }
+
 
 /// <summary>
 /// ターンごとの初期化
@@ -62,6 +69,7 @@ void BattleSystem::Start()
 	m_succesedEscape = false;
 	m_isSelectTarget = false;
 }
+
 
 /// <summary>
 /// 行動の選択
@@ -78,13 +86,15 @@ bool BattleSystem::SelectAction()
 	{
 		isDecided = SelectCommand();
 	}
-	else
+
+	if (m_isSelectTarget)
 	{
 		isDecided = SelectTarget();
 	}
 
 	return isDecided;
 }
+
 
 /// <summary>
 /// 選択肢を移動する
@@ -103,6 +113,7 @@ void BattleSystem::ShiftOption(int num)
 	}
 }
 
+
 /// <summary>
 /// ターゲットを変更
 /// </summary>
@@ -119,6 +130,7 @@ void BattleSystem::ShiftTarget(int num)
 		m_targetNum = 0;
 	}
 }
+
 
 /// <summary>
 /// 行動を積む
@@ -177,6 +189,12 @@ bool BattleSystem::ExecuteAction()
 		//行動が終わったら次の行動に移る
 		if (isEnded)
 		{
+			//プレイヤーが死んでいたら終了
+			if (m_player->IsDead())
+			{
+				return true;
+			}
+
 			auto next = (++action);
 
 			//次の行動があるなら初期化
@@ -199,6 +217,11 @@ bool BattleSystem::ExecuteAction()
 bool BattleSystem::IsEnded()
 {
 	if (m_succesedEscape)
+	{
+		return true;
+	}
+
+	if (m_player->IsDead())
 	{
 		return true;
 	}
@@ -228,10 +251,21 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		else
 		{
 			auto tarPos = m_enemy.enemyList[m_targetNum].first;
-			m_arrow->Draw(tarPos + ShunLib::Vec2(0.0f, 400.0f), ShunLib::Vec2(2.0f, 2.0f));
+			m_arrow->Draw(tarPos + ShunLib::Vec2(0.0f, 50.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
 
+	ShunLib::Vec2 enemyPos;
+	auto& ds = DB_Enemy;
+
+	for (int i = 0; i < (int)(m_enemy.enemyList.size()); i++)
+	{
+		if (m_enemy.enemyList[i].second->Param[EnemyData::HP] > 0)
+		{
+			enemyPos = m_enemy.enemyList[i].first;
+			m_enemy.enemyList[i].second->Texture->Draw(enemyPos, ShunLib::Vec2::One);
+		}
+	}
 }
 
 /// <summary>

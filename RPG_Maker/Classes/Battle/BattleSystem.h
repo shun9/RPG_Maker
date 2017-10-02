@@ -12,8 +12,7 @@
 #include "Action.h"
 #include "../Data/DataBase.h"
 #include "../Enemy/EnemyAction.h"
-
-class Player;
+#include "../Player/Player.h"
 struct EnemyData;
 
 class BattleSystem
@@ -24,6 +23,8 @@ private:
 	ShunLib::Vec2 m_arrowPos;
 
 	Player* m_player;
+
+	std::unique_ptr<EnemyGroupData> tmp;
 	EnemyGroupData m_enemy;
 	ActionList m_enemyAction;
 
@@ -54,6 +55,7 @@ private:
 	//プレイヤーが勝ったかどうか
 	bool m_isWinPlayer;
 
+
 public:
 	BattleSystem();
 	~BattleSystem();
@@ -80,7 +82,7 @@ public:
 	void Draw(const ShunLib::Vec2& pos);
 
 	//戦うキャラクターを設定
-	void SetPlayer(Player* p) { m_player = p; }
+	void SetPlayer(Player* p) {m_player = p;}
 	void SetEnemy(int id) { m_enemy = *DB_EnemyGroup.GetData(id); }
 
 	//戦うキャラクターを取得
@@ -89,6 +91,8 @@ public:
 
 	void Escape() { m_succesedEscape = true; }
 	bool IsEscape() { return m_succesedEscape; }
+
+
 private:
 	bool SelectCommand();
 	bool SelectTarget();

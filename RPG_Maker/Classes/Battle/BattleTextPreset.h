@@ -12,7 +12,7 @@
 #define DEFENCE_TEXT(name) name + std::string(u8"はみをまもっている")
 #define TAKE_DAMEGE_TEXT(name,damege) name + std::string(u8"は") + damege + std::string(u8"のダメージをうけた！！")
 #define KILL_MONSTER_TEXT(name) name + std::string(u8"をたおした！！")
-#define LOSE_TEXT(name) name + std::string(u8"はやられてしまった")
+#define LOSE_TEXT(name) name + std::string(u8"はちからつきた")
 #define ESCAPE_TEXT(name) name + std::string(u8"はにげだした")
 
 

@@ -27,6 +27,7 @@ bool PlayerAttackAction::Execute(BattleSystem * obj, void* own)
 		m_isSetText = true;
 		std::string str = u8"プレイヤー";
 		text->SetString(ATTACK_TEXT(str));
+		player->ChangeDefence(false);
 	}
 	else
 	{
@@ -53,6 +54,8 @@ bool PlayerDefenseAction::Execute(BattleSystem * obj, void* own)
 		m_isSetText = true;
 		std::string str = u8"プレイヤー";
 		text->SetString(DEFENCE_TEXT(str));
+
+		player->ChangeDefence(true);
 	}
 	else
 	{
@@ -78,6 +81,7 @@ bool PlayerEscapeAction::Execute(BattleSystem * obj, void* own)
 		m_isSetText = true;
 		std::string str = u8"プレイヤー";
 		text->SetString(ESCAPE_TEXT(str));
+		player->ChangeDefence(false);
 
 		obj->Escape();
 	}

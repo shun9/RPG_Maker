@@ -21,6 +21,7 @@ Game::Game():
 	m_player = new Player();
 
 	m_battle = BattleManager::GetInstance();
+
 }
 
 Game::~Game()
@@ -204,7 +205,7 @@ void Game::FieldUpdate()
 		if (m_player->IsEndMoveMoment() && m_map->IsEncount(m_player->Getpos()))
 		{
 			int enemyID = m_map->GetRandamEnemy(m_player->Getpos());
-			//if (enemyID != -1)
+
 			{
 				m_isDuringBattle = true;
 				m_battle->SetPlayer(m_player);
@@ -225,12 +226,7 @@ void Game::BattleUpdate()
 	//終了したらフィールドに戻る
 	if (m_battle->IsEnded())
 	{
+		m_player->Revive();
 		m_isDuringBattle = false;
-
-		//負けていたら最初から
-		if (!m_battle->Result())
-		{
-			this->Initialize();
-		}
 	}
 }
