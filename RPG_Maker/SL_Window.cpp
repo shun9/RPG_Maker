@@ -448,7 +448,7 @@ void ShunLib::Window::DestroyDebugger()
 	if (m_game[DEBUGGER] != nullptr)
 	{
 		m_game[DEBUGGER]->Finalize();
-		//m_game[DEBUGGER] = nullptr;
+		m_game[DEBUGGER] = nullptr;
 	}
 }
 
