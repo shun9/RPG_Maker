@@ -28,7 +28,7 @@ std::unique_ptr<EnemyData> EnemyService::CreateEnemyData(const wstring & path)
 		data->Param[EnemyData::Param::MONEY] = 10;
 	}
 
-	data->Name = string("");
+	data->Name = string(u8"ƒXƒ‰ƒCƒ€");
 
 	if (path != L"") data->Texture = make_unique<Texture>(path.c_str());
 	else data->Texture = nullptr;

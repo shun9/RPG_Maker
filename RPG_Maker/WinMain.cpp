@@ -4,6 +4,8 @@
 
 #include "Classes\Editor\GameEditor.h"
 #include "Utils\ImageLoader.h"
+#include "Classes\Battle\BattleManager.h"
+#include "Classes\Battle\BattleText.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
@@ -31,6 +33,8 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpSh
 		window->Run();
 	}
 
+	BattleText::Destroy();
+	BattleManager::Destroy();
 	ImageLoader::Destroy();
 	ShunLib::KeyManager::Destroy();
 	ShunLib::Window::Destroy();

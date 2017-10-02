@@ -67,13 +67,6 @@ public:
 	/// 指定方向のタイルに移動できるかどうか
 	bool CanMoveSpecifiedDir(Vec2 pos,DIRECTION_2D dir);
 
-	////エンカウントするかどうか
-	////タイルの上に移動したときに使用
-	//bool IsEncount();
-
-	////敵グループからランダムに取得
-	//Enemy* GetRandamEnemy();
-
 	std::vector<std::vector<Tile>>* GetMapData() { return &m_map; }
 
 	void DisplayRange(const Vec2& leftTop, const Vec2& rightBottom) {

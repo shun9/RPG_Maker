@@ -1,0 +1,20 @@
+//************************************************/
+//* @file  :EnemyAction.h
+//* @brief :ìGÇÃçsìÆàÍóó
+//* @date  :2017/10/01
+//* @author:S.Katou
+//************************************************/
+#pragma once
+#include"../Battle/Action.h"
+
+class EnemyAttackAction:public Action
+{
+
+public:
+	EnemyAttackAction() {}
+	~EnemyAttackAction() {}
+	bool Execute(BattleSystem* obj, void* own)override;
+	void Start()override {
+		m_isSetText = false;
+	};
+};

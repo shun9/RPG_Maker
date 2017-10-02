@@ -5,6 +5,7 @@
 //* @author:Y.mano
 //************************************************/
 #include "Player.h"
+#include "PlayerAction.h"
 #include <SL_KeyManager.h>
 #include <SL_Texture.h>
 
@@ -14,6 +15,12 @@ using namespace ShunLib;
 Player::Player()
 {
 	player = new ShunLib::Texture(L"Image\\charcter.png");
+
+	//パラメータ作成
+	m_param.resize(Player::PARAM::length, 10);
+	m_actionList.List().push_back(new PlayerAttackAction);
+	m_actionList.List().push_back(new PlayerDefenseAction);
+	m_actionList.List().push_back(new PlayerEscapeAction);
 
 	//ポジションの初期化
 	m_posOnMap = Vec2(0, 0);
@@ -36,6 +43,9 @@ Player::Player()
 
 	//アニメカウントの初期化
 	animecount = 0;
+	m_endMoveMoment = false;
+
+	this->ChangeDefence(false);
 }
 
 Player::~Player()
@@ -48,10 +58,16 @@ void Player::Update()
 	{
 		count += SPEED;
 	}
+
 	if (count == TROUT)
 	{
 		count = 0;
 		state = false;
+		m_endMoveMoment = true;
+	}
+	else
+	{
+		m_endMoveMoment = false;
 	}
 
 	if (animecount == 32)
@@ -248,6 +264,29 @@ ShunLib::ConstantNumber::DIRECTION_2D Player::Getdirection()
 	return dir;
 }
 
+
+/// <summary>
+/// ダメージを受ける
+/// </summary>
+/// <param name="damage">ダメージ</param>
+/// <returns>最終的なダメージ量</returns>
+int Player::TakeDamage(int damage)
+{
+	int d = damage;// -m_param[DEF];
+
+	if (d < 0)
+	{
+		d = 0;
+	}
+
+	if (m_isDefence)
+	{
+		d /= 2;
+	}
+	m_param[HP] -= d;
+	return d;
+}
+
 void Player::operator=(const Player& p)
 {
 	//マップ座標上の位置
@@ -270,4 +309,7 @@ void Player::operator=(const Player& p)
 
 	//アニメカウント
 	this->animecount = p.animecount;
+
+	this->m_param = p.m_param;
+	this->m_maxHp = this->m_param[HP];
 }

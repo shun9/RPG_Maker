@@ -10,6 +10,7 @@
 #include "../Map/DebugMap.h"
 #include "../Map/Map.h"
 #include "../Player/Player.h"
+#include "../Battle/BattleManager.h"
 
 Game::Game():
 	m_isPlaying(false)
@@ -18,6 +19,9 @@ Game::Game():
 	auto win = ShunLib::Window::GetInstance();
 	m_map->DisplayRange(ShunLib::Vec2(0.0f, 0.0f), ShunLib::Vec2(win->DebugWidth(),win->DebugHeight()));
 	m_player = new Player();
+
+	m_battle = BattleManager::GetInstance();
+
 }
 
 Game::~Game()
@@ -40,6 +44,7 @@ void Game::Initialize()
 	}
 
 	m_isPlaying = true;
+	m_isDuringBattle = false;
 }
 
 //更新
@@ -52,24 +57,15 @@ void Game::Update()
 		return;
 	}
 
-	//プレイヤーの更新
-	if (m_player != nullptr)
+	if (!m_isDuringBattle)
 	{
-		//プレイヤーが先に進めるかどうか
-		if (m_map->DebugCanMoveSpecifiedDir(m_player->Getpos(), m_player->Getdirection()) || m_player->Movestate())
-		{
-			m_player->Move();
-		}
-
-		m_player->Update();
-		ClampScroll();
-		m_player->Scroll(m_scrollNum);
+		//フィールド画面での更新
+		FieldUpdate();
 	}
-
-	//マップの更新
-	if (m_map != nullptr)
+	else
 	{
-		m_map->Scroll(m_scrollNum);
+		//バトル画面での更新
+		BattleUpdate();
 	}
 }
 
@@ -91,7 +87,10 @@ void Game::Render()
 		m_player->Draw();
 	}
 
-
+	if (m_isDuringBattle)
+	{
+		m_battle->Draw(ShunLib::Vec2(25.0f, 17.5f));
+	}
 	//描画対象をエディター用のウィンドウに戻す
 	win->SetDrawingWindow(ShunLib::Window::EDITOR);
 }
@@ -173,5 +172,61 @@ void Game::ClampScroll()
 	}
 	m_scrollNum.m_x = scrollX;
 	m_scrollNum.m_y = scrollY;
+}
 
+/// <summary>
+/// フィールド画面での更新
+/// </summary>
+void Game::FieldUpdate()
+{
+	//プレイヤーの更新
+	if (m_player != nullptr)
+	{
+		//プレイヤーが先に進めるかどうか
+		if (m_map->DebugCanMoveSpecifiedDir(m_player->Getpos(), m_player->Getdirection()) || m_player->Movestate())
+		{
+			m_player->Move();
+		}
+
+		m_player->Update();
+		ClampScroll();
+		m_player->Scroll(m_scrollNum);
+	}
+
+	//マップの更新
+	if (m_map != nullptr)
+	{
+		m_map->Scroll(m_scrollNum);
+	}
+
+	//エンカウント処理
+	if (m_player != nullptr && m_map != nullptr)
+	{
+		if (m_player->IsEndMoveMoment() && m_map->IsEncount(m_player->Getpos()))
+		{
+			int enemyID = m_map->GetRandamEnemy(m_player->Getpos());
+
+			{
+				m_isDuringBattle = true;
+				m_battle->SetPlayer(m_player);
+				m_battle->BattleStart();
+			}
+		}
+	}
+
+}
+
+/// <summary>
+/// バトル画面での更新
+/// </summary>
+void Game::BattleUpdate()
+{
+	m_battle->Update();
+
+	//終了したらフィールドに戻る
+	if (m_battle->IsEnded())
+	{
+		m_player->Revive();
+		m_isDuringBattle = false;
+	}
 }

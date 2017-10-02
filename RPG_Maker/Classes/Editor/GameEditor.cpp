@@ -23,7 +23,6 @@
 #include "../../Utils/GameSaver.h"
 
 using namespace std;
-
 GameEditor::GameEditor()
 	:m_map(nullptr)
 {
@@ -47,7 +46,7 @@ void GameEditor::Initialize()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-	
+
 	//プレイヤーの作成
 	player = new Player();
 	m_game = new Game();
@@ -63,27 +62,28 @@ void GameEditor::Initialize()
 	DataInitialize(*win);
 
 	{
-		m_uiMenu->SetMenuItemFunc("File ", "1.New RPGData Create (Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
-		m_shortCutKey.Add(KEY_CODE::C, [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
+		m_uiMenu->SetMenuItemFunc("File ", u8"1.データ作成(Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
+		m_shortCutKey.Add(KEY::C, [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
 
 		m_uiMenu->SetMenuItemFunc("File ", "2.RPGData Load (Ctl+L)", [this]() { LoadData(); });
-		m_shortCutKey.Add(KEY_CODE::L, [this]() {LoadData(); });
+		m_shortCutKey.Add(KEY::L, [this]() {LoadData(); });
 
 		m_uiMenu->SetMenuItemFunc("File ", "3.Save RPGData overwrite (Ctl+S)", [this]() {SaveDataOverwrite(); });
-		m_shortCutKey.Add(KEY_CODE::S, [this]() {SaveDataOverwrite(); });
+		m_shortCutKey.Add(KEY::S, [this]() {SaveDataOverwrite(); });
 
 		m_uiMenu->SetMenuItemFunc("File ", "2.Save RPGData as (Ctl+A)", [this]() {SaveDataAs(); });
-		m_shortCutKey.Add(KEY_CODE::A, [this]() {SaveDataAs(); });
+		m_shortCutKey.Add(KEY::A, [this]() {SaveDataAs(); });
 
 		m_uiMenu->SetMenuItemFunc("File ", "4.Tile Load", [this]() {SelectedCreateTileData(); });
 
 		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+T)", [this]() {TilePropertyChangeActive(); });
-		m_shortCutKey.Add(KEY_CODE::T, [this]() {TilePropertyChangeActive(); });
+		m_shortCutKey.Add(KEY::T, [this]() {TilePropertyChangeActive(); });
 
 		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() { });
 
+
 		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)", [this]() {StartDebug(); });
-		m_shortCutKey.Add(KEY_CODE::P, [this]() {StartDebug(); });
+		m_shortCutKey.Add(KEY::P, [this]() {StartDebug(); });
 	}
 }
 
@@ -148,14 +148,6 @@ void GameEditor::Render()
 	int mapX, mapY;
 	m_map->ConvertMapPos(mouse->GetMousePosition(), &mapX, &mapY);
 
-	ImGui::Text("scroll x : %.3f", m_map->Scroll()->m_x);
-	ImGui::Text("scroll y : %.3f", m_map->Scroll()->m_y);
-
-	ImGui::Text("mouse x : %.3f", mouse->GetMousePosition().m_x);
-	ImGui::Text("mouse y : %.3f", mouse->GetMousePosition().m_y);
-
-	ImGui::Text("tile list : %d", DB_Tile.GetContainerSize());
-
 	m_map->Draw();
 
 	//プレイヤーの描画
@@ -188,7 +180,7 @@ void GameEditor::DataInitialize(const Window& win)
 	FileName("");
 
 	// データベースの初期化
-	DB->Reset();
+	//DB->Reset();
 
 	DELETE_POINTER(m_map);
 	m_map = new Map();

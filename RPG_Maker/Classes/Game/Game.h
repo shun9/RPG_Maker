@@ -11,6 +11,7 @@
 class Map;
 class DebugMap;
 class Player;
+class BattleManager;
 
 //ゲームクラス
 //実行ボタンで作成
@@ -20,6 +21,7 @@ class Game : public AppBase
 private:
 	DebugMap* m_map;
 	Player* m_player;
+	BattleManager* m_battle;
 
 	//スクロール量
 	ShunLib::Vec2 m_scrollNum;
@@ -27,6 +29,8 @@ private:
 	//実行中かどうか
 	bool m_isPlaying;
 
+	//バトル中かどうか
+	bool m_isDuringBattle;
 public:
 	Game();
 	~Game();
@@ -46,5 +50,11 @@ public:
 private:
 	//スクロール量を制限
 	void ClampScroll();
+
+	//フィールド画面での更新
+	void FieldUpdate();
+
+	//バトル画面での更新
+	void BattleUpdate();
 
 };

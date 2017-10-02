@@ -20,6 +20,12 @@ public:
 	void DebugConvertMapPos(const Vec2& pos, int* bufX, int* bufY);
 
 	//指定方向に進めるかどうか
-	bool DebugCanMoveSpecifiedDir(Vec2 pos, DIRECTION_2D dir);
+	bool DebugCanMoveSpecifiedDir(const Vec2& pos, DIRECTION_2D dir);
 
+	//エンカウントするかどうか
+	//タイルの上に移動したときに使用
+	bool IsEncount(const Vec2& pos);
+
+	//敵グループからランダムに取得
+	int GetRandamEnemy(const Vec2& pos);
 };

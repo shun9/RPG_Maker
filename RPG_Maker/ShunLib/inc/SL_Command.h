@@ -14,6 +14,6 @@ namespace ShunLib
 	{
 	public:
 		virtual ~Command() {}
-		virtual void Execute(T* obj) = 0;
+		virtual bool Execute(T* obj) = 0;
 	};
 }
