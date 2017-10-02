@@ -56,6 +56,9 @@ bool GameLoader::LoadGame(GameEditor* editor)
 	//ファイルが無ければ読み込まない
 	if (!file)return false;
 
+	//今あるデータをリセット
+	DB->Reset();
+
 	//先頭のタイトルを読み込む
 	char tmp[10];
 	file.read(tmp, 10);
