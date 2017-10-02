@@ -166,6 +166,7 @@
     <ClInclude Include="Classes\Data\DataHolder.h" />
     <ClInclude Include="Classes\Data\EmeyGroupData.h" />
     <ClInclude Include="Classes\Data\EnemyData.h" />
+    <ClInclude Include="Classes\Data\EnemyGroupAloneData.h" />
     <ClInclude Include="Classes\Data\TileData.h" />
     <ClInclude Include="Classes\Editor\GameEditor.h" />
     <ClInclude Include="Classes\Editor\ShortCutKey.h" />

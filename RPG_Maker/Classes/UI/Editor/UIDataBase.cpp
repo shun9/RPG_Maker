@@ -13,6 +13,7 @@ using namespace std;
 
 UIDataBase::UIDataBase(const string& name,Player* player)
 	:UIBase(name)
+	,m_viewData(DATA_LIST::ENEMY)
 {
 	m_uiList.resize(3);
 
@@ -20,12 +21,13 @@ UIDataBase::UIDataBase(const string& name,Player* player)
 	m_uiList[DATA_LIST::ENEMY] = make_unique<UIEnemyTable>(string("Enemy DataBase"));
 	m_uiList[DATA_LIST::ENEMYGROUP] = make_unique<UIEnemyGroupTable>(string("Enemy DataBase"));
 
-	m_uiList[DATA_LIST::ENEMY]->Active = false;
-	m_uiList[DATA_LIST::ENEMYGROUP]->Active = false;
-
 	m_playerButton = std::make_unique<UIButton>("Player", bind(&UIDataBase::ChangeActive, this, DATA_LIST::PLAYER));
-	m_enemyButton = std::make_unique<UIButton>("Enemy", bind(&UIDataBase::ChangeActive, this, DATA_LIST::ENEMY));
+	m_enemyButton = std::make_unique<UIButton>("Enemy", bind(&UIDataBase::ChangeActive,this, DATA_LIST::ENEMY));
 	m_enemyGroupButton = std::make_unique<UIButton>("Enemy Group", bind(&UIDataBase::ChangeActive,this, DATA_LIST::ENEMYGROUP));
+
+	for (int i = 0; i < DATA_LIST::length; i++){
+		if(i!=m_viewData)m_uiList.at(i)->Active = false;
+	}
 
 }
 
@@ -39,7 +41,13 @@ void UIDataBase::DrawUpdate()
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
 	ImGui::SetNextWindowPos(ImVec2(350.0f, 55.0f), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(1200, 860), ImGuiSetCond_Once);
+
+	ImVec2 size = ImVec2(1200.0f, 860.0f);
+	if (m_viewData == DATA_LIST::ENEMYGROUP)
+	{
+		size = ImVec2(895.0f, 850.0f);
+	}
+	ImGui::SetNextWindowSize(size /*,ImGuiSetCond_Once*/);
 
 	auto& style = ImGui::GetStyle();
 
@@ -95,4 +103,5 @@ void UIDataBase::ChangeActive(DATA_LIST data)
 		ui->Active = false;
 	}
 	m_uiList[data]->Active = true;
+	m_viewData = data;
 }

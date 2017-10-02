@@ -23,7 +23,8 @@ class UIDataBase :public UIBase
 	{
 		PLAYER,
 		ENEMY,
-		ENEMYGROUP
+		ENEMYGROUP,
+		length
 	};
 private:
 	std::vector<std::unique_ptr<UIBase>> m_uiList;
@@ -32,6 +33,7 @@ private:
 	std::unique_ptr<UIButton> m_enemyButton;
 	std::unique_ptr<UIButton> m_enemyGroupButton;
 
+	DATA_LIST m_viewData;
 public:
 
 	/// <summary>
