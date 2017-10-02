@@ -7,8 +7,9 @@
 #pragma once
 #include <string>
 
+#define STR(var) #var
+
 // Data‚ÌŠî’ê
 struct Data {
 	std::string Name;
-
 };

@@ -61,12 +61,11 @@ bool GameSaver::SaveGameFileSelect(GameEditor * editor)
 	ofn.nMaxFileTitle = MAX_PATH;
 	ofn.lpstrFile = (LPWSTR)szFile;
 	ofn.nMaxFile = MAX_PATH;
-	ofn.Flags = OFN_FILEMUSTEXIST 
-		| OFN_NOCHANGEDIR 
-		| OFN_CREATEPROMPT
-		| OFN_PATHMUSTEXIST
+	ofn.Flags = OFN_PATHMUSTEXIST
 		| OFN_OVERWRITEPROMPT;
-	GetOpenFileName(&ofn);
+
+	if(GetSaveFileName(&ofn))
+	MessageBox(Window::GetInstance()->WindouHandle(Window::EDITOR),(LPWSTR) szFile, TEXT("Save as"), MB_OK);
 
 	// 開いたファイル名をマルチバイト文字に変更
 	wstring wfullpath = wstring(ofn.lpstrFile);

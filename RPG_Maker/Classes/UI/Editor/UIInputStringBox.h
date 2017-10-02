@@ -1,6 +1,6 @@
 //************************************************/
-//* @file  :UIButton.h
-//* @brief :UIButtonのクラス
+//* @file  :UIInputStringBox.h
+//* @brief :UIInputStringBoxのクラス
 //* @date  :2017/09/27
 //* @author:K.Yamamoto
 //************************************************/
@@ -11,31 +11,26 @@
 #include <list>
 #include <memory>
 #include <functional>
+#include <string>
 
-class UIButton : public UIBase
+class UIInputStringBox : public UIBase
 {
 	using Vector2 = ShunLib::Vec2;
 
 private:
-	 std::function<void()> m_func;
+	 std::string* m_text;
+	 std::size_t m_size;
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UIButton(const std::string& name, std::function<void()> func = nullptr);
+	UIInputStringBox(const std::string& name, std::string* text,std::size_t size);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~UIButton() override;
-
-	/// <summary>
-	/// 押されたときのイベント
-	/// </summary>
-	/// <param name="func"></param>
-	void SetPressEvent(std::function<void()> func) { m_func = func;  }
+	virtual ~UIInputStringBox() override;
 
 	virtual void DrawUpdate() override;
-	void DrawUpdate(const std::string& name);
 };

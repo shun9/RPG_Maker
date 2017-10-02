@@ -8,6 +8,7 @@
 #include <SL_Singleton.h>
 #include <SL_Vec2.h>
 #include "TileService.h"
+#include "EnemyService.h"
 
 class ServiceManager;
 
@@ -17,6 +18,7 @@ namespace {
 }
 
 #define SVC_Tile ServiceManager::GetInstance()->GetTileSVC()
+#define SVC_Enemy ServiceManager::GetInstance()->GetEnemySVC()
 
 class ServiceManager : public Singleton<ServiceManager>
 {
@@ -24,4 +26,6 @@ class ServiceManager : public Singleton<ServiceManager>
 
 public:
 	TileService* GetTileSVC(){ return TileService::GetInstance(); }
+	EnemyService* GetEnemySVC() { return EnemyService::GetInstance(); }
+
 };

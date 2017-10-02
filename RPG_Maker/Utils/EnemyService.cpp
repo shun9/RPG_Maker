@@ -30,12 +30,13 @@ std::unique_ptr<EnemyData> EnemyService::CreateEnemyData(const wstring & path)
 
 	data->Name = string("");
 
-	data->Texture = make_unique<Texture>(path.c_str());
+	if (path != L"") data->Texture = make_unique<Texture>(path.c_str());
+	else data->Texture = nullptr;
 
 	return move(data);
 }
 
-std::unique_ptr<EnemyGroupData> EnemyService::CreateEnemyGroupData(const wstring & path)
+std::unique_ptr<EnemyGroupData> EnemyService::CreateEnemyGroupData()
 {
 	auto data = make_unique<EnemyGroupData>();
 

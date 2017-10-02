@@ -15,13 +15,15 @@ private:
 	//Data種類一覧
 	std::vector<std::unique_ptr<T>> m_DataList;
 
+	bool m_change;
 public:
-	DataHolder() {}
+	DataHolder() :m_change(false) {}
 	~DataHolder() {}
 
 	//データを追加する
 	int AddData(std::unique_ptr<T> data) {
 		m_DataList.push_back(move(data));
+		m_change = true;
 		return (int)(m_DataList.size()) - 1;
 	}
 
@@ -34,11 +36,19 @@ public:
 	}
 
 	// 全データ取得
-	const std::vector<std::unique_ptr<T>>& GetTileList() const {
+	std::vector<std::unique_ptr<T>>& GetList() {
 		return m_DataList;
 	}
 
 	int GetContainerSize() const {
 		return (int)(m_DataList.size());
+	}
+
+	bool ChangeHolderCallBack() {
+		if (m_change) {
+			m_change = false;
+			return true;
+		}
+		return false;
 	}
 };
