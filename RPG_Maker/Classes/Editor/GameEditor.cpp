@@ -133,6 +133,8 @@ void GameEditor::Update()
 	m_map->Update();
 
 	PlayerScroll();
+
+	m_map->SetChoiseId(edi->Id());
 }
 
 //•`‰æ

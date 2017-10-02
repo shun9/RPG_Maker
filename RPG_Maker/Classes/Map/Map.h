@@ -35,6 +35,12 @@ protected:
 	Vec2 m_firstPos;
 	Vec2 m_displaySize;
 
+	//選択されているID
+	int m_choiceId;
+
+	//強調するの際使用する画像のデータ
+	std::unique_ptr<ShunLib::Texture> m_emphasisMap;
+
 public:
 	Map();
 	virtual ~Map();
@@ -74,6 +80,12 @@ public:
 		m_firstPos = leftTop;
 		m_displaySize = rightBottom;
 	};
+
+	//選択されているIDのセット
+	void SetChoiseId(int id) { m_choiceId = id; }
+
+	//選択されているマップの協調
+	void EmphasisMapDraw(int id, const ShunLib::Vec2& pos, const ShunLib::Vec2& scale, RECT* rect = nullptr);
 
 private:
 	bool IsInRangeTile(int x, int y, int dirTile[]);
