@@ -39,13 +39,13 @@ UITileCanvas::~UITileCanvas()
 
 void UITileCanvas::DrawUpdate()
 {
-	RECT rect = { (LONG)m_Pos.m_x,(LONG)m_Pos.m_y,(LONG)IMAGE_SIZE.m_x + m_Pos.m_x,(LONG)IMAGE_SIZE.m_y + m_Pos.m_y };
+	RECT rect = { (LONG)m_Pos.m_x,(LONG)m_Pos.m_y,(LONG)IMAGE_SIZE.m_x + (LONG)m_Pos.m_x,(LONG)IMAGE_SIZE.m_y + (LONG)m_Pos.m_y };
 
 	m_texture->Draw(m_Pos, Vec2::One, &rect);
 
 	int x = 0, y = 0;
 
-	for each (const auto& data in DB_Tile.GetTileList())
+	for each (const auto& data in DB_Tile.GetList())
 	{
 		Vec2 pos(x*Tile::SIZE + (x + 1)*PADDING.m_x, y*Tile::SIZE + (y + 1)*PADDING.m_y);
 		data->texture->Draw(m_Pos + pos, Vec2::One);
@@ -92,7 +92,7 @@ void UITileCanvas::SelectTile()
 		int* id = nullptr;
 
 		if (CollisionTile(pos, id)) {
-			auto tileListSize = DB_Tile.GetTileList().size();
+			auto tileListSize = DB_Tile.GetList().size();
 
 			if (*id <= (int)tileListSize - 1)
 			{

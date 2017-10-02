@@ -56,9 +56,8 @@ void GameEditor::Initialize()
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
 	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
-	m_uiEnemyTable = make_unique<UIEnemyTable>(string("Enemy DataBase"));
 	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
-	EnemyTableChangeActive();
+	m_uiDataBase = make_unique<UIDataBase>("DataBase");
 
 	// データの初期設定
 	DataInitialize(*win);
@@ -78,13 +77,13 @@ void GameEditor::Initialize()
 
 		m_uiMenu->SetMenuItemFunc("File ", "4.Tile Load", [this]() {SelectedCreateTileData(); });
 
-		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+P)", [this]() {TilePropertyChangeActive(); });
-		m_shortCutKey.Add(KEY_CODE::P, [this]() {TilePropertyChangeActive(); });
+		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+T)", [this]() {TilePropertyChangeActive(); });
+		m_shortCutKey.Add(KEY_CODE::T, [this]() {TilePropertyChangeActive(); });
 
-		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() {EnemyTableChangeActive(); });
-		m_shortCutKey.Add(KEY_CODE::E, [this]() {EnemyTableChangeActive(); });
+		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() { });
 
-		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)");
+		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)", [this]() {StartDebug(); });
+		m_shortCutKey.Add(KEY_CODE::P, [this]() {StartDebug(); });
 	}
 }
 
@@ -126,10 +125,6 @@ void GameEditor::Update()
 		}
 
 	}
-	else if (mouse->GetMouseButtonDown(MouseButton::middleButton))
-	{
-		StartDebug();
-	}
 	m_map->Update();
 
 	PlayerScroll();
@@ -167,14 +162,16 @@ void GameEditor::Render()
 	player->Draw();
 
 	m_uiMenu->DrawUpdate();
-	m_uiTileProperty->DrawUpdate();
-	m_uiTileCanvas->DrawUpdate();
-	m_uiEnemyTable->DrawUpdate();
+	UIACTIVEDRAW(m_uiTileProperty);
+	UIACTIVEDRAW(m_uiTileCanvas);
+	UIACTIVEDRAW(m_uiDataBase);
 	m_uiUnderBar->DrawUpdate(m_fileName, mapX, mapY);
 
 	// Rendering
 	//この上に描画処理を書く
 	ImGui::Render();
+
+	m_uiDataBase->DrawImage();
 }
 
 //終了

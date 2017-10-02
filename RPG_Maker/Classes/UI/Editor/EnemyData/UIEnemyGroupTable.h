@@ -1,6 +1,6 @@
 //************************************************/
-//* @file  :UIEnemyTable.h
-//* @brief :UIのUIEnemyTableクラス
+//* @file  :UIEnemyGroupTable.h
+//* @brief :UIEnemyGroupTableクラス
 //* @date  :2017/09/27
 //* @author:K.Yamamoto
 //************************************************/
@@ -11,16 +11,16 @@
 #include <string>
 #include "../UIBase.h"
 #include "UIDataList.h"
-#include "UIEnemyDataParam.h"
+#include "UIEnemyGroupDataParam.h"
 
-class UIEnemyTable :public UIBase
+class UIEnemyGroupTable :public UIBase
 {
 	using Vector2 = ShunLib::Vec2;
 
 private:
 
-	std::unique_ptr<UIDataList<EnemyData>> m_uiDataList;
-	std::unique_ptr<UIEnemyDataParam> m_uiDataParam;
+	std::unique_ptr<UIDataList<EnemyGroupData>> m_uiDataList;
+	std::unique_ptr<UIEnemyGroupDataParam> m_uiDataParam;
 
 	int m_selectId;
 public:
@@ -28,16 +28,16 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UIEnemyTable(const std::string& name);
+	UIEnemyGroupTable(const std::string& name);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~UIEnemyTable() override;
+	virtual ~UIEnemyGroupTable() override;
 
 	virtual void DrawUpdate() override;
 
-	void ParamUpdate(int id) { m_uiDataParam->UIUpdate(DB_Enemy.GetData(id)); }
+	void ParamUpdate(int id) { m_uiDataParam->UIUpdate(DB_EnemyGroup.GetData(id)); }
 
 	void DrawImage();
 };

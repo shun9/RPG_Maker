@@ -8,12 +8,12 @@
 #include <SL_Texture.h>
 #include "../AppBase/AppBase.h"
 #include "../../SL_Window.h"
+#include "../Map/Map.h"
 #include "../UI/Editor/UIMenuBar.h"
 #include "../UI/Editor/UITileProperty.h"
 #include "../UI/Editor/UITileCanvas.h"
-#include "../UI/Editor/EnemyData/UIEnemyTable.h"
 #include "../UI/Editor/UIUnderBar.h"
-#include "../Map/Map.h"
+#include "../UI/Editor/UIDataBase.h"
 #include "../../Utils/GameLoader.h"
 #include "../../Utils/GameSaver.h"
 #include "ShortCutKey.h"
@@ -36,8 +36,8 @@ private:
 	std::unique_ptr<UIMenuBar> m_uiMenu;
 	std::unique_ptr<UITileProperty> m_uiTileProperty;
 	std::unique_ptr<UITileCanvas> m_uiTileCanvas;
-	std::unique_ptr<UIEnemyTable> m_uiEnemyTable;
 	std::unique_ptr<UIUnderBar> m_uiUnderBar;
+	std::unique_ptr<UIDataBase> m_uiDataBase;
 
 	//	TODO:仮実装
 	Player * player;
@@ -65,7 +65,6 @@ public:
 	// TODO:のちほど専用クラスに移動UI
 	void UIChangeActive(UIBase& ui);
 	void TilePropertyChangeActive() { UIChangeActive(*m_uiTileProperty.get()); }
-	void EnemyTableChangeActive() { UIChangeActive(*m_uiEnemyTable.get()); }
 	void SelectedCreateTileData();
 	// データのロード
 	void LoadData() { GameLoader::GetInstance()->LoadGame(this); }

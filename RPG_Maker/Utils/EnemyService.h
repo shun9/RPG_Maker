@@ -24,10 +24,9 @@ public:
 	~EnemyService(){}
 
 	// EnemyDataì¬
-	std::unique_ptr<EnemyData> CreateEnemyData(const wstring& path);
-
+	std::unique_ptr<EnemyData> CreateEnemyData(const wstring& path = L"");
 	// EnemyGroupì¬
-	std::unique_ptr<EnemyGroupData> CreateEnemyGroupData(const wstring& path);
+	std::unique_ptr<EnemyGroupData> CreateEnemyGroupData();
 
 private:
 	EnemyService(){}

@@ -32,3 +32,9 @@ void UIButton::DrawUpdate()
 		m_func();
 	}
 }
+
+void UIButton::DrawUpdate(const string & name)
+{
+	m_name = name;
+	DrawUpdate();
+}

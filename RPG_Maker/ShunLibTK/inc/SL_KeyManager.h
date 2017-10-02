@@ -25,6 +25,7 @@ namespace ShunLib
 			L = DirectX::Keyboard::Keys::L,
 			P = DirectX::Keyboard::Keys::P,
 			S = DirectX::Keyboard::Keys::S,
+			T = DirectX::Keyboard::Keys::T,
 			Z     = DirectX::Keyboard::Keys::Z,
 			X     = DirectX::Keyboard::Keys::X,
 			LEFT  = DirectX::Keyboard::Keys::Left,

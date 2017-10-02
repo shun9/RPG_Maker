@@ -81,7 +81,8 @@ void UITileProperty::UIDrawUpdate()
 	auto oldWindowPadding = style.WindowPadding;
 
 	if(ImGui::Begin(m_name.c_str(),nullptr
-		,ImGuiWindowFlags_NoResize 
+		, ImGuiWindowFlags_NoResize
+		| ImGuiWindowFlags_NoMove
 		| ImGuiWindowFlags_NoCollapse))
 	{
 		// StyleÇÃê›íË
