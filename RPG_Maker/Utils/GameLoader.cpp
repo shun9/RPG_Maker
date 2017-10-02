@@ -98,7 +98,6 @@ bool GameLoader::LoadTileData(ifstream * file)
 		tileData = std::make_unique<TileData>();
 
 		//テクスチャのパス　終端文字があるので+1
-		//path = data->texture->GetPath();
 		file->read((char*)&size, sizeof(int));
 		file->read((char*)tmpr, size);
 		tileData->texture = std::make_unique<ShunLib::Texture>(tmpr);
@@ -169,13 +168,15 @@ bool GameLoader::LoadPlayerData(ifstream * file)
 bool GameLoader::LoadEnemyData(ifstream * file)
 {
 	auto& holder = DB_Enemy;
-	auto containerSize = holder.GetContainerSize();
+	int containerSize;
+	file->read((char*)&containerSize, sizeof(int));
 
 	std::wstring texture;
-	wchar_t* path;
+	wchar_t path[255];
 	int size = 0;
 	char nameBuf[255];
 
+	bool isTexture = true;
 	for (int i = 0; i < containerSize; i++)
 	{
 		//敵データを作成
@@ -187,10 +188,15 @@ bool GameLoader::LoadEnemyData(ifstream * file)
 		file->read((char*)nameBuf, size);
 		data->Name = nameBuf;
 
-		//テクスチャのパス　終端文字があるので+1
-		file->read((char*)&size, sizeof(size));
-		file->read((char*)path, size);
-		data->Texture = std::make_unique<ShunLib::Texture>(path);
+		//テクスチャがあれば読み込み
+		file->read((char*)&isTexture, sizeof(isTexture));
+		if (isTexture)
+		{
+			//テクスチャのパス　終端文字があるので+1
+			file->read((char*)&size, sizeof(size));
+			file->read((char*)path, size);
+			data->Texture = std::make_unique<ShunLib::Texture>(path);
+		}
 
 		//能力値
 		data->Param.resize(EnemyData::Param::length);
@@ -211,5 +217,37 @@ bool GameLoader::LoadEnemyData(ifstream * file)
 /// </summary>
 bool GameLoader::LoadEnemyGroupData(ifstream * file)
 {
+	auto& holder = DB_EnemyGroup;
+	int containerSize;
+	file->read((char*)&containerSize, sizeof(int));
+
+	int groupSize = 0;
+	int size = 0;
+	char nameBuf[255];
+	int id = 0;
+	ShunLib::Vec2 pos;
+	for (int i = 0; i < containerSize; i++)
+	{
+		//敵グループデータを作成
+		std::unique_ptr<EnemyGroupData> data;
+		data = std::make_unique<EnemyGroupData>();
+
+		//名前
+		file->read((char*)&size, sizeof(size));
+		file->read(nameBuf, size);
+		data->Name = nameBuf;
+
+		//構成
+		file->read((char*)&groupSize, sizeof(int));
+
+		for (int i = 0; i < groupSize; i++)
+		{
+			file->read((char*)&id, sizeof(int));
+			file->read((char*)&pos, sizeof(ShunLib::Vec2));
+			data->enemyList[i].first = id;
+			data->enemyList[i].second = pos;
+		}
+	}
+
 	return true;
 }

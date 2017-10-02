@@ -89,7 +89,7 @@ public:
 		auto& db = DB_Enemy;
 		m_enemy = DB_EnemyGroup.GetData(id);
 		//HP‚ð•Û‘¶
-		for (int i = 0; i < m_enemy->enemyList.size(); i++)
+		for (int i = 0; i < (int)m_enemy->enemyList.size(); i++)
 		{
 			m_enemyHp.push_back(db.GetData(m_enemy->enemyList[i].first)->Param[EnemyData::Param::HP]);
 		}

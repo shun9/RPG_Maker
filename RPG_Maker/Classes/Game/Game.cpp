@@ -205,10 +205,11 @@ void Game::FieldUpdate()
 		if (m_player->IsEndMoveMoment() && m_map->IsEncount(m_player->Getpos()))
 		{
 			int enemyID = m_map->GetRandamEnemy(m_player->Getpos());
-
+			if (enemyID >= 0)
 			{
 				m_isDuringBattle = true;
 				m_battle->SetPlayer(m_player);
+				m_battle->SetEnemy(enemyID);
 				m_battle->BattleStart();
 			}
 		}

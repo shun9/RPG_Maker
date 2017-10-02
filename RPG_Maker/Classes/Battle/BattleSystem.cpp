@@ -31,21 +31,9 @@ BattleSystem::BattleSystem() :
 	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::LEFT, new SelectDownTarget);
 	m_targetSelectInput.SetCommand(KeyManager::KEY_CODE::SPACE, new SelectDecideTarget);
 
-	auto& db = DB_Enemy;
-	int id = db.AddData(EnemyService::GetInstance()->CreateEnemyData(L"Image\\cute-slime-Pixel.png"));
-
-	tmp = std::make_unique<EnemyGroupData>();
-
-	tmp->enemyList.push_back(std::make_pair(id, ShunLib::Vec2(150.0f, 300.0f)));
-	tmp->enemyList.push_back(std::make_pair(id, ShunLib::Vec2(350.0f, 300.0f)));
-	tmp->enemyList.push_back(std::make_pair(id, ShunLib::Vec2(550.0f, 300.0f)));
-
-	id = DB_EnemyGroup.AddData(move(tmp));
-	this->SetEnemy(id);
 
 	m_enemyAction.List().push_back(new EnemyAttackAction);
 
-	auto& db2 = DB_Enemy;
 	m_arrowPos = { 0.0f,60.0f };
 }
 
@@ -244,7 +232,7 @@ bool BattleSystem::IsEnded()
 		return true;
 	}
 
-	for (int i = 0; i < m_enemyHp.size(); i++)
+	for (int i = 0; i < (int)m_enemyHp.size(); i++)
 	{
 		if (m_enemyHp[i] > 0)
 		{
@@ -278,7 +266,7 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		else
 		{
 			auto tarPos = m_enemy->enemyList[m_targetNum].second;
-			m_arrow->Draw(tarPos + ShunLib::Vec2(0.0f, 50.0f), ShunLib::Vec2(2.0f, 2.0f));
+			m_arrow->Draw(tarPos + ShunLib::Vec2(-50.0f, 0.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
 

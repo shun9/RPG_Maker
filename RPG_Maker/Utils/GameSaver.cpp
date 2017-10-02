@@ -187,12 +187,13 @@ bool GameSaver::SaveEnemyData(ofstream * file)
 {
 	const auto& holder = DB_Enemy;
 	auto containerSize = holder.GetContainerSize();
+	file->write((char*)&containerSize, sizeof(int));
 
 	EnemyData* data;
 	std::wstring texture;
 	wchar_t* path;
 	int size = 0;
-
+	bool isTexture = true;
 	for (int i = 0; i < containerSize; i++)
 	{
 		data = holder.GetData(i);
@@ -202,12 +203,23 @@ bool GameSaver::SaveEnemyData(ofstream * file)
 		file->write((char*)&size, sizeof(size));
 		file->write(data->Name.c_str(), size);
 
-		//テクスチャのパス　終端文字があるので+1
-		texture = data->Texture->GetPath();
-		size = (texture.length() + 1) * 2;
-		path = const_cast<wchar_t*>(texture.c_str());
-		file->write((char*)&size, sizeof(size));
-		file->write((char*)path, size);
+		//テクスチャがあれば書き込み
+		if (data->Texture && data->Texture->GetPath() != L"")
+		{
+			isTexture = true;
+			file->write((char*)&isTexture, sizeof(isTexture));
+
+			//テクスチャのパス　終端文字があるので+1
+			texture = data->Texture->GetPath();
+			size = (texture.length() + 1) * 2;
+			path = const_cast<wchar_t*>(texture.c_str());
+			file->write((char*)&size, sizeof(size));
+			file->write((char*)path, size);
+		}
+		else {
+			isTexture = false;
+			file->write((char*)&isTexture, sizeof(isTexture));
+		}
 
 		//能力値
 		for (int j = 0; j < (int)data->Param.size(); j++)
@@ -224,5 +236,31 @@ bool GameSaver::SaveEnemyData(ofstream * file)
 /// </summary>
 bool GameSaver::SaveEnemyGroupData(ofstream * file)
 {
+	auto& holder = DB_EnemyGroup;
+	int containerSize = holder.GetContainerSize();
+	file->write((char*)&containerSize, sizeof(int));
+
+	int groupSize = 0;
+	int size = 0;
+	EnemyGroupData* group;
+	for (int i = 0; i < containerSize; i++)
+	{
+		group = holder.GetData(i);
+
+		//名前
+		size = group->Name.size();
+		file->write((char*)&size, sizeof(size));
+		file->write(group->Name.c_str(), group->Name.size());
+
+		//構成
+		groupSize = (int)group->enemyList.size();
+		file->write((char*)&groupSize, sizeof(int));
+
+		for (int j = 0; j < groupSize; j++)
+		{
+			file->write((char*)&group->enemyList[i].first, sizeof(int));
+			file->write((char*)&group->enemyList[i].second, sizeof(ShunLib::Vec2));
+		}
+	}
 	return true;
 }
