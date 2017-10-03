@@ -16,7 +16,7 @@ class ImageLoader : public ShunLib::Singleton<ImageLoader>
 private:
 
 public:
-	std::wstring OpenLoadingDialog();
+	std::wstring OpenLoadingDialog(std::wstring path);
 
 private:
 	ImageLoader() {}

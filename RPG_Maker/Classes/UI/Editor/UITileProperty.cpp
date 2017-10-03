@@ -15,6 +15,7 @@
 #include "../../Map/MapEditor.h"
 #include "../../Data/DataBase.h"
 #include "../../Map/Tile.h"
+#include "../../Map/Map.h"
 
 using namespace ShunLib;
 using namespace std;
@@ -48,6 +49,7 @@ void UITileProperty::UIUpdate()
 	m_tileData = DB_Tile.GetData(m_currentTileId);
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
+	m_checkBoxIsEmphasis = make_unique<UICheckBox>("  ", &Map::m_isEmphasis);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
 }
 
@@ -58,6 +60,8 @@ void UITileProperty::UIErase()
 	m_encountSlider = nullptr;
 	m_checkBoxIsMove.release();
 	m_checkBoxIsMove = nullptr;
+	m_checkBoxIsEmphasis.release();
+	m_checkBoxIsEmphasis = nullptr;
 	m_groupSlider.release();
 	m_groupSlider = nullptr;
 }
@@ -73,8 +77,8 @@ void UITileProperty::UIDrawUpdate()
 
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-	ImGui::SetNextWindowPos(ImVec2(1250, 415), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(400, 510), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(1250, 390), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(400, 525), ImGuiSetCond_Once);
 
 	auto& style = ImGui::GetStyle();
 
@@ -120,6 +124,13 @@ void UITileProperty::UIDrawUpdate()
 			m_checkBoxIsMove->DrawUpdate();
 		}
 
+		if (m_checkBoxIsEmphasis)
+		{
+			ImGui::Text("Emphasis : ");
+			ImGui::SameLine(110);
+			m_checkBoxIsEmphasis->DrawUpdate();
+		}
+
 		if (m_groupSlider)
 		{
 			ImGui::Text("EnemyGroup : ");
@@ -159,7 +170,7 @@ void UITileProperty::ChangeTexture()
 	if (m_tileData == nullptr) return;
 
 	auto Il = ImageLoader::GetInstance();
-	auto str = Il->OpenLoadingDialog();
+	auto str = Il->OpenLoadingDialog(Tile::PATH);
 
 	if (str.c_str() != wstring(Tile::PATH))
 	{

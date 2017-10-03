@@ -27,14 +27,13 @@ private:
 	std::unique_ptr<UIButton> m_enemyButton;
 	std::unique_ptr<UIButton> m_enemyGroupButton;
 	std::unique_ptr<UIButton> m_enemyAddButton;
+	std::unique_ptr<UIButton> m_enemyDeleteButton;
 
 	std::unique_ptr<UIInputStringBox> m_nameInputBox;
 
 	std::unique_ptr<UIDataList<EnemyGroupAloneData>> m_groupAloneList;
 	std::unique_ptr<UIDataList<EnemyData>> m_enemyList;
 
-	// 現在選択しているグループデータのID
-	int m_selectGroupID;
 	// 現在選択しているグループアローンデータのID
 	int m_selectGroupAloneID;
 	// 現在選択している敵データのID
@@ -59,7 +58,7 @@ public:
 	void AddEnemyAlone();
 	bool DeleteEnemyAlone();
 
-	void DataListIDUpdate() { m_enemyList->SetID(m_data->enemyList.GetList().size() - 1); }
+	void DataListIDUpdate() { m_enemyList->SetID(m_data->enemyList.GetList().size() + 1); }
 
 	void DrawImage();
 };

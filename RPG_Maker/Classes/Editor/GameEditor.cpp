@@ -207,7 +207,7 @@ void GameEditor::UIChangeActive(UIBase & ui)
 void GameEditor::SelectedCreateTileData()
 {
 	auto Il = ImageLoader::GetInstance();
-	auto str = Il->OpenLoadingDialog();
+	auto str = Il->OpenLoadingDialog(Tile::PATH);
 
 	if (str.c_str() != wstring(Tile::PATH))
 	{

@@ -22,6 +22,8 @@ public:
 	static const int WIDTH;
 	static const int HEIGHT;
 
+	static bool m_isEmphasis;
+
 protected:
 	//中クリックされた座標　スクロール用
 	ShunLib::Vec2 m_tapPos;

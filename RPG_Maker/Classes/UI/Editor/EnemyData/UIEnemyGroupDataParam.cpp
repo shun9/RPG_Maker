@@ -21,7 +21,7 @@ UIEnemyGroupDataParam::UIEnemyGroupDataParam(const string& name, EnemyGroupData*
 	, m_data(data)
 	, m_groupAloneList(nullptr)
 	, m_enemyAddButton(nullptr)
-	, m_selectGroupID(-1)
+	, m_enemyDeleteButton(nullptr)
 	, m_selectGroupAloneID(-1)
 	, m_selectEnemyID(-1)
 
@@ -54,6 +54,13 @@ void UIEnemyGroupDataParam::UIUpdate(EnemyGroupData* data)
 
 	m_enemyAddButton->SetPressEvent([this]() {
 		AddEnemyAlone();
+	});
+
+	if (m_enemyDeleteButton == nullptr) m_enemyDeleteButton = make_unique<UIButton>(string("               Enemy Delete               "));
+	else m_enemyDeleteButton.reset(new UIButton(string("           Enemy Delete           ")));
+
+	m_enemyDeleteButton->SetPressEvent([this]() {
+		DeleteEnemyAlone();
 		DataListIDUpdate();
 	});
 
@@ -61,14 +68,8 @@ void UIEnemyGroupDataParam::UIUpdate(EnemyGroupData* data)
 	m_enemyList = make_unique<UIDataList<EnemyData>>("enemyList");
 	m_enemyList->SetButtonUI(&DB_Enemy.GetList());
 
-	auto eData = DB_EnemyGroup.GetData(0);
-	if (eData != nullptr)m_selectGroupID = 0;
-
-	auto egaData = m_data->enemyList.GetData(0);
-	if (egaData != nullptr)m_selectGroupAloneID = 0;
-
-	auto egData = DB_Enemy.GetData(0);
-	if (egData != nullptr)m_selectEnemyID = 0;
+	m_selectGroupAloneID = m_groupAloneList->ID();
+	m_selectEnemyID = m_enemyList->ID();
 }
 
 void UIEnemyGroupDataParam::DrawUpdate()
@@ -83,17 +84,18 @@ void UIEnemyGroupDataParam::DrawUpdate()
 	{
 		m_enemyList->SetButtonUI(&DB_Enemy.GetList());
 		m_selectEnemyID = currentEnemyId;
+		m_enemyList->SetID(m_selectEnemyID);
 	};
-
 
 	// グループアローンID判定
 	if (m_data->enemyList.ChangeHolderCallBack()) m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
 	auto currentGroupAloneId = m_groupAloneList->ID();
-	if (m_selectGroupID != currentGroupAloneId)
+	if (m_selectGroupAloneID != currentGroupAloneId)
 	{
 		m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
 		// 変わっている時
-		m_selectGroupID = currentGroupAloneId;
+		m_selectGroupAloneID = currentGroupAloneId;
+		m_groupAloneList->SetID(m_selectGroupAloneID);
 	};
 
 
@@ -127,6 +129,11 @@ void UIEnemyGroupDataParam::DrawUpdate()
 	ImGui::SameLine(300.0f);
 	UIACTIVEDRAW(m_enemyAddButton);
 
+	// 削除ボタン
+	ImGui::NewLine();
+	ImGui::SameLine(300.0f);
+	UIACTIVEDRAW(m_enemyDeleteButton);
+
 	// 敵データリスト
 	ImGui::SetCursorPos(ImVec2(x+600, y));
 	ImGui::Text("ENEMY DATA :");
@@ -149,12 +156,10 @@ void UIEnemyGroupDataParam::AddEnemyAlone()
 
 bool UIEnemyGroupDataParam::DeleteEnemyAlone()
 {
-	// 選択されている値がおかしいときは消さない
-	if (GROUP_ENEMY_MAX <= m_selectGroupAloneID) return false;
-
 	// 削除
-	auto& data = m_data->enemyList.GetList();
-	data.erase(data.begin() + m_selectGroupAloneID);
+	m_data->enemyList.DeleteData(m_selectGroupAloneID);
+	if (0 < m_selectGroupAloneID) m_selectGroupAloneID = 0;
+	else m_selectGroupAloneID = -1;
 
 	// ボタンUI作成
 	m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());

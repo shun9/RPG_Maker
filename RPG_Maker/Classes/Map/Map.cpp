@@ -17,6 +17,7 @@ using namespace std;
 
 const int Map::WIDTH = 256;
 const int Map::HEIGHT = 256;
+bool Map::m_isEmphasis = false;
 
 /// <summary>
 /// コンストラクタ
@@ -272,7 +273,8 @@ bool Map::CanMoveSpecifiedDir(Vec2 pos, ConstantNumber::DIRECTION_2D dir)
 void Map::EmphasisMapDraw(int id, const ShunLib::Vec2& pos, const ShunLib::Vec2& scale, RECT* rect)
 {
 	if (m_choiceId != id
-		&& id != -1)
+		&& id != -1
+		&& m_isEmphasis)
 	{
 		m_emphasisMap->Draw(pos, scale, rect);
 	}

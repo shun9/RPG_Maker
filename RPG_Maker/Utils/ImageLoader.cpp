@@ -6,9 +6,8 @@
 //************************************************/
 #pragma once
 #include "ImageLoader.h"
-#include "../Classes/Map/Tile.h"
 
-std::wstring ImageLoader::OpenLoadingDialog()
+std::wstring ImageLoader::OpenLoadingDialog(std::wstring path)
 {
 	//CString setting = "実行ファイル（*.exe)|*.exe|全て(*.*)|*.*||";
 	//CFileDialog dlg(TRUE, "*.exe", "", OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, setting, this);
@@ -30,7 +29,7 @@ std::wstring ImageLoader::OpenLoadingDialog()
 	GetOpenFileName(&ofn);
 
 	char szPath[MAX_PATH] = "";
-	std::wstring tmp = Tile::PATH;
+	std::wstring tmp = path;
 	tmp += ofn.lpstrFileTitle;
 	tmp.push_back(*L"\0");
 
