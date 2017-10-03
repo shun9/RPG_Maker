@@ -47,6 +47,9 @@ private:
 	Map* m_map;
 
 	ShortCutKey m_shortCutKey;
+	bool m_isActiveTile;
+
+	ShunLib::Texture* m_activeTileFlame;
 
 public:
 	GameEditor();
@@ -90,4 +93,8 @@ private:
 
 	//プレイヤーをスクロールと同期させる
 	void PlayerScroll();
+
+	//選択されているタイルを強調
+	void DrawActiveTile();
+
 };

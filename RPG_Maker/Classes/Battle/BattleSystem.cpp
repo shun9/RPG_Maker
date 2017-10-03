@@ -295,7 +295,7 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 int BattleSystem::TakeDamageEnemy(int damage)
 {
 	int d = damage;
-	d -= DB_Enemy.GetData(m_enemy->enemyList[m_targetNum].first)->Param[EnemyData::Param::DEF];
+	d -= DB_Enemy.GetData(m_enemy->enemyList.GetList()[m_targetNum]->Id)->Param[EnemyData::Param::DEF];
 	if (d < 0) { d = 0; }
 	m_enemyHp[m_targetNum] -= d;
 	return d;
