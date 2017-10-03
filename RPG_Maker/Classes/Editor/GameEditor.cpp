@@ -21,7 +21,7 @@
 #include "../../Utils/ImageLoader.h"
 #include "../../Utils/ServiceManager.h"
 #include "../../Utils/GameSaver.h"
-
+#include "../Player/PlayerHolder.h"
 
 using namespace std;
 GameEditor::GameEditor()
@@ -50,6 +50,8 @@ void GameEditor::Initialize()
 
 	//ƒvƒŒƒCƒ„[‚Ìì¬
 	player = new Player();
+	PlayerHolder::GetInstance()->Set(player);
+
 	m_game = new Game();
 
 	// SettingUI
@@ -171,6 +173,7 @@ void GameEditor::Render()
 void GameEditor::Finalize()
 {
 	ImGui_ImplDX11_Shutdown();
+	PlayerHolder::Destroy();
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(player);
 }

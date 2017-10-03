@@ -11,6 +11,7 @@
 #include "../Classes/Editor/GameEditor.h"
 #include "../Classes/Data/DataBase.h"
 #include "../SL_Window.h"
+#include "../Classes/Player/PlayerHolder.h"
 
 using namespace std;
 using namespace ShunLib;
@@ -31,9 +32,9 @@ bool GameSaver::SaveGame(const string & fileName)
 	//各データを保存
 	if (!SaveTileData(&file)) { return false; }
 	if (!SaveMapData(&file)) { return false; }
-	if (!SavePlayerData(&file)) { return false; }
 	if (!SaveEnemyData(&file)) { return false; }
 	if (!SaveEnemyGroupData(&file)) { return false; }
+	if (!SavePlayerData(&file)) { return false; }
 
 	return true;
 }
@@ -172,15 +173,6 @@ bool GameSaver::SaveMapData(ofstream * file)
 
 
 /// <summary>
-/// プレイヤー情報の書き込み
-/// </summary>
-bool GameSaver::SavePlayerData(ofstream * file)
-{
-	return true;
-}
-
-
-/// <summary>
 /// 敵情報の書き込み
 /// </summary>
 bool GameSaver::SaveEnemyData(ofstream * file)
@@ -271,6 +263,25 @@ bool GameSaver::SaveEnemyGroupData(ofstream * file)
 			file->write((char*)&group->enemyList[j].first, sizeof(int));
 			file->write((char*)&group->enemyList[j].second, sizeof(ShunLib::Vec2));
 		}
+	}
+	return true;
+}
+
+/// <summary>
+/// プレイヤー情報の書き込み
+/// </summary>
+bool GameSaver::SavePlayerData(ofstream * file)
+{
+	auto player = PlayerHolder::GetInstance()->Get();
+
+	//位置
+	auto pos = player->PosOnMap();
+	file->write((char*)&(pos.m_x), sizeof(float));
+	file->write((char*)&(pos.m_y), sizeof(float));
+
+	for (int i = 0; i < Player::PARAM::length; i++)
+	{
+		file->write((char*)&(player->GetParam()[i]), sizeof(int));
 	}
 	return true;
 }
