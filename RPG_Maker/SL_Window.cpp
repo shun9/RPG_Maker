@@ -530,7 +530,8 @@ HRESULT ShunLib::Window::MakeWindow(WINDOW_TYPE type)
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = m_instApp;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hIcon = LoadIcon(m_instApp, (LPCTSTR)NULL);
+	//wc.hIcon = LoadIcon(m_instApp, L"slime.ico");
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
 	wc.lpszClassName = m_name[type];
