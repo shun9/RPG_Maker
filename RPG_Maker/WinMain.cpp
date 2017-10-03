@@ -6,6 +6,11 @@
 #include "Utils\ImageLoader.h"
 #include "Classes\Battle\BattleManager.h"
 #include "Classes\Battle\BattleText.h"
+#include "Classes\Map\MapEditor.h"
+#include "Utils\ServiceManager.h"
+#include "Utils\GameLoader.h"
+#include "Utils\GameSaver.h"
+#include "Utils\MouseManager.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMag, WPARAM wParam, LPARAM lParam);
 
@@ -33,6 +38,15 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpSh
 		window->Run();
 	}
 
+
+	MouseManager::Destroy();
+	GameSaver::Destroy();
+	GameLoader::Destroy();
+	DataBase::Destroy();
+	MapEditor::Destroy();
+	ServiceManager::Destroy();
+	TileService::Destroy();
+	EnemyService::Destroy();
 	BattleText::Destroy();
 	BattleManager::Destroy();
 	ImageLoader::Destroy();
