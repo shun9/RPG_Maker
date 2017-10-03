@@ -28,7 +28,7 @@ public:
 	// EnemyGroupì¬
 	std::unique_ptr<EnemyGroupData> CreateEnemyGroupData();
 	// EnemyGroupì¬
-	std::unique_ptr<EnemyGroupAloneData> CreateEnemyGroupAloneData();
+	std::unique_ptr<EnemyGroupAloneData> CreateEnemyGroupAloneData(int id = -1);
 private:
 	EnemyService(){}
 };

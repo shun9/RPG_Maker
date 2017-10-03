@@ -22,7 +22,7 @@ UIEnemyTable::UIEnemyTable(const string& name)
 	,m_selectId(-1)
 {
 	m_uiDataList = make_unique<UIDataList<EnemyData>>(name);
-	m_uiDataList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy.GetList());
+	m_uiDataList->SetButtonUI(&DB_Enemy.GetList());
 	m_addButton = std::make_unique<UIButton>("                  Add                  ", [this]() {
 		ParamUpdate(DB_Enemy.AddData(SVC_Enemy->CreateEnemyData()));
 		DataListIDUpdate();
@@ -41,7 +41,7 @@ UIEnemyTable::~UIEnemyTable()
 void UIEnemyTable::DrawUpdate()
 {
 	if (!Active)return;
-	if (DB_Enemy.ChangeHolderCallBack()) m_uiDataList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy.GetList());
+	if (DB_Enemy.ChangeHolderCallBack()) m_uiDataList->SetButtonUI(&DB_Enemy.GetList());
 
 	auto currentId = m_uiDataList->ID();
 	if (m_selectId != currentId)

@@ -53,13 +53,13 @@ void UIEnemyGroupDataParam::UIUpdate(EnemyGroupData* data)
 	else m_enemyAddButton.reset(new UIButton(string("           Enemy Add           ")));
 
 	m_enemyAddButton->SetPressEvent([this]() {
-		AddEnemy();
+		AddEnemyAlone();
 		DataListIDUpdate();
 	});
 
-	m_groupAloneList->SetButtonUI(data->enemyList.GetList().size(), &data->enemyList.GetList());
+	m_groupAloneList->SetButtonUI(&data->enemyList.GetList());
 	m_enemyList = make_unique<UIDataList<EnemyData>>("enemyList");
-	m_enemyList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy.GetList());
+	m_enemyList->SetButtonUI(&DB_Enemy.GetList());
 
 	auto eData = DB_EnemyGroup.GetData(0);
 	if (eData != nullptr)m_selectGroupID = 0;
@@ -77,21 +77,21 @@ void UIEnemyGroupDataParam::DrawUpdate()
 	//フォントサイズ変更 
 	ImGui::SetWindowFontScale(1.4f);
 
-	if (DB_Enemy.ChangeHolderCallBack()) m_enemyList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy.GetList());
+	if (DB_Enemy.ChangeHolderCallBack()) m_enemyList->SetButtonUI(&DB_Enemy.GetList());
 	auto currentEnemyId = m_enemyList->ID();
 	if (m_selectEnemyID != currentEnemyId)
 	{
-		m_enemyList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy.GetList());
+		m_enemyList->SetButtonUI(&DB_Enemy.GetList());
 		m_selectEnemyID = currentEnemyId;
 	};
 
 
 	// グループアローンID判定
-	if (m_data->enemyList.ChangeHolderCallBack()) m_groupAloneList->SetButtonUI(m_data->enemyList.GetList().size(), &m_data->enemyList.GetList());
+	if (m_data->enemyList.ChangeHolderCallBack()) m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
 	auto currentGroupAloneId = m_groupAloneList->ID();
 	if (m_selectGroupID != currentGroupAloneId)
 	{
-		m_groupAloneList->SetButtonUI(m_data->enemyList.GetList().size(), &m_data->enemyList.GetList());
+		m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
 		// 変わっている時
 		m_selectGroupID = currentGroupAloneId;
 	};
@@ -135,14 +135,31 @@ void UIEnemyGroupDataParam::DrawUpdate()
 	UIACTIVEDRAW(m_enemyList);
 }
 
-void UIEnemyGroupDataParam::AddEnemy()
+void UIEnemyGroupDataParam::AddEnemyAlone()
 {
+	// 上限数いたら追加されない
 	if (GROUP_ENEMY_MAX <= m_data->enemyList.GetList().size())return;
 
-	m_data->enemyList.AddData(SVC_Enemy->CreateEnemyGroupAloneData());
+	// 追加
+	m_data->enemyList.AddData(SVC_Enemy->CreateEnemyGroupAloneData(m_selectEnemyID));
 
-	m_groupAloneList->SetButtonUI(m_data->enemyList.GetList().size(), &m_data->enemyList.GetList());
+	// ボタンUI作成
+	m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
 }
+
+bool UIEnemyGroupDataParam::DeleteEnemyAlone()
+{
+	// 選択されている値がおかしいときは消さない
+	if (GROUP_ENEMY_MAX <= m_selectGroupAloneID) return false;
+
+	// 削除
+	auto& data = m_data->enemyList.GetList();
+	data.erase(data.begin() + m_selectGroupAloneID);
+
+	// ボタンUI作成
+	m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
+}
+
 
 void UIEnemyGroupDataParam::DrawImage()
 {

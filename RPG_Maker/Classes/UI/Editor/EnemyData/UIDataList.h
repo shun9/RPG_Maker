@@ -37,11 +37,13 @@ public:
 	virtual ~UIDataList() override{}
 
 	template<class D>
-	void SetButtonUI(int size, std::vector<std::unique_ptr<D>>* holder) {
+	void SetButtonUI(std::vector<std::unique_ptr<D>>* holder) {
 		m_holder = holder;
 
-		m_buttonList.resize(size);
-		for (int i = 0; i < size; i++)
+		m_buttonList.resize(m_holder->size());
+		m_buttonList.shrink_to_fit();
+
+		for (int i = 0; i < (int)m_holder->size(); i++)
 		{
 			auto& list = *m_holder;
 			auto* dataTmp = list[i].get();
@@ -49,7 +51,8 @@ public:
 			char title[24];
 			sprintf_s(title, "%d : %s", i, data->Name.c_str());
 			auto bind = std::bind(&UIDataList<D>::SetID, this, i);
-			m_buttonList[i] = make_unique<UIButton>(title, bind,ShunLib::Vec2(230.0f,30.0f));
+			if(!m_buttonList.at(i)) m_buttonList.at(i) = make_unique<UIButton>(title, bind,ShunLib::Vec2(230.0f,30.0f));
+			else m_buttonList.at(i).reset(new UIButton(title, bind, ShunLib::Vec2(230.0f, 30.0f)));
 		}
 	}
 
@@ -81,11 +84,11 @@ public:
 			if (m_selectId == i)
 			{
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-				m_buttonList[i]->DrawUpdate(title);
+				m_buttonList[i]->DrawUpdate();
 				ImGui::PopStyleColor();
 			}
 			else {
-				m_buttonList[i]->DrawUpdate(title);
+				m_buttonList[i]->DrawUpdate();
 			}
 			i++;
 		}

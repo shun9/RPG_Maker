@@ -56,7 +56,8 @@ public:
 
 	virtual void DrawUpdate() override;
 
-	void AddEnemy();
+	void AddEnemyAlone();
+	bool DeleteEnemyAlone();
 
 	void DataListIDUpdate() { m_enemyList->SetID(m_data->enemyList.GetList().size() - 1); }
 

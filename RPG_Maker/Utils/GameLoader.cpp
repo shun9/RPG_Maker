@@ -242,8 +242,8 @@ bool GameLoader::LoadEnemyGroupData(ifstream * file)
 		{
 			file->read((char*)&id, sizeof(int));
 			file->read((char*)&pos, sizeof(ShunLib::Vec2));
-			data->enemyList[j].first = id;
-			data->enemyList[j].second = pos;
+			data->enemyList.GetList().at(j)->Id = id;
+			data->enemyList.GetList().at(j)->Pos = pos;
 		}
 
 		holder.AddData(move(data));

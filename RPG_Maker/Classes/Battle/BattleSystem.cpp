@@ -109,7 +109,7 @@ void BattleSystem::ShiftTarget(int num)
 {
 	m_targetNum += num;
 
-	int listSize = (int)(m_enemy->enemyList.size()) - 1;
+	int listSize = (int)(m_enemy->enemyList.GetList().size()) - 1;
 
 	if (m_targetNum < 0) {
 		m_targetNum = listSize;
@@ -149,12 +149,12 @@ void BattleSystem::StackAction()
 	auto& db = DB_Enemy;
 	ShunLib::RandomNumber rn;
 	EnemyData* enemy;
-	for (int i = 0; i < (int)(m_enemy->enemyList.size()); i++)
+	for (int i = 0; i < (int)(m_enemy->enemyList.GetList().size()); i++)
 	{
 		//Ž€‚ñ‚Å‚é“G‚Ìs“®‚ÍÏ‚Ü‚È‚¢
 		if (m_enemyHp[i] > 0)
 		{
-			enemy = db.GetData(m_enemy->enemyList[i].first);
+			enemy = db.GetData(m_enemy->enemyList.GetList().at(i)->Id);
 			int num = rn(0, m_enemyAction.List().size() - 1);
 			m_actionList.insert(std::make_pair(enemy->Param[EnemyData::Param::DEX], m_enemyAction.List()[num]));
 			m_charactorList.insert(std::make_pair(enemy->Param[EnemyData::Param::DEX], enemy));
@@ -265,7 +265,7 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		}
 		else
 		{
-			auto tarPos = m_enemy->enemyList[m_targetNum].second;
+			auto tarPos = m_enemy->enemyList.GetList().at(m_targetNum)->Pos;
 			m_arrow->Draw(tarPos + ShunLib::Vec2(-50.0f, 0.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
@@ -273,12 +273,12 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 	auto& ds = DB_Enemy;
 	ShunLib::Vec2 enemyPos;
 	EnemyData* enemy;
-	for (int i = 0; i < (int)(m_enemy->enemyList.size()); i++)
+	for (int i = 0; i < (int)(m_enemy->enemyList.GetList().size()); i++)
 	{
-		enemy = DB_Enemy.GetData(m_enemy->enemyList[i].first);
+		enemy = DB_Enemy.GetData(m_enemy->enemyList.GetList().at(i)->Id);
 		if (m_enemyHp[i] > 0)
 		{
-			enemyPos = m_enemy->enemyList[i].second;
+			enemyPos = m_enemy->enemyList.GetList().at(i)->Pos;
 			enemy->Texture->Draw(enemyPos, ShunLib::Vec2::One);
 		}
 	}

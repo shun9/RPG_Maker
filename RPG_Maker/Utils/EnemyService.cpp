@@ -47,12 +47,14 @@ std::unique_ptr<EnemyGroupData> EnemyService::CreateEnemyGroupData()
 	return move(data);
 }
 
-std::unique_ptr<EnemyGroupAloneData> EnemyService::CreateEnemyGroupAloneData()
+std::unique_ptr<EnemyGroupAloneData> EnemyService::CreateEnemyGroupAloneData(int id)
 {
 	auto data = make_unique<EnemyGroupAloneData>();
 
-	data->Name = string("");
 	data->Pos = Vec2(0.0f, 0.0f);
-	data->Id = -1;
+	data->Id = id;
+	auto enemy = DB_Enemy.GetData(data->Id);
+	if (enemy)data->Name = enemy->Name;
+	else data->Name = "";
 	return move(data);
 }

@@ -40,7 +40,7 @@ public:
 
 	void ParamUpdate(int id);
 
-	void DataListIDUpdate() { m_uiDataList->SetID(DB_Enemy.GetList().size() - 1); }
+	void DataListIDUpdate() { m_uiDataList->SetID(DB_EnemyGroup.GetList().size() - 1); }
 
 	void DrawImage();
 };

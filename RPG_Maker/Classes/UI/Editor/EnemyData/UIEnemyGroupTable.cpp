@@ -23,7 +23,7 @@ UIEnemyGroupTable::UIEnemyGroupTable(const string& name)
 	,m_uiDataParam(nullptr)
 {
 	m_uiDataList = make_unique<UIDataList<EnemyGroupData>>(name);
-	m_uiDataList->SetButtonUI(DB_EnemyGroup.GetList().size(), &DB_EnemyGroup.GetList());
+	m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
 
 	m_addButton = std::make_unique<UIButton>("                  Add                  ", [this]() {
 		ParamUpdate(DB_EnemyGroup.AddData(SVC_Enemy->CreateEnemyGroupData()));
@@ -31,7 +31,7 @@ UIEnemyGroupTable::UIEnemyGroupTable(const string& name)
 	});
 
 	auto data = DB_EnemyGroup.GetData(0);
-	if (data != nullptr)m_selectId = 0;
+	if (data != nullptr)m_selectId = -1;
 }
 
 UIEnemyGroupTable::~UIEnemyGroupTable()
@@ -41,11 +41,12 @@ UIEnemyGroupTable::~UIEnemyGroupTable()
 void UIEnemyGroupTable::DrawUpdate()
 {
 	if (!Active)return;
-	if (DB_EnemyGroup.ChangeHolderCallBack()) m_uiDataList->SetButtonUI(DB_EnemyGroup.GetList().size(), &DB_EnemyGroup.GetList());
+	if (DB_EnemyGroup.ChangeHolderCallBack()) m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
 
 	auto currentId = m_uiDataList->ID();
 	if (m_selectId != currentId)
 	{
+		m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
 		m_uiDataParam->UIUpdate(DB_EnemyGroup.GetData(currentId));
 		m_selectId = currentId;
 	};

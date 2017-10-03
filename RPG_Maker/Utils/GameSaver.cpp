@@ -255,13 +255,13 @@ bool GameSaver::SaveEnemyGroupData(ofstream * file)
 		file->write(buf.c_str(), size);
 
 		//\¬
-		groupSize = (int)group->enemyList.size();
+		groupSize = (int)group->enemyList.GetList().size();
 		file->write((char*)&groupSize, sizeof(int));
 
 		for (int j = 0; j < groupSize; j++)
 		{
-			file->write((char*)&group->enemyList[j].first, sizeof(int));
-			file->write((char*)&group->enemyList[j].second, sizeof(ShunLib::Vec2));
+			file->write((char*)&group->enemyList.GetList().at(j)->Id, sizeof(int));
+			file->write((char*)&group->enemyList.GetList().at(j)->Pos, sizeof(ShunLib::Vec2));
 		}
 	}
 	return true;
