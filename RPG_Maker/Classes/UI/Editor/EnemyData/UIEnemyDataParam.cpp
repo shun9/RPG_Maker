@@ -43,7 +43,7 @@ void UIEnemyDataParam::UIUpdate(EnemyData* data)
 	if (m_multiBox == nullptr) m_multiBox = std::make_unique<UIInputStringBox>("memo", &m_text, (size_t)400);
 	else m_multiBox.reset(new UIInputStringBox("memo", &m_text, (size_t)400));
 
-	if (m_imageChangeButton) m_imageChangeButton = std::make_unique<UIButton>("Image Change");
+	if (!m_imageChangeButton) m_imageChangeButton = std::make_unique<UIButton>("Image Change");
 	else m_imageChangeButton.reset(new UIButton("Image Change"));
 
 	m_imageChangeButton->SetPressEvent([this]() {EnemyChangeTexture(); });

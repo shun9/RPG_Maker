@@ -59,8 +59,6 @@ void GameEditor::Initialize()
 	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
-	m_uiDataBase = make_unique<UIDataBase>("DataBase",player);
-	m_uiDataBase->Active = false;
 
 	// データの初期設定
 	DataInitialize(*win);
@@ -194,6 +192,10 @@ void GameEditor::DataInitialize(const Window& win)
 	//張り替えるマップを設定
 	auto edi = MapEditor::GetInstance();
 	edi->Map(m_map);
+
+	if (!m_uiDataBase)m_uiDataBase = make_unique<UIDataBase>("DataBase", PlayerHolder::GetInstance()->Get());
+	else m_uiDataBase.reset(new UIDataBase("DataBase", PlayerHolder::GetInstance()->Get()));
+	m_uiDataBase->Active = false;
 
 	MapEditor::GetInstance()->Id(-1);
 	m_uiTileProperty->SetID(-1);

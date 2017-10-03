@@ -36,17 +36,18 @@ public:
 	~DataBase() {}
 
 	void Reset() {
-		if(m_enemy==nullptr) m_enemy = std::make_unique<DataHolder<EnemyData>>();
+		if(m_enemy) m_enemy = std::make_unique<DataHolder<EnemyData>>();
 		else m_enemy.reset(new DataHolder<EnemyData>());
 
-		if (m_enemyGroup == nullptr) m_enemyGroup = std::make_unique<DataHolder<EnemyGroupData>>();
+		if (m_enemyGroup) m_enemyGroup = std::make_unique<DataHolder<EnemyGroupData>>();
 		else m_enemyGroup.reset(new DataHolder<EnemyGroupData>());
 
-		if (m_tile == nullptr) m_tile = std::make_unique<DataHolder<TileData>>();
+		if (m_tile) m_tile = std::make_unique<DataHolder<TileData>>();
 		else m_tile.reset(new DataHolder<TileData>());
 	}
 
 	DataHolder<EnemyData>& getEnemyData() { return *m_enemy.get(); }
 	DataHolder<EnemyGroupData>& getEnemyGroupData() { return *m_enemyGroup.get(); }
 	DataHolder<TileData>& getTileData() { return *m_tile.get(); }
+
 };

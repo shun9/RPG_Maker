@@ -48,8 +48,8 @@ void UITileProperty::UIUpdate()
 {
 	m_tileData = DB_Tile.GetData(m_currentTileId);
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
-	m_checkBoxIsMove = make_unique<UICheckBox>(" ", &m_tileData->canMove);
-	m_checkBoxIsEmphasis = make_unique<UICheckBox>("  ", &Map::m_isEmphasis);
+	m_checkBoxIsMove = make_unique<UICheckBox>("  ", &m_tileData->canMove);
+	m_checkBoxIsEmphasis = make_unique<UICheckBox>("   ", &Map::m_isEmphasis);
 	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
 }
 
