@@ -23,6 +23,8 @@ private:
 	EnemyData* m_data;
 	std::unique_ptr<UIInputStringBox> m_nameInputBox;
 	std::vector<std::unique_ptr<UIInputIntBox>> m_paramInputBox;
+	std::unique_ptr<UIInputStringBox> m_multiBox;
+	std::string m_text;
 public:
 
 	/// <summary>

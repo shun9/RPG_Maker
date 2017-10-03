@@ -18,12 +18,13 @@ class UIButton : public UIBase
 
 private:
 	 std::function<void()> m_func;
+	 ImVec2 m_size;
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UIButton(const std::string& name, std::function<void()> func = nullptr);
+	UIButton(const std::string& name, std::function<void()> func = nullptr, const Vector2& size = Vector2(0.0f, 0.0f));
 
 	/// <summary>
 	/// デストラクタ

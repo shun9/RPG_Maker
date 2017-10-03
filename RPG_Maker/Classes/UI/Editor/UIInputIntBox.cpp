@@ -26,7 +26,7 @@ void UIInputIntBox::DrawUpdate()
 {
 	if (!m_num)return;
 
-	ImGui::InputInt(m_name.c_str(), m_num);
+	ImGui::InputInt(m_name.c_str(), m_num, 1, 100);
 
 	if (*m_num < m_min) {
 		*m_num = m_min;

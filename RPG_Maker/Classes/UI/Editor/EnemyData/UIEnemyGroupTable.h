@@ -12,14 +12,16 @@
 #include "../UIBase.h"
 #include "UIDataList.h"
 #include "UIEnemyGroupDataParam.h"
+#include "UITableBase.h"
 
-class UIEnemyGroupTable :public UIBase
+class UIEnemyGroupTable :public UITableBase
 {
 	using Vector2 = ShunLib::Vec2;
 
 private:
 
 	std::unique_ptr<UIDataList<EnemyGroupData>> m_uiDataList;
+	std::unique_ptr<UIButton> m_addButton;
 	std::unique_ptr<UIEnemyGroupDataParam> m_uiDataParam;
 
 	int m_selectId;
@@ -37,7 +39,9 @@ public:
 
 	virtual void DrawUpdate() override;
 
-	void ParamUpdate(int id) { m_uiDataParam->UIUpdate(DB_EnemyGroup.GetData(id)); }
+	void ParamUpdate(int id) override;
 
-	void DrawImage();
+	void DataListIDUpdate() override { m_uiDataList->SetID(DB_EnemyGroup.GetList().size() - 1); }
+
+	void DrawImage() override;
 };

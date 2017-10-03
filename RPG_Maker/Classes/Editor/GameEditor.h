@@ -66,6 +66,7 @@ public:
 	// TODO:のちほど専用クラスに移動UI
 	void UIChangeActive(UIBase& ui);
 	void TilePropertyChangeActive() { UIChangeActive(*m_uiTileProperty.get()); }
+	void DataBaseChangeActive() { UIChangeActive(*m_uiDataBase.get()); }
 	void SelectedCreateTileData();
 	// データのロード
 	void LoadData() { GameLoader::GetInstance()->LoadGame(this); }

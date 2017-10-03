@@ -55,7 +55,7 @@ namespace ShunLib
 
 		//•`‰æ
 		void Draw(float x, float y, float scale = 1.0f, const RECT* rect = nullptr);
-		void Draw(const Vec2& pos, const Vec2& scale, const RECT* rect = nullptr);
+		void Draw(const Vec2& pos, const Vec2& scale, const RECT* rect = nullptr, const Vec2& origin = Vec2(0.0f, 0.0f));
 
 		//ƒpƒX‚ð•Ô‚·
 		std::wstring GetPath() { return m_path; }

@@ -60,6 +60,7 @@ void GameEditor::Initialize()
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
 	m_uiDataBase = make_unique<UIDataBase>("DataBase",player);
+	m_uiDataBase->Active = false;
 
 	// データの初期設定
 	DataInitialize(*win);
@@ -68,22 +69,22 @@ void GameEditor::Initialize()
 		m_uiMenu->SetMenuItemFunc("File ", u8"1.データ作成(Ctl+C)", [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
 		m_shortCutKey.Add(KEY::C, [this]() {DataInitialize(*ShunLib::Window::GetInstance()); });
 
-		m_uiMenu->SetMenuItemFunc("File ", "2.RPGData Load (Ctl+L)", [this]() { LoadData(); });
+		m_uiMenu->SetMenuItemFunc("File ", u8"2.データ読み込み (Ctl+L)", [this]() { LoadData(); });
 		m_shortCutKey.Add(KEY::L, [this]() {LoadData(); });
 
-		m_uiMenu->SetMenuItemFunc("File ", "3.Save RPGData overwrite (Ctl+S)", [this]() {SaveDataOverwrite(); });
+		m_uiMenu->SetMenuItemFunc("File ", u8"3.上書き保存 (Ctl+S)", [this]() {SaveDataOverwrite(); });
 		m_shortCutKey.Add(KEY::S, [this]() {SaveDataOverwrite(); });
 
-		m_uiMenu->SetMenuItemFunc("File ", "2.Save RPGData as (Ctl+A)", [this]() {SaveDataAs(); });
+		m_uiMenu->SetMenuItemFunc("File ", u8"4.名前を付けて保存 (Ctl+A)", [this]() {SaveDataAs(); });
 		m_shortCutKey.Add(KEY::A, [this]() {SaveDataAs(); });
 
-		m_uiMenu->SetMenuItemFunc("File ", "4.Tile Load", [this]() {SelectedCreateTileData(); });
+		m_uiMenu->SetMenuItemFunc("File ", u8"5.タイルを読み込み", [this]() {SelectedCreateTileData(); });
 
 		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+T)", [this]() {TilePropertyChangeActive(); });
 		m_shortCutKey.Add(KEY::T, [this]() {TilePropertyChangeActive(); });
 
-		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() { });
-
+		m_uiMenu->SetMenuItemFunc("View ", "2.DataBase (Ctl+D)", [this]() { DataBaseChangeActive(); });
+		m_shortCutKey.Add(KEY::D, [this]() {DataBaseChangeActive(); });
 
 		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)", [this]() {StartDebug(); });
 		m_shortCutKey.Add(KEY::P, [this]() {StartDebug(); });

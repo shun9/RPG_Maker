@@ -14,8 +14,9 @@
 
 using namespace std;
 
-UIButton::UIButton(const string& name, std::function<void()> func)
+UIButton::UIButton(const string& name, std::function<void()> func, const Vector2& size)
 	:UIBase(name)
+	,m_size(size.m_x,size.m_y)
 {
 	// 初期設定が無い場合デバッグ用イベント
 	m_func = func ? func : [=]() {OutputDebugStringW(L"press button\n"); };
@@ -28,7 +29,8 @@ UIButton::~UIButton()
 void UIButton::DrawUpdate()
 {
 	// ボタンの描画と押されたときの処理
-	if (ImGui::Button(m_name.c_str())) {
+	if (ImGui::Button(m_name.c_str(), m_size))
+	{
 		m_func();
 	}
 }

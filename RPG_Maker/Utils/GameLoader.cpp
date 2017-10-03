@@ -10,6 +10,7 @@
 #include "../Classes/Editor/GameEditor.h"
 #include "../Classes/Data/DataBase.h"
 #include "../Classes/Player/PlayerHolder.h"
+#include "ServiceManager.h"
 
 using namespace std;
 
@@ -238,12 +239,19 @@ bool GameLoader::LoadEnemyGroupData(ifstream * file)
 		//\¬
 		file->read((char*)&groupSize, sizeof(int));
 
+		data->enemyList.GetList().resize(0);
+		data->enemyList.GetList().shrink_to_fit();
 		for (int j = 0; j < groupSize; j++)
 		{
 			file->read((char*)&id, sizeof(int));
 			file->read((char*)&pos, sizeof(ShunLib::Vec2));
-			data->enemyList[j].first = id;
-			data->enemyList[j].second = pos;
+
+			if (!data->enemyList.GetData(j))
+			{			
+				data->enemyList.AddData(SVC_Enemy->CreateEnemyGroupAloneData(j));
+			}
+			data->enemyList.GetData(j)->Id = id;
+			data->enemyList.GetData(j)->Pos = pos;
 		}
 
 		holder.AddData(move(data));

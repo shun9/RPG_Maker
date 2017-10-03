@@ -18,19 +18,19 @@ using namespace ShunLib;
 using namespace std;
 
 UIEnemyTable::UIEnemyTable(const string& name)
-	:UIBase(name)
+	:UITableBase(name)
 	,m_selectId(-1)
 {
 	m_uiDataList = make_unique<UIDataList<EnemyData>>(name);
-	m_uiDataList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy);
+	m_uiDataList->SetButtonUI(&DB_Enemy.GetList());
+	m_addButton = std::make_unique<UIButton>("                  Add                  ", [this]() {
+		ParamUpdate(DB_Enemy.AddData(SVC_Enemy->CreateEnemyData()));
+		DataListIDUpdate();
+	});
 
 	auto data = DB_Enemy.GetData(0);
 	m_uiDataParam = make_unique<UIEnemyDataParam>("param", data);
 	if (data != nullptr)m_selectId = 0;
-
-	m_uiDataList->SetAddButtonFunc([this]() { 
-		ParamUpdate(DB_Enemy.AddData(SVC_Enemy->CreateEnemyData()));
-	});
 }
 
 UIEnemyTable::~UIEnemyTable()
@@ -40,7 +40,7 @@ UIEnemyTable::~UIEnemyTable()
 void UIEnemyTable::DrawUpdate()
 {
 	if (!Active)return;
-	if (DB_Enemy.ChangeHolderCallBack()) m_uiDataList->SetButtonUI(DB_Enemy.GetList().size(), &DB_Enemy);
+	if (DB_Enemy.ChangeHolderCallBack()) m_uiDataList->SetButtonUI(&DB_Enemy.GetList());
 
 	auto currentId = m_uiDataList->ID();
 	if (m_selectId != currentId)
@@ -53,12 +53,19 @@ void UIEnemyTable::DrawUpdate()
 	auto y = ImGui::GetCursorPosY();
 
 	m_uiDataList->DrawUpdate();
+
+	// ’Ç‰Áƒ{ƒ^ƒ“
+	ImGui::NewLine();
+	ImGui::SameLine(12.0f);
+	m_addButton->DrawUpdate();
+
 	ImGui::SetCursorPos(ImVec2(x, y));
 	m_uiDataParam->DrawUpdate();
 }
 
 void UIEnemyTable::DrawImage()
 {
+	if (!Active)return;
 	m_uiDataParam->DrawImage();
 }
 

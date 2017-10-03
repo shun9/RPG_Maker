@@ -89,9 +89,9 @@ public:
 		auto& db = DB_Enemy;
 		m_enemy = DB_EnemyGroup.GetData(id);
 		//HP‚ð•Û‘¶
-		for (int i = 0; i < (int)m_enemy->enemyList.size(); i++)
+		for (int i = 0; i < (int)m_enemy->enemyList.GetList().size(); i++)
 		{
-			m_enemyHp.push_back(db.GetData(m_enemy->enemyList[i].first)->Param[EnemyData::Param::HP]);
+			m_enemyHp.push_back(db.GetData(m_enemy->enemyList.GetList().at(i)->Id)->Param[EnemyData::Param::HP]);
 		}
 	}
 
@@ -104,7 +104,7 @@ public:
 
 	int TakeDamageEnemy(int damage);
 	EnemyData* GetTarget() {
-		return DB_Enemy.GetData(m_enemy->enemyList[m_targetNum].first);
+		return DB_Enemy.GetData(m_enemy->enemyList.GetList().at(m_targetNum)->Id);
 	}
 private:
 	bool SelectCommand();

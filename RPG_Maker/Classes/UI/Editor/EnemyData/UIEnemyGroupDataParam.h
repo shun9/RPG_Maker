@@ -14,6 +14,7 @@
 #include "../UIButton.h"
 #include "../UIInputIntBox.h"
 #include "../UIInputStringBox.h"
+#include "UIDataList.h"
 
 class UIEnemyGroupDataParam :public UIBase
 {
@@ -22,17 +23,28 @@ class UIEnemyGroupDataParam :public UIBase
 private:
 	EnemyGroupData* m_data;
 
+	std::vector<std::unique_ptr<UIInputIntBox>> m_paramInputBox;
 	std::unique_ptr<UIButton> m_enemyButton;
 	std::unique_ptr<UIButton> m_enemyGroupButton;
+	std::unique_ptr<UIButton> m_enemyAddButton;
 
 	std::unique_ptr<UIInputStringBox> m_nameInputBox;
-	std::vector<std::unique_ptr<UIInputIntBox>> m_paramInputBox;
+
+	std::unique_ptr<UIDataList<EnemyGroupAloneData>> m_groupAloneList;
+	std::unique_ptr<UIDataList<EnemyData>> m_enemyList;
+
+	// 現在選択しているグループデータのID
+	int m_selectGroupID;
+	// 現在選択しているグループアローンデータのID
+	int m_selectGroupAloneID;
+	// 現在選択している敵データのID
+	int m_selectEnemyID;
 public:
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UIEnemyGroupDataParam(const std::string& name, EnemyGroupData* data);
+	UIEnemyGroupDataParam(const std::string& name, EnemyGroupData* data = nullptr);
 
 	/// <summary>
 	/// デストラクタ
@@ -43,6 +55,11 @@ public:
 	void UIUpdate(EnemyGroupData* data);
 
 	virtual void DrawUpdate() override;
+
+	void AddEnemyAlone();
+	bool DeleteEnemyAlone();
+
+	void DataListIDUpdate() { m_enemyList->SetID(m_data->enemyList.GetList().size() - 1); }
 
 	void DrawImage();
 };
