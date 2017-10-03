@@ -180,7 +180,7 @@ void GameEditor::DataInitialize(const Window& win)
 	FileName("");
 
 	// データベースの初期化
-	//DB->Reset();
+	DB->Reset();
 
 	DELETE_POINTER(m_map);
 	m_map = new Map();
