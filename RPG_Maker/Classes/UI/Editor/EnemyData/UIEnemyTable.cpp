@@ -59,6 +59,8 @@ void UIEnemyTable::DrawUpdate()
 	ImGui::SameLine(12.0f);
 	m_addButton->DrawUpdate();
 
+	if (currentId < 0) return;
+
 	ImGui::SetCursorPos(ImVec2(x, y));
 	m_uiDataParam->DrawUpdate();
 }

@@ -40,7 +40,7 @@ std::unique_ptr<EnemyGroupData> EnemyService::CreateEnemyGroupData()
 {
 	auto data = make_unique<EnemyGroupData>();
 
-	data->Name = string("");
+	data->Name = string(u8"–¢Ý’èƒOƒ‹[ƒv");
 
 	data->enemyList.GetList().resize(0);
 

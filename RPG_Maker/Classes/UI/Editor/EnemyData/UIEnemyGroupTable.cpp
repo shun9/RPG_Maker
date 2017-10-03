@@ -25,13 +25,15 @@ UIEnemyGroupTable::UIEnemyGroupTable(const string& name)
 	m_uiDataList = make_unique<UIDataList<EnemyGroupData>>(name);
 	m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
 
+
 	m_addButton = std::make_unique<UIButton>("                  Add                  ", [this]() {
 		ParamUpdate(DB_EnemyGroup.AddData(SVC_Enemy->CreateEnemyGroupData()));
 		DataListIDUpdate();
 	});
 
 	auto data = DB_EnemyGroup.GetData(0);
-	if (data != nullptr)m_selectId = -1;
+	m_uiDataParam = make_unique<UIEnemyGroupDataParam>("param");
+	if (!data)m_selectId = -1;
 }
 
 UIEnemyGroupTable::~UIEnemyGroupTable()
@@ -46,23 +48,22 @@ void UIEnemyGroupTable::DrawUpdate()
 	auto currentId = m_uiDataList->ID();
 	if (m_selectId != currentId)
 	{
-		m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
+		//m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
 		m_uiDataParam->UIUpdate(DB_EnemyGroup.GetData(currentId));
 		m_selectId = currentId;
 	};
 
-	//フォントサイズ変更 
-	ImGui::SetWindowFontScale(1.4f);
-
 	auto x = ImGui::GetCursorPosX();
 	auto y = ImGui::GetCursorPosY();
 
-	if (m_uiDataList != nullptr)m_uiDataList->DrawUpdate(ImGui::GetID((void*)0));
+	m_uiDataList->DrawUpdate(ImGui::GetID((void*)0));
 
 	// 追加ボタン
 	ImGui::NewLine();
 	ImGui::SameLine(12.0f);
 	UIACTIVEDRAW(m_addButton);
+
+	if (currentId < 0) return;
 
 	ImGui::SetCursorPos(ImVec2(x, y));
 	UIACTIVEDRAW(m_uiDataParam);

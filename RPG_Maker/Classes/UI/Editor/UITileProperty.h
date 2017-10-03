@@ -15,6 +15,7 @@
 #include "UISlider.h"
 #include "UITilePropertyEGroup.h"
 #include "../../Data/TileData.h"
+#include "UIButton.h"
 
 class UITileProperty :public UIBase
 {
@@ -28,6 +29,8 @@ private:
 	std::unique_ptr<UISlider> m_encountSlider;
 
 	std::unique_ptr<UICheckBox> m_checkBoxIsMove;
+
+	std::unique_ptr<UICheckBox> m_checkBoxIsEmphasis;
 
 	// ÉXÉNÉçÅ[Éã
 	std::unique_ptr<UITilePropertyEGroup> m_groupSlider;

@@ -11,6 +11,7 @@
 #include <vector>
 #include <SL_Texture.h>
 #include "UIEnemyDataParam.h"
+#include "../../../../Utils/ImageLoader.h"
 
 using namespace ShunLib;
 using namespace std;
@@ -36,11 +37,16 @@ void UIEnemyDataParam::UIUpdate(EnemyData* data)
 
 	m_data = data;
 
-	if (m_nameInputBox == nullptr) m_nameInputBox = std::make_unique<UIInputStringBox>("name", &data->Name, (size_t)11);
-	else m_nameInputBox.reset(new UIInputStringBox("name", &data->Name, (size_t)11));
+	if (m_nameInputBox == nullptr) m_nameInputBox = std::make_unique<UIInputStringBox>("name", &data->Name, (size_t)40);
+	else m_nameInputBox.reset(new UIInputStringBox("name", &data->Name, (size_t)40));
 	
 	if (m_multiBox == nullptr) m_multiBox = std::make_unique<UIInputStringBox>("memo", &m_text, (size_t)400);
 	else m_multiBox.reset(new UIInputStringBox("memo", &m_text, (size_t)400));
+
+	if (!m_imageChangeButton) m_imageChangeButton = std::make_unique<UIButton>("Image Change");
+	else m_imageChangeButton.reset(new UIButton("Image Change"));
+
+	m_imageChangeButton->SetPressEvent([this]() {EnemyChangeTexture(); });
 
 	m_paramInputBox.resize(EnemyData::Param::length);
 	for (int i = 0; i < EnemyData::Param::length; i++) {
@@ -121,9 +127,13 @@ void UIEnemyDataParam::DrawUpdate()
 
 	ImGui::NewLine();
 	ImGui::NewLine();
+	ImGui::SameLine(txtinitPos);
+	UIACTIVEDRAW(m_imageChangeButton);
+	ImGui::NewLine();
+	ImGui::NewLine();
 	ImGui::NewLine();
 	ImGui::SameLine(300.0f);
-	m_multiBox->DrawMultiBoxUpdate(Vec2(850.0f,250.0f));
+	m_multiBox->DrawMultiBoxUpdate(Vec2(850.0f,230.0f));
 
 	// Save 
 
@@ -136,3 +146,17 @@ void UIEnemyDataParam::DrawImage()
 	if (m_data)m_data->Texture->Draw(Vec2(630.0f, 250.0f), Vec2(0.7f, 0.7f), nullptr, Vec2(0.5f, 0.5f));
 }
 
+void UIEnemyDataParam::EnemyChangeTexture()
+{
+	if (!m_data) return;
+
+	auto Il = ImageLoader::GetInstance();
+	auto str = Il->OpenLoadingDialog(L"Image\\enemy\\");
+
+	if (str.c_str() != wstring(L"Image\\enemy\\"))
+	{
+		m_data->Texture.reset();
+		m_data->Texture = make_unique<Texture>(str.c_str());
+	}
+
+}

@@ -8,6 +8,7 @@
 #include "../../imgui/imgui_impl_dx11.h"
 #include "UIDataBase.h"
 #include "UIPlayer.h"
+#include "../../../Utils/GameSaver.h"
 
 using namespace std;
 
@@ -24,7 +25,9 @@ UIDataBase::UIDataBase(const string& name,Player* player)
 	m_playerButton = std::make_unique<UIButton>("Player", bind(&UIDataBase::ChangeActive, this, DATA_LIST::PLAYER));
 	m_enemyButton = std::make_unique<UIButton>("Enemy", bind(&UIDataBase::ChangeActive,this, DATA_LIST::ENEMY));
 	m_enemyGroupButton = std::make_unique<UIButton>("Enemy Group", bind(&UIDataBase::ChangeActive,this, DATA_LIST::ENEMYGROUP));
+	m_saveButton = std::make_unique<UIButton>("     Save     ", bind(&UIDataBase::ChangeActive, this, DATA_LIST::ENEMYGROUP));
 
+	//m_saveButton->SetPressEvent([this]() {GameSaver::GetInstance()->SaveGameFileSelect(this); })
 	for (int i = 0; i < DATA_LIST::length; i++){
 		if(i!=m_viewData)m_uiList.at(i)->Active = false;
 	}
@@ -64,6 +67,9 @@ void UIDataBase::DrawUpdate()
 
 		style.FramePadding = ImVec2(3.0f, 2.0f);
 
+		//フォントサイズ変更
+		ImGui::SetWindowFontScale(1.4f);
+
 		auto x = ImGui::GetCursorPosX();
 		auto y = ImGui::GetCursorPosY();
 
@@ -76,11 +82,17 @@ void UIDataBase::DrawUpdate()
 		UIACTIVEDRAW(m_enemyButton);
 		ImGui::SameLine(500.0f);
 		UIACTIVEDRAW(m_enemyGroupButton);
-
 		for each(auto& ui in m_uiList)
 		{
 			UIACTIVEDRAW(ui);
 		}
+
+		//ImGui::SetCursorPos(ImVec2(900.0f, 800.0f));
+		//
+		//// TODO: ごり押し
+		//ImGui::SetWindowFontScale(1.6f);
+		//UIACTIVEDRAW(m_saveButton);
+		//ImGui::SetWindowFontScale(1.4f);
 
 		ImGui::End();
 		{

@@ -27,6 +27,15 @@ public:
 		return (int)(m_DataList.size()) - 1;
 	}
 
+	//データを削除する
+	bool DeleteData(int id) {
+		if (m_DataList.size() < id) return false;
+		m_DataList.erase(m_DataList.begin() + id);
+		m_DataList.shrink_to_fit();
+		m_change = true;
+		return true;
+	}
+
 	//データ情報を返す
 	//無ければnullptr
 	T* GetData(int id) const {

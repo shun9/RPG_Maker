@@ -32,6 +32,7 @@ private:
 	std::unique_ptr<UIButton> m_playerButton;
 	std::unique_ptr<UIButton> m_enemyButton;
 	std::unique_ptr<UIButton> m_enemyGroupButton;
+	std::unique_ptr<UIButton> m_saveButton;
 
 	DATA_LIST m_viewData;
 public:

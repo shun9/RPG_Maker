@@ -48,12 +48,14 @@ public:
 			auto& list = *m_holder;
 			auto* dataTmp = list[i].get();
 			const auto* data = dynamic_cast<Data*>(dataTmp);
-			char title[24];
+			char title[500];
 			sprintf_s(title, u8"%d : %s", i, data->Name.c_str());
 			auto bind = std::bind(&UIDataList<D>::SetID, this, i);
 			if(!m_buttonList.at(i)) m_buttonList.at(i) = make_unique<UIButton>(title, bind,ShunLib::Vec2(230.0f,30.0f));
 			else m_buttonList.at(i).reset(new UIButton(title, bind, ShunLib::Vec2(230.0f, 30.0f)));
 		}
+
+		m_selectId = m_holder->size() - 1;
 	}
 
 	virtual void DrawUpdate(int id = 0, ShunLib::Vec2 size = Vec2(250, 500))

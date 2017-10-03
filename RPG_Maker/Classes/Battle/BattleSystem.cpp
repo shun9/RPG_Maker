@@ -253,6 +253,23 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 
 	auto text = BattleText::GetInstance();
 
+	auto& ds = DB_Enemy;
+	ShunLib::Vec2 enemyPos;
+	EnemyData* enemy;
+
+	int posNum[] = { 1,0,2 };
+	int viewNum[] = { 0,1,2 };
+	for (int i = 0; i < (int)(m_enemy->enemyList.GetList().size()); i++)
+	{
+		enemy = DB_Enemy.GetData(m_enemy->enemyList.GetList().at(posNum[i])->Id);
+		if (m_enemyHp[i] > 0)
+		{
+			enemyPos = Vec2(50.0f+(200.0f*viewNum[i]), 100.0f);
+			//enemyPos = m_enemy->enemyList.GetList().at(i)->Pos;
+			enemy->Texture->Draw(enemyPos, Vec2(0.6f, 0.6f));
+		}
+	}
+
 	if (m_isExecuteAction)
 	{
 		text->Draw(pos);
@@ -267,19 +284,6 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		{
 			auto tarPos = m_enemy->enemyList.GetList().at(m_targetNum)->Pos;
 			m_arrow->Draw(tarPos + ShunLib::Vec2(-50.0f, 0.0f), ShunLib::Vec2(2.0f, 2.0f));
-		}
-	}
-
-	auto& ds = DB_Enemy;
-	ShunLib::Vec2 enemyPos;
-	EnemyData* enemy;
-	for (int i = 0; i < (int)(m_enemy->enemyList.GetList().size()); i++)
-	{
-		enemy = DB_Enemy.GetData(m_enemy->enemyList.GetList().at(i)->Id);
-		if (m_enemyHp[i] > 0)
-		{
-			enemyPos = m_enemy->enemyList.GetList().at(i)->Pos;
-			enemy->Texture->Draw(enemyPos, ShunLib::Vec2::One);
 		}
 	}
 }

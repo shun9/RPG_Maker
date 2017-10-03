@@ -22,8 +22,10 @@ void UIPlayer::DrawUpdate()
 	ImGui::Text("pos :");
 
 	ImGui::PushItemWidth(150.0f);
+	ImGui::NewLine();
+	ImGui::SameLine(300);
 	UIVECTORDRAW(m_posInputBox, 0);
-	ImGui::SameLine(txtinitPos);
+	ImGui::SameLine(300.0f+175.0f);
 	UIVECTORDRAW(m_posInputBox, 1);
 	m_player->PosOnMap(ShunLib::Vec2((float)m_playerPosX,(float)m_playerPosY));
 

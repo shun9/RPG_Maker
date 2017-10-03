@@ -22,6 +22,7 @@
 #include <memory>
 
 #include "../Player/Player.h"
+#include "../Player/PlayerHolder.h"
 
 class Game;
 
@@ -69,7 +70,12 @@ public:
 	void DataBaseChangeActive() { UIChangeActive(*m_uiDataBase.get()); }
 	void SelectedCreateTileData();
 	// データのロード
-	void LoadData() { GameLoader::GetInstance()->LoadGame(this); }
+	void LoadData() { 
+		GameLoader::GetInstance()->LoadGame(this); 
+		if (!m_uiDataBase)m_uiDataBase = std::make_unique<UIDataBase>("DataBase", PlayerHolder::GetInstance()->Get());
+		else m_uiDataBase.reset(new UIDataBase("DataBase", PlayerHolder::GetInstance()->Get()));
+		m_uiDataBase->Active = false;
+	}
 	// データのセーブ
 	void SaveDataAs() { GameSaver::GetInstance()->SaveGameFileSelect(this); }
 	// データの上書きセーブ
