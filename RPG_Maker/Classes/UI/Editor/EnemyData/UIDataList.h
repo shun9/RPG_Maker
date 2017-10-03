@@ -63,13 +63,15 @@ public:
 		// ここから描画処理
 		// リスト表示
 
-		//フォントサイズ変更 
+		//フォントサイズ変更
 		ImGui::SetWindowFontScale(1.4f);
 
 		ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(250, 500), ImGuiWindowFlags_NoTitleBar);
 		int i = 0;
 		for each(auto& data in m_buttonList) {
 			auto* dataTmp = m_holder->GetData(i);
+
+			if (dataTmp == nullptr)break;
 			const auto* data = dynamic_cast<Data*>(dataTmp);
 			char title[24];
 			sprintf_s(title, "ID %d : %s", i, data->Name.c_str());
