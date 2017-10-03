@@ -192,6 +192,7 @@
     <ClInclude Include="Classes\UI\Editor\EnemyData\UIEnemyGroupTable.h" />
     <ClInclude Include="Classes\Player\PlayerAction.h" />
     <ClInclude Include="Classes\UI\Editor\EnemyData\UIEnemyTable.h" />
+    <ClInclude Include="Classes\UI\Editor\EnemyData\UITableBase.h" />
     <ClInclude Include="Classes\UI\Editor\UIBase.h" />
     <ClInclude Include="Classes\UI\Editor\UIButton.h" />
     <ClInclude Include="Classes\UI\Editor\UICheckBox.h" />

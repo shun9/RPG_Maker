@@ -94,7 +94,10 @@ void UIDataBase::DrawUpdate()
 
 void UIDataBase::DrawImage()
 {
-
+	for each(auto& ui in m_uiList)
+	{
+		ui->DrawImage();
+	}
 }
 
 void UIDataBase::ChangeActive(DATA_LIST data)

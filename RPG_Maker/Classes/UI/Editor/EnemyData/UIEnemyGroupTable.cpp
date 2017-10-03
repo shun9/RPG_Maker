@@ -18,7 +18,7 @@ using namespace ShunLib;
 using namespace std;
 
 UIEnemyGroupTable::UIEnemyGroupTable(const string& name)
-	:UIBase(name)
+	:UITableBase(name)
 	,m_selectId(-1)
 	,m_uiDataParam(nullptr)
 {

@@ -38,3 +38,17 @@ void UIInputStringBox::DrawUpdate()
 
 	delete[] cstr; // 解放
 }
+
+void UIInputStringBox::DrawMultiBoxUpdate(ShunLib::Vec2 size)
+{
+	auto cstr = new char[100000]; // メモリ確保
+	std::strcpy(cstr, m_text->c_str());        // コピー
+
+	if (ImGui::InputTextMultiline(m_name.c_str(), cstr, m_size, ImVec2(size.m_x, size.m_y)))
+	{
+		*m_text = cstr;
+	}
+
+	delete[] cstr; // 解放
+}
+

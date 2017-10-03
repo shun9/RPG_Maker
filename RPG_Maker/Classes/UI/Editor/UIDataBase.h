@@ -27,7 +27,7 @@ class UIDataBase :public UIBase
 		length
 	};
 private:
-	std::vector<std::unique_ptr<UIBase>> m_uiList;
+	std::vector<std::unique_ptr<UITableBase>> m_uiList;
 
 	std::unique_ptr<UIButton> m_playerButton;
 	std::unique_ptr<UIButton> m_enemyButton;

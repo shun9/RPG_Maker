@@ -158,6 +158,7 @@ bool UIEnemyGroupDataParam::DeleteEnemyAlone()
 
 	// ƒ{ƒ^ƒ“UIì¬
 	m_groupAloneList->SetButtonUI(&m_data->enemyList.GetList());
+	return true;
 }
 
 

@@ -74,7 +74,7 @@ void Texture::Draw(float x, float y, float scale,const RECT* rect)
 	m_spriteBatch->End();
 }
 
-void ShunLib::Texture::Draw(const Vec2& pos, const Vec2& scale, const RECT * rect)
+void ShunLib::Texture::Draw(const Vec2& pos, const Vec2& scale, const RECT * rect,const Vec2& origin)
 {
 	using namespace DirectX;
 

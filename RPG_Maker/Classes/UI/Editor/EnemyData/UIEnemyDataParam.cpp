@@ -34,8 +34,13 @@ void UIEnemyDataParam::UIUpdate(EnemyData* data)
 {
 	if (data == nullptr)return;
 
-	if (m_nameInputBox == nullptr) m_nameInputBox = std::make_unique<UIInputStringBox>("name", &data->Name, (size_t)10);
+	m_data = data;
+
+	if (m_nameInputBox == nullptr) m_nameInputBox = std::make_unique<UIInputStringBox>("name", &data->Name, (size_t)11);
 	else m_nameInputBox.reset(new UIInputStringBox("name", &data->Name, (size_t)11));
+	
+	if (m_multiBox == nullptr) m_multiBox = std::make_unique<UIInputStringBox>("memo", &m_text, (size_t)400);
+	else m_multiBox.reset(new UIInputStringBox("memo", &m_text, (size_t)400));
 
 	m_paramInputBox.resize(EnemyData::Param::length);
 	for (int i = 0; i < EnemyData::Param::length; i++) {
@@ -48,10 +53,11 @@ void UIEnemyDataParam::UIUpdate(EnemyData* data)
 void UIEnemyDataParam::DrawUpdate()
 {
 	if (!Active)return;
-	if (m_data == nullptr)return;
 
 	//フォントサイズ変更
 	ImGui::SetWindowFontScale(1.4f);
+
+	if (m_data == nullptr)return;
 
 	ImGui::NewLine();
 	ImGui::NewLine();
@@ -112,15 +118,21 @@ void UIEnemyDataParam::DrawUpdate()
 	UIVECTORDRAW(m_paramInputBox, EnemyData::Param::EXP);
 	ImGui::SameLine(txtinitPos + nextinitdir);
 	UIVECTORDRAW(m_paramInputBox, EnemyData::Param::MONEY);
-	// Save
 
-	// cansel
+	ImGui::NewLine();
+	ImGui::NewLine();
+	ImGui::NewLine();
+	ImGui::SameLine(300.0f);
+	m_multiBox->DrawMultiBoxUpdate(Vec2(850.0f,250.0f));
+
+	// Save 
 
 }
 
 void UIEnemyDataParam::DrawImage()
 {
+	if (!Active)return;
 	// 画像
-
+	if (m_data)m_data->Texture->Draw(Vec2(630.0f, 250.0f), Vec2(0.7f, 0.7f), nullptr, Vec2(0.5f, 0.5f));
 }
 

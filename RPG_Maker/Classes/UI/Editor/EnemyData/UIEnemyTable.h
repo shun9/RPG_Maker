@@ -12,8 +12,9 @@
 #include "../UIBase.h"
 #include "UIDataList.h"
 #include "UIEnemyDataParam.h"
+#include "UITableBase.h"
 
-class UIEnemyTable :public UIBase
+class UIEnemyTable :public UITableBase
 {
 	using Vector2 = ShunLib::Vec2;
 
@@ -38,9 +39,9 @@ public:
 
 	virtual void DrawUpdate() override;
 
-	void ParamUpdate(int id) { m_uiDataParam->UIUpdate(DB_Enemy.GetData(id)); }
+	void ParamUpdate(int id) override{ m_uiDataParam->UIUpdate(DB_Enemy.GetData(id)); }
 
-	void DataListIDUpdate() { m_uiDataList->SetID(DB_Enemy.GetList().size() - 1); }
+	void DataListIDUpdate() override{ m_uiDataList->SetID(DB_Enemy.GetList().size() - 1); }
 
-	void DrawImage();
+	void DrawImage()override;
 };

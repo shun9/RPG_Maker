@@ -33,4 +33,5 @@ public:
 	virtual ~UIInputStringBox() override;
 
 	virtual void DrawUpdate() override;
+	virtual void DrawMultiBoxUpdate(ShunLib::Vec2 size);
 };

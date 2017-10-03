@@ -18,7 +18,7 @@ using namespace ShunLib;
 using namespace std;
 
 UIEnemyTable::UIEnemyTable(const string& name)
-	:UIBase(name)
+	:UITableBase(name)
 	,m_selectId(-1)
 {
 	m_uiDataList = make_unique<UIDataList<EnemyData>>(name);
@@ -31,7 +31,6 @@ UIEnemyTable::UIEnemyTable(const string& name)
 	auto data = DB_Enemy.GetData(0);
 	m_uiDataParam = make_unique<UIEnemyDataParam>("param", data);
 	if (data != nullptr)m_selectId = 0;
-
 }
 
 UIEnemyTable::~UIEnemyTable()

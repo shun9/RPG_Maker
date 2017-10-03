@@ -49,7 +49,7 @@ public:
 			auto* dataTmp = list[i].get();
 			const auto* data = dynamic_cast<Data*>(dataTmp);
 			char title[24];
-			sprintf_s(title, "%d : %s", i, data->Name.c_str());
+			sprintf_s(title, u8"%d : %s", i, data->Name.c_str());
 			auto bind = std::bind(&UIDataList<D>::SetID, this, i);
 			if(!m_buttonList.at(i)) m_buttonList.at(i) = make_unique<UIButton>(title, bind,ShunLib::Vec2(230.0f,30.0f));
 			else m_buttonList.at(i).reset(new UIButton(title, bind, ShunLib::Vec2(230.0f, 30.0f)));
@@ -75,12 +75,6 @@ public:
 
 		int i = 0;
 		for each(auto& data in m_buttonList) {
-			auto* dataTmp = m_holder->GetData(i);
-
-			if (dataTmp == nullptr)break;
-			const auto* data = dynamic_cast<Data*>(dataTmp);
-			char title[24];
-			sprintf_s(title, "%s", data->Name.c_str());
 			if (m_selectId == i)
 			{
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
