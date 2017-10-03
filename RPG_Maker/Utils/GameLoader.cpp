@@ -9,6 +9,7 @@
 #include <assert.h>
 #include "../Classes/Editor/GameEditor.h"
 #include "../Classes/Data/DataBase.h"
+#include "../Classes/Player/PlayerHolder.h"
 
 using namespace std;
 
@@ -66,9 +67,9 @@ bool GameLoader::LoadGame(GameEditor* editor)
 	//各データを読み込む
 	if(!LoadTileData      (&file)) { return false; }
 	if(!LoadMapData       (&file)) { return false; }
-	if(!LoadPlayerData    (&file)) { return false; }
 	if(!LoadEnemyData     (&file)) { return false; }
 	if(!LoadEnemyGroupData(&file)) { return false; }
+	if (!LoadPlayerData(&file)) { return false; }
 
 	return true;
 }
@@ -154,16 +155,6 @@ bool GameLoader::LoadMapData(ifstream* file)
 
 	return true;
 }
-
-
-/// /// <summary>
-//プレイヤーの情報を読み込む
-/// </summary>
-bool GameLoader::LoadPlayerData(ifstream * file)
-{
-	return true;
-}
-
 
 /// <summary>
 //敵の情報を読み込む
@@ -256,6 +247,28 @@ bool GameLoader::LoadEnemyGroupData(ifstream * file)
 		}
 
 		holder.AddData(move(data));
+	}
+
+	return true;
+}
+
+
+/// /// <summary>
+//プレイヤーの情報を読み込む
+/// </summary>
+bool GameLoader::LoadPlayerData(ifstream * file)
+{
+	auto player = PlayerHolder::GetInstance()->Get();
+
+	//位置
+	ShunLib::Vec2 pos;
+	file->read((char*)&(pos.m_x), sizeof(float));
+	file->read((char*)&(pos.m_y), sizeof(float));
+	player->PosOnMap(pos);
+
+	for (int i = 0; i < Player::PARAM::length; i++)
+	{
+		file->read((char*)&(player->GetParam()[i]), sizeof(int));
 	}
 
 	return true;
