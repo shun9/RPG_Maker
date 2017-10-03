@@ -21,7 +21,7 @@ namespace ShunLib
 		{
 			A = DirectX::Keyboard::Keys::A,
 			C = DirectX::Keyboard::Keys::C,
-			E = DirectX::Keyboard::Keys::E,
+			D = DirectX::Keyboard::Keys::D,
 			L = DirectX::Keyboard::Keys::L,
 			P = DirectX::Keyboard::Keys::P,
 			S = DirectX::Keyboard::Keys::S,

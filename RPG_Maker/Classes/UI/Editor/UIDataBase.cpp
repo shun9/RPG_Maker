@@ -37,6 +37,7 @@ UIDataBase::~UIDataBase()
 
 void UIDataBase::DrawUpdate()
 {
+	if (!Active) return;
 
 	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
@@ -94,6 +95,8 @@ void UIDataBase::DrawUpdate()
 
 void UIDataBase::DrawImage()
 {
+	if (!Active) return;
+
 	for each(auto& ui in m_uiList)
 	{
 		ui->DrawImage();

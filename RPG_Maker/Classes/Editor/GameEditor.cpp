@@ -60,6 +60,7 @@ void GameEditor::Initialize()
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
 	m_uiDataBase = make_unique<UIDataBase>("DataBase",player);
+	m_uiDataBase->Active = false;
 
 	// ƒf[ƒ^‚Ì‰ŠúÝ’è
 	DataInitialize(*win);
@@ -82,8 +83,8 @@ void GameEditor::Initialize()
 		m_uiMenu->SetMenuItemFunc("View ", "1.TileProperty (Ctl+T)", [this]() {TilePropertyChangeActive(); });
 		m_shortCutKey.Add(KEY::T, [this]() {TilePropertyChangeActive(); });
 
-		m_uiMenu->SetMenuItemFunc("View ", "2.EnemyData (Ctl+E)", [this]() { });
-
+		m_uiMenu->SetMenuItemFunc("View ", "2.DataBase (Ctl+D)", [this]() { DataBaseChangeActive(); });
+		m_shortCutKey.Add(KEY::D, [this]() {DataBaseChangeActive(); });
 
 		m_uiMenu->SetMenuItemFunc("Game ", "1.Play (Ctl+P)", [this]() {StartDebug(); });
 		m_shortCutKey.Add(KEY::P, [this]() {StartDebug(); });
