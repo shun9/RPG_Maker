@@ -14,6 +14,7 @@
 #include "../UI/Editor/UITileCanvas.h"
 #include "../UI/Editor/UIUnderBar.h"
 #include "../UI/Editor/UIDataBase.h"
+#include "../UI/Editor/UIPlayer.h"
 #include "../../Utils/GameLoader.h"
 #include "../../Utils/GameSaver.h"
 #include "ShortCutKey.h"

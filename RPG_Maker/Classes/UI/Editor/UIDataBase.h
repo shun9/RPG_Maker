@@ -13,6 +13,7 @@
 #include <string>
 #include "EnemyData\UIEnemyGroupTable.h"
 #include "EnemyData\UIEnemyTable.h"
+#include "../../Player/Player.h"
 
 class UIDataBase :public UIBase
 {
@@ -20,12 +21,14 @@ class UIDataBase :public UIBase
 
 	enum DATA_LIST
 	{
+		PLAYER,
 		ENEMY,
 		ENEMYGROUP
 	};
 private:
 	std::vector<std::unique_ptr<UIBase>> m_uiList;
 
+	std::unique_ptr<UIButton> m_playerButton;
 	std::unique_ptr<UIButton> m_enemyButton;
 	std::unique_ptr<UIButton> m_enemyGroupButton;
 
@@ -34,7 +37,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	UIDataBase(const std::string& name);
+	UIDataBase(const std::string& name, Player* player);
 
 	/// <summary>
 	/// デストラクタ

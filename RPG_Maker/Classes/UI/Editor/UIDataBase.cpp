@@ -7,20 +7,24 @@
 #include "../../imgui/imgui.h"
 #include "../../imgui/imgui_impl_dx11.h"
 #include "UIDataBase.h"
+#include "UIPlayer.h"
 
 using namespace std;
 
-UIDataBase::UIDataBase(const string& name)
+UIDataBase::UIDataBase(const string& name,Player* player)
 	:UIBase(name)
 {
-	m_uiList.resize(2);
+	m_uiList.resize(3);
 
+	m_uiList[DATA_LIST::PLAYER] = make_unique<UIPlayer>(player);
 	m_uiList[DATA_LIST::ENEMY] = make_unique<UIEnemyTable>(string("Enemy DataBase"));
 	m_uiList[DATA_LIST::ENEMYGROUP] = make_unique<UIEnemyGroupTable>(string("Enemy DataBase"));
 
+	m_uiList[DATA_LIST::ENEMY]->Active = false;
 	m_uiList[DATA_LIST::ENEMYGROUP]->Active = false;
 
-	m_enemyButton = std::make_unique<UIButton>("Enemy", bind(&UIDataBase::ChangeActive,this, DATA_LIST::ENEMY));
+	m_playerButton = std::make_unique<UIButton>("Player", bind(&UIDataBase::ChangeActive, this, DATA_LIST::PLAYER));
+	m_enemyButton = std::make_unique<UIButton>("Enemy", bind(&UIDataBase::ChangeActive, this, DATA_LIST::ENEMY));
 	m_enemyGroupButton = std::make_unique<UIButton>("Enemy Group", bind(&UIDataBase::ChangeActive,this, DATA_LIST::ENEMYGROUP));
 
 }
@@ -58,8 +62,10 @@ void UIDataBase::DrawUpdate()
 		// DataêÿÇËë÷Ç¶ópUI
 		ImGui::NewLine();
 		ImGui::SameLine(300.0f);
-		UIACTIVEDRAW(m_enemyButton);
+		UIACTIVEDRAW(m_playerButton);
 		ImGui::SameLine(400.0f);
+		UIACTIVEDRAW(m_enemyButton);
+		ImGui::SameLine(500.0f);
 		UIACTIVEDRAW(m_enemyGroupButton);
 
 		for each(auto& ui in m_uiList)

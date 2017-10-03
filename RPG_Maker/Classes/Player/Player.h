@@ -40,6 +40,7 @@ public:
 	bool Movestate();
 
 	//À•W‚ÌŠ“¾
+	ShunLib::Vec2& PosOnMap(int tmp) { return m_posOnMap; }
 	ShunLib::Vec2 PosOnMap() { return m_posOnMap; }
 	void PosOnMap(const ShunLib::Vec2& pos) { m_posOnMap = pos; }
 

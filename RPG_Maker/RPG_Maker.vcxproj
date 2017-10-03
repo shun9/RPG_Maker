@@ -198,6 +198,7 @@
     <ClInclude Include="Classes\UI\Editor\UIMenu.h" />
     <ClInclude Include="Classes\UI\Editor\UIMenuBar.h" />
     <ClInclude Include="Classes\UI\Editor\UIMenuItem.h" />
+    <ClInclude Include="Classes\UI\Editor\UIPlayer.h" />
     <ClInclude Include="Classes\UI\Editor\UISlider.h" />
     <ClInclude Include="Classes\UI\Editor\UIInputStringBox.h" />
     <ClInclude Include="Classes\UI\Editor\UITileCanvas.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Classes\UI\Editor\UIMenu.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIMenuBar.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIMenuItem.cpp" />
+    <ClCompile Include="Classes\UI\Editor\UIPlayer.cpp" />
     <ClCompile Include="Classes\UI\Editor\UISlider.cpp" />
     <ClCompile Include="Classes\UI\Editor\UIInputStringBox.cpp" />
     <ClCompile Include="Classes\UI\Editor\UITileCanvas.cpp" />
