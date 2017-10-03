@@ -204,7 +204,6 @@
     <ClInclude Include="Classes\UI\Editor\UITileProperty.h" />
     <ClInclude Include="Classes\UI\Editor\UITilePropertyEGroup.h" />
     <ClInclude Include="Classes\UI\Editor\UIUnderBar.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="ShunLibTK\inc\SL_ConversionTK.h" />
     <ClInclude Include="ShunLibTK\inc\SL_KeyManager.h" />
