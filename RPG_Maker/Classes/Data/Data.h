@@ -12,5 +12,4 @@
 // Data‚ÌŠî’ê
 struct Data {
 	std::string Name;
-	int Id;
 };
