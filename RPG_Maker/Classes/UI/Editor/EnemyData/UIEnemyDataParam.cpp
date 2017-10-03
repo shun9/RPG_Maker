@@ -19,8 +19,6 @@ UIEnemyDataParam::UIEnemyDataParam(const string& name, EnemyData* data)
 	:UIBase(name)
 	,m_data(data)
 {
-
-
 	UIUpdate(data);
 }
 
@@ -50,7 +48,6 @@ void UIEnemyDataParam::UIUpdate(EnemyData* data)
 void UIEnemyDataParam::DrawUpdate()
 {
 	if (!Active)return;
-
 	if (m_data == nullptr)return;
 
 	//フォントサイズ変更
@@ -115,7 +112,7 @@ void UIEnemyDataParam::DrawUpdate()
 	UIVECTORDRAW(m_paramInputBox, EnemyData::Param::EXP);
 	ImGui::SameLine(txtinitPos + nextinitdir);
 	UIVECTORDRAW(m_paramInputBox, EnemyData::Param::MONEY);
-	// Save 
+	// Save
 
 	// cansel
 

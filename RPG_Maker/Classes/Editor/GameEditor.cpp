@@ -22,6 +22,7 @@
 #include "../../Utils/ServiceManager.h"
 #include "../../Utils/GameSaver.h"
 
+
 using namespace std;
 GameEditor::GameEditor()
 	:m_map(nullptr)
@@ -56,7 +57,7 @@ void GameEditor::Initialize()
 	m_uiTileProperty = make_unique<UITileProperty>(string("Tile Property"));
 	m_uiTileCanvas = make_unique<UITileCanvas>(string("Tile Canvas"));
 	m_uiUnderBar = make_unique<UIUnderBar>(string("Under"));
-	m_uiDataBase = make_unique<UIDataBase>("DataBase");
+	m_uiDataBase = make_unique<UIDataBase>("DataBase",player);
 
 	// ƒf[ƒ^‚Ì‰Šúİ’è
 	DataInitialize(*win);
