@@ -22,6 +22,7 @@ BattleSystem::BattleSystem() :
 {
 	m_backGround = new ShunLib::Texture(L"Image\\Prairie.png");
 	m_arrow = new ShunLib::Texture(L"Image\\arrow.png");
+	m_arrow2 = new ShunLib::Texture(L"Image\\arrow2.png");
 
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::UP, new SelectUpCommand);
 	m_commandInput.SetCommand(KeyManager::KEY_CODE::DOWN, new SelectDownCommand);
@@ -42,6 +43,7 @@ BattleSystem::~BattleSystem()
 {
 	DELETE_POINTER(m_backGround);
 	DELETE_POINTER(m_arrow);
+	DELETE_POINTER(m_arrow2);
 }
 
 
@@ -252,6 +254,7 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 	m_backGround->Draw(pos, ShunLib::Vec2(0.94f, 0.94f));
 
 	auto text = BattleText::GetInstance();
+	int enemyListSize = (int)(m_enemy->enemyList.GetList().size());
 
 	auto& ds = DB_Enemy;
 	ShunLib::Vec2 enemyPos;
@@ -265,7 +268,6 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		if (m_enemyHp[i] > 0)
 		{
 			enemyPos = Vec2(50.0f+(200.0f*viewNum[i]), 100.0f);
-			//enemyPos = m_enemy->enemyList.GetList().at(i)->Pos;
 			enemy->Texture->Draw(enemyPos, Vec2(0.6f, 0.6f));
 		}
 	}
@@ -282,8 +284,8 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		}
 		else
 		{
-			auto tarPos = m_enemy->enemyList.GetList().at(m_targetNum)->Pos;
-			m_arrow->Draw(tarPos + ShunLib::Vec2(-50.0f, 0.0f), ShunLib::Vec2(2.0f, 2.0f));
+			auto tarPos = Vec2(120.0f + (200.0f*viewNum[m_targetNum]), 250.0f);
+			m_arrow2->Draw(tarPos + ShunLib::Vec2(40.0f, 100.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
 }
@@ -301,7 +303,7 @@ int BattleSystem::TakeDamageEnemy(int damage)
 	return d;
 }
 
-/// <summary>
+/// <summ4ary>
 /// コマンドの選択
 /// </summary>
 bool BattleSystem::SelectCommand()
@@ -364,9 +366,6 @@ bool BattleSystem::SelectTarget()
 	}
 	return isDecided;
 }
-
-
-
 
 //選択肢を1つ上に移動する
 bool SelectUpCommand::Execute(BattleSystem * obj)
