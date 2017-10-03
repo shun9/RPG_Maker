@@ -50,6 +50,17 @@ Map::~Map()
 void Map::Update()
 {
 	auto key = ShunLib::KeyManager::GetInstance();
+	auto mouse = MouseManager::GetInstance();
+
+	if (mouse->GetMouseButtonDown(MouseButton::middleButton))
+	{
+		m_tapPos = m_scrollNum+mouse->GetMousePosition();
+	}
+
+	if (mouse->GetMouseButton(MouseButton::middleButton))
+	{
+		m_scrollNum = (m_tapPos - mouse->GetMousePosition());
+	}
 
 	if		(key->IsPushed(KeyManager::KEY_CODE::UP   ))
 	{
@@ -168,7 +179,7 @@ void Map::Draw()
 			else if(GetActiveWindow() == Window::GetInstance()->WindouHandle(Window::EDITOR))
 			{
 				EmphasisMapDraw(m_map[i][j].Id(), pos - m_scrollNum + m_firstPos, Vec2::One);
-			}		
+			}
 		}
 	}
 }

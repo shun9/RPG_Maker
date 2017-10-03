@@ -23,6 +23,9 @@ public:
 	static const int HEIGHT;
 
 protected:
+	//中クリックされた座標　スクロール用
+	ShunLib::Vec2 m_tapPos;
+
 	// グリッド背景
 	std::unique_ptr<ShunLib::Texture> m_bgTile;
 
