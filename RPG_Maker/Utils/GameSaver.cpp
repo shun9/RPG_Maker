@@ -185,6 +185,10 @@ bool GameSaver::SavePlayerData(ofstream * file)
 /// </summary>
 bool GameSaver::SaveEnemyData(ofstream * file)
 {
+	//先頭のタイトルを書き込む
+	char tmp[] = "Enemy";
+	file->write(tmp, 6);
+
 	const auto& holder = DB_Enemy;
 	auto containerSize = holder.GetContainerSize();
 	file->write((char*)&containerSize, sizeof(int));
@@ -194,14 +198,17 @@ bool GameSaver::SaveEnemyData(ofstream * file)
 	wchar_t* path;
 	int size = 0;
 	bool isTexture = true;
+	std::string buf;
 	for (int i = 0; i < containerSize; i++)
 	{
 		data = holder.GetData(i);
 
 		//敵の名前
-		size = data->Name.length();
+		size = (data->Name.length() + 1) * 2;
+		buf = data->Name;
+		buf += '\0';
 		file->write((char*)&size, sizeof(size));
-		file->write(data->Name.c_str(), size);
+		file->write(buf.c_str(), size);
 
 		//テクスチャがあれば書き込み
 		if (data->Texture && data->Texture->GetPath() != L"")
@@ -224,7 +231,7 @@ bool GameSaver::SaveEnemyData(ofstream * file)
 		//能力値
 		for (int j = 0; j < (int)data->Param.size(); j++)
 		{
-			file->write((char*)&data->Param[i], sizeof(int));
+			file->write((char*)&data->Param[j], sizeof(int));
 		}
 	}
 	return true;
@@ -243,14 +250,17 @@ bool GameSaver::SaveEnemyGroupData(ofstream * file)
 	int groupSize = 0;
 	int size = 0;
 	EnemyGroupData* group;
+	std::string buf;
 	for (int i = 0; i < containerSize; i++)
 	{
 		group = holder.GetData(i);
 
-		//名前
-		size = group->Name.size();
+		//敵の名前
+		size = (group->Name.length() + 1) * 2;
+		buf = group->Name;
+		buf += '\0';
 		file->write((char*)&size, sizeof(size));
-		file->write(group->Name.c_str(), group->Name.size());
+		file->write(buf.c_str(), size);
 
 		//構成
 		groupSize = (int)group->enemyList.size();
@@ -258,8 +268,8 @@ bool GameSaver::SaveEnemyGroupData(ofstream * file)
 
 		for (int j = 0; j < groupSize; j++)
 		{
-			file->write((char*)&group->enemyList[i].first, sizeof(int));
-			file->write((char*)&group->enemyList[i].second, sizeof(ShunLib::Vec2));
+			file->write((char*)&group->enemyList[j].first, sizeof(int));
+			file->write((char*)&group->enemyList[j].second, sizeof(ShunLib::Vec2));
 		}
 	}
 	return true;

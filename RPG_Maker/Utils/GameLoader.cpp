@@ -170,6 +170,10 @@ bool GameLoader::LoadPlayerData(ifstream * file)
 /// </summary>
 bool GameLoader::LoadEnemyData(ifstream * file)
 {
+	//先頭のタイトルを読み込む
+	char tmp[6];
+	file->read(tmp, 6);
+
 	auto& holder = DB_Enemy;
 	int containerSize;
 	file->read((char*)&containerSize, sizeof(int));
@@ -195,7 +199,7 @@ bool GameLoader::LoadEnemyData(ifstream * file)
 		file->read((char*)&isTexture, sizeof(isTexture));
 		if (isTexture)
 		{
-			//テクスチャのパス　終端文字があるので+1
+			//テクスチャのパス
 			file->read((char*)&size, sizeof(size));
 			file->read((char*)path, size);
 			data->Texture = std::make_unique<ShunLib::Texture>(path);
@@ -205,7 +209,7 @@ bool GameLoader::LoadEnemyData(ifstream * file)
 		data->Param.resize(EnemyData::Param::length);
 		for (int j = 0; j < (int)data->Param.size(); j++)
 		{
-			file->read((char*)&data->Param[i], sizeof(int));
+			file->read((char*)&data->Param[j], sizeof(int));
 		}
 
 		holder.AddData(move(data));
@@ -243,13 +247,15 @@ bool GameLoader::LoadEnemyGroupData(ifstream * file)
 		//構成
 		file->read((char*)&groupSize, sizeof(int));
 
-		for (int i = 0; i < groupSize; i++)
+		for (int j = 0; j < groupSize; j++)
 		{
 			file->read((char*)&id, sizeof(int));
 			file->read((char*)&pos, sizeof(ShunLib::Vec2));
-			data->enemyList[i].first = id;
-			data->enemyList[i].second = pos;
+			data->enemyList[j].first = id;
+			data->enemyList[j].second = pos;
 		}
+
+		holder.AddData(move(data));
 	}
 
 	return true;
