@@ -24,7 +24,7 @@ public:
 	~EnemyService(){}
 
 	// EnemyDataì¬
-	std::unique_ptr<EnemyData> CreateEnemyData(const std::wstring& path = L"Image\\enemy\\special\\Slime.png");
+	std::unique_ptr<EnemyData> CreateEnemyData(const std::wstring& path = L"Image\\enemy\\Slime.png");
 	// EnemyGroupì¬
 	std::unique_ptr<EnemyGroupData> CreateEnemyGroupData();
 	// EnemyGroupì¬

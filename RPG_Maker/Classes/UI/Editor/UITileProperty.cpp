@@ -97,7 +97,7 @@ void UITileProperty::UIDrawUpdate()
 		//フォントサイズ変更 
 		ImGui::SetWindowFontScale(1.4f);
 
-		if (0 < m_currentTileId)
+		if (0 <= m_currentTileId)
 		{
 			ImGui::Text("ID :");
 			ImGui::SameLine(110);

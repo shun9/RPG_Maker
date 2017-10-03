@@ -151,9 +151,9 @@ void UIEnemyDataParam::EnemyChangeTexture()
 	if (!m_data) return;
 
 	auto Il = ImageLoader::GetInstance();
-	auto str = Il->OpenLoadingDialog(L"Image\\enemy\\special\\");
+	auto str = Il->OpenLoadingDialog(L"Image\\enemy\\");
 
-	if (str.c_str() != wstring(L"Image\\enemy\\special\\"))
+	if (str.c_str() != wstring(L"Image\\enemy\\"))
 	{
 		m_data->Texture.reset();
 		m_data->Texture = make_unique<Texture>(str.c_str());

@@ -27,7 +27,6 @@ UIEnemyGroupDataParam::UIEnemyGroupDataParam(const string& name, EnemyGroupData*
 
 {
 	UIUpdate(data);
-
 }
 
 UIEnemyGroupDataParam::~UIEnemyGroupDataParam()
@@ -43,8 +42,8 @@ void UIEnemyGroupDataParam::UIUpdate(EnemyGroupData* data)
 	if (data == nullptr)return;
 	m_data = data;
 
-	if (m_nameInputBox == nullptr) m_nameInputBox = std::make_unique<UIInputStringBox>("name", &data->Name, (size_t)10);
-	else m_nameInputBox.reset(new UIInputStringBox("name", &data->Name, (size_t)11));
+	if (m_nameInputBox == nullptr) m_nameInputBox = std::make_unique<UIInputStringBox>("name", &data->Name, (size_t)40);
+	else m_nameInputBox.reset(new UIInputStringBox("name", &data->Name, (size_t)40));
 
 	if (m_groupAloneList == nullptr) m_groupAloneList = make_unique<UIDataList<EnemyGroupAloneData>>(string(m_name));
 	else m_groupAloneList.reset(new UIDataList<EnemyGroupAloneData>(string(m_name)));

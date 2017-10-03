@@ -51,7 +51,7 @@ void UITileCanvas::DrawUpdate()
 		data->texture->Draw(m_Pos + pos, Vec2::One);
 
 		x++;
-		if (CANVAS_WIDTH + 1 < x) {
+		if (CANVAS_WIDTH < x) {
 			x = 0;
 			y++;
 		}
@@ -137,7 +137,7 @@ bool UITileCanvas::CollisionTile(const Vec2& pos,int*& id)
 		return false;
 	}
 
-	id = new int(x * (y + 1));
+	id = new int(x + y * CANVAS_WIDTH + y);
 
 	return true;
 }

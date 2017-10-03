@@ -67,6 +67,9 @@ void UIDataBase::DrawUpdate()
 
 		style.FramePadding = ImVec2(3.0f, 2.0f);
 
+		//フォントサイズ変更
+		ImGui::SetWindowFontScale(1.4f);
+
 		auto x = ImGui::GetCursorPosX();
 		auto y = ImGui::GetCursorPosY();
 
