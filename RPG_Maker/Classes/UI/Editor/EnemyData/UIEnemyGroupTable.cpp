@@ -25,6 +25,8 @@ UIEnemyGroupTable::UIEnemyGroupTable(const string& name)
 	m_uiDataList = make_unique<UIDataList<EnemyGroupData>>(name);
 	m_uiDataList->SetButtonUI(&DB_EnemyGroup.GetList());
 
+	if (!m_uiDataParam) m_uiDataParam = make_unique<UIEnemyGroupDataParam>("param");
+
 	m_addButton = std::make_unique<UIButton>("                  Add                  ", [this]() {
 		ParamUpdate(DB_EnemyGroup.AddData(SVC_Enemy->CreateEnemyGroupData()));
 		DataListIDUpdate();

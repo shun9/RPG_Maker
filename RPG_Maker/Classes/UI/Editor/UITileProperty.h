@@ -15,6 +15,7 @@
 #include "UISlider.h"
 #include "UITilePropertyEGroup.h"
 #include "../../Data/TileData.h"
+#include "UIButton.h"
 
 class UITileProperty :public UIBase
 {

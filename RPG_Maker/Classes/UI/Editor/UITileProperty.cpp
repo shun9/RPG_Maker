@@ -50,7 +50,7 @@ void UITileProperty::UIUpdate()
 	m_encountSlider = make_unique<UISlider>(" ", &m_tileData->encountRate);
 	m_checkBoxIsMove = make_unique<UICheckBox>("  ", &m_tileData->canMove);
 	m_checkBoxIsEmphasis = make_unique<UICheckBox>("   ", &Map::m_isEmphasis);
-	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup");
+	m_groupSlider = make_unique<UITilePropertyEGroup>("EnemyGroup", m_currentTileId);
 }
 
 void UITileProperty::UIErase()
