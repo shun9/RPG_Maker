@@ -26,6 +26,7 @@ UITilePropertyEGroup::UITilePropertyEGroup(const string& name, int id)
 	m_bool.resize(holder.size());
 	m_bool.shrink_to_fit();
 
+	auto& group = DB_Tile.GetData(m_currentId)->enemyGroup;
 	for (int i = 0; i < (int)holder.size(); i++)
 	{
 		auto& list = holder;
@@ -35,15 +36,13 @@ UITilePropertyEGroup::UITilePropertyEGroup(const string& name, int id)
 		sprintf_s(title, u8"%d : %s", i, data->Name.c_str());
 		m_bool.at(i) = make_unique<bool>(false);
 		
-		auto& group = DB_Tile.GetData(m_currentId)->enemyGroup;
 		
-		for each (auto id in group){
-			*m_bool.at(id).get() = true;
-		}
 		if (!m_buttonList.at(i)) m_buttonList.at(i) = make_unique<UICheckBox>(title, m_bool.at(i).get());
 		else m_buttonList.at(i).reset(new UICheckBox(title, m_bool.at(i).get()));
 	}
-
+	for each (auto id in group) {
+		*m_bool.at(id).get() = true;
+	}
 }
 
 UITilePropertyEGroup::~UITilePropertyEGroup()
@@ -72,6 +71,7 @@ void UITilePropertyEGroup::UIDrawUpdate()
 			// false ‚Ì‚Ííœ
 			group.erase(itr);
 			group.shrink_to_fit();
+			break;
 		}
 		// true‚Ì‚Í’Ç‰Á
 		if(*flag.get()) tmp.push_back(i);
