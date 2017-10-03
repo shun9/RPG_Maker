@@ -38,7 +38,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmpSh
 		window->Run();
 	}
 
-
+	//シングルトン終了処理
 	MouseManager::Destroy();
 	GameSaver::Destroy();
 	GameLoader::Destroy();

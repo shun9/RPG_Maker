@@ -50,7 +50,10 @@ void UIEnemyDataParam::UIUpdate(EnemyData* data)
 void UIEnemyDataParam::DrawUpdate()
 {
 	if (!Active)return;
-	//フォントサイズ変更 
+
+	if (m_data == nullptr)return;
+
+	//フォントサイズ変更
 	ImGui::SetWindowFontScale(1.4f);
 
 	ImGui::NewLine();
