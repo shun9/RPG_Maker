@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "UIBase.h"
+#include "EnemyData\UITableBase.h"
 #include "UIInputIntBox.h"
 
 class Player;
 
-class UIPlayer :public UIBase
+class UIPlayer :public UITableBase
 {
 private:
 	Player* m_player;
@@ -16,7 +16,7 @@ private:
 	int m_playerPosY;
 
 public:
-	UIPlayer(Player* player) :UIBase("Player"), m_player(player) { UIUpdate(); }
+	UIPlayer(Player* player) :UITableBase("Player"), m_player(player) { UIUpdate(); }
 	~UIPlayer() {}
 
 	virtual void DrawUpdate() override;

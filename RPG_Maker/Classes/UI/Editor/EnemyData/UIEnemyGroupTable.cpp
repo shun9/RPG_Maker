@@ -77,6 +77,7 @@ void UIEnemyGroupTable::ParamUpdate(int id)
 
 void UIEnemyGroupTable::DrawImage()
 {
+	if (!Active)return;
 	m_uiDataParam->DrawImage();
 }
 

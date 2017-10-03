@@ -65,6 +65,7 @@ void UIEnemyTable::DrawUpdate()
 
 void UIEnemyTable::DrawImage()
 {
+	if (!Active)return;
 	m_uiDataParam->DrawImage();
 }
 
