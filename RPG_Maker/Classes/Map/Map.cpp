@@ -60,6 +60,7 @@ void Map::Update()
 	if (mouse->GetMouseButton(MouseButton::middleButton))
 	{
 		m_scrollNum = (m_tapPos - mouse->GetMousePosition());
+		ClampScroll();
 	}
 
 	if		(key->IsPushed(KeyManager::KEY_CODE::UP   ))
@@ -82,6 +83,7 @@ void Map::Update()
 		m_scrollNum.m_x += 1.0f;
 		ClampScroll();
 	}
+
 }
 
 
@@ -392,8 +394,9 @@ void Map::ClampScroll()
 	{
 		m_scrollNum.m_y = Map::HEIGHT*Tile::SIZE - m_displaySize.m_y;
 	}
+
 	//ç∂í[
-	else if (m_scrollNum.m_x < 0.0f)
+	if (m_scrollNum.m_x < 0.0f)
 	{
 		m_scrollNum.m_x = 0.0f;
 	}
