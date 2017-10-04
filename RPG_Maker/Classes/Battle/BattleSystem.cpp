@@ -290,7 +290,7 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		}
 		else
 		{
-			auto tarPos = Vec2(120.0f + (200.0f*viewNum[m_targetNum]), 250.0f);
+			auto tarPos = Vec2(120.0f + (200.0f* posNum[m_targetNum]), 250.0f);
 			m_arrow2->Draw(tarPos + ShunLib::Vec2(40.0f, 100.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
