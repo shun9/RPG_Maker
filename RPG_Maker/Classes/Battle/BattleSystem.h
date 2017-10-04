@@ -20,6 +20,7 @@ class BattleSystem
 private:
 	ShunLib::Texture* m_backGround;
 	ShunLib::Texture* m_arrow;
+	ShunLib::Texture* m_arrow2;
 	ShunLib::Vec2 m_arrowPos;
 
 	Player* m_player;
@@ -88,10 +89,12 @@ public:
 	void SetEnemy(int id) {
 		auto& db = DB_Enemy;
 		m_enemy = DB_EnemyGroup.GetData(id);
+		m_enemyHp.clear();
+
 		//HP‚ð•Û‘¶
 		for (int i = 0; i < (int)m_enemy->enemyList.GetList().size(); i++)
 		{
-			m_enemyHp.push_back(db.GetData(m_enemy->enemyList.GetList().at(i)->Id)->Param[EnemyData::Param::HP]);
+			m_enemyHp.push_back(db.GetData(m_enemy->enemyList.GetList()[i]->Id)->Param[EnemyData::Param::HP]);
 		}
 	}
 

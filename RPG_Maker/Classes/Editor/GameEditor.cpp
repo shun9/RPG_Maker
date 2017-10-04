@@ -53,6 +53,7 @@ void GameEditor::Initialize()
 	PlayerHolder::GetInstance()->Set(player);
 
 	m_game = new Game();
+	m_activeTileFlame = new ShunLib::Texture(L"Image\\flame.png");
 
 	// SettingUI
 	m_uiMenu = make_unique<UIMenuBar>(string("menu"));
@@ -114,6 +115,7 @@ void GameEditor::Update()
 	if (!ImGui::IsAnyWindowHovered()&&
 		!ImGui::IsAnyItemActive())
 	{
+		m_isActiveTile = true;
 		if (mouse->GetMouseButton(MouseButton::leftButton))
 		{
 			auto p = mouse->GetMousePosition();
@@ -127,6 +129,10 @@ void GameEditor::Update()
 		}
 
 	}
+	else {
+		m_isActiveTile = false;
+	}
+
 	m_map->Update();
 
 	PlayerScroll();
@@ -151,6 +157,7 @@ void GameEditor::Render()
 	m_map->ConvertMapPos(mouse->GetMousePosition(), &mapX, &mapY);
 
 	m_map->Draw();
+	DrawActiveTile();
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	player->Draw();
@@ -173,6 +180,7 @@ void GameEditor::Finalize()
 {
 	ImGui_ImplDX11_Shutdown();
 	PlayerHolder::Destroy();
+	DELETE_POINTER(m_activeTileFlame);
 	DELETE_POINTER(m_map);
 	DELETE_POINTER(player);
 }
@@ -241,4 +249,19 @@ void GameEditor::PlayerScroll()
 	Vec2 tmp = player->PosOnMap();
 	m_map->ConvertScreenPos((int)tmp.m_x, (int)tmp.m_y, &playerPos);
 	player->Setpos(playerPos);
+}
+
+
+void GameEditor::DrawActiveTile()
+{
+	if (m_isActiveTile)
+	{
+		auto mouse = MouseManager::GetInstance();
+		ShunLib::Vec2 pos;
+		int x, y;
+		m_map->ConvertMapPos(mouse->GetMousePosition(), &x, &y);
+		m_map->ConvertScreenPos(x, y,&pos);
+
+		m_activeTileFlame->Draw(pos-ShunLib::Vec2(4.0f,4.0f), ShunLib::Vec2::One);
+	}
 }
