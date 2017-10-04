@@ -261,13 +261,19 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 	EnemyData* enemy;
 
 	int posNum[] = { 1,0,2 };
-	int viewNum[] = { 0,1,2 };
-	for (int i = 0; i < (int)(m_enemy->enemyList.GetList().size()); i++)
+	Vec2 position[] = { Vec2(0.0f,0.0f),Vec2(0.0f,0.0f),Vec2(0.0f,0.0f) };
+	for (int i=0;i<3;i++)
 	{
-		enemy = DB_Enemy.GetData(m_enemy->enemyList.GetList().at(posNum[i])->Id);
+		position[i] = Vec2(50.0f + (200.0f*posNum[i]), 100.0f);
+	}
+
+	for (int i = (int)(m_enemy->enemyList.GetList().size())-1; i >= 0; i--)
+	{
+		enemy = DB_Enemy.GetData(m_enemy->enemyList.GetList().at(i)->Id);
 		if (m_enemyHp[i] > 0)
 		{
-			enemyPos = Vec2(50.0f+(200.0f*viewNum[i]), 100.0f);
+			enemyPos = position[i];
+			//enemyPos = m_enemy->enemyList.GetList().at(i)->Pos;
 			enemy->Texture->Draw(enemyPos, Vec2(0.6f, 0.6f));
 		}
 	}
@@ -284,7 +290,7 @@ void BattleSystem::Draw(const ShunLib::Vec2 & pos)
 		}
 		else
 		{
-			auto tarPos = Vec2(120.0f + (200.0f*viewNum[m_targetNum]), 250.0f);
+			auto tarPos = Vec2(120.0f + (200.0f* posNum[m_targetNum]), 250.0f);
 			m_arrow2->Draw(tarPos + ShunLib::Vec2(40.0f, 100.0f), ShunLib::Vec2(2.0f, 2.0f));
 		}
 	}
